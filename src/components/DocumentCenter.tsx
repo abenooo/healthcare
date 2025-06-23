@@ -243,7 +243,7 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"
           >
             <Upload className="w-4 h-4" />
-            <span>Upload Document 123</span>
+            <span>Upload Document</span>
           </button>
           <button
             className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-200 flex items-center space-x-2"
