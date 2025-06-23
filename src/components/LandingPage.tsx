@@ -537,7 +537,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         </div>
       </section>
 
-      {/* Solutions Section */}
+      {/* Patient Documents Section */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -546,117 +546,113 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             </h2>
           </div>
 
-          <div className="space-y-10">
+          <div className="space-y-16">
             {/* PCMH Patient Compact */}
-            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
-              <h3 className="text-2xl font-semibold text-blue-700 mb-2">PCMH Patient Compact</h3>
-              <p className="text-gray-700 mb-4">
-                A Patient-Centered Medical Home reflects a trusting partnership between a doctor-led healthcare team and an informed patient. It includes an agreement between the doctor and the patient that acknowledges the role each plays in a total healthcare program.
-              </p>
-              <div className="mb-4">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-8">
+              <div className="md:w-1/2 w-full">
                 <iframe
-                  src="https://wellspire.net/wp-content/uploads/2021/09/PCMH-Patient-Compact.pdf"
+                  src="/PCMH-Patient-Compact-2.pdf"
                   width="100%"
-                  height="500px"
+                  height="400px"
                   title="PCMH Patient Compact PDF Preview"
-                  className="rounded border"
-                >
-                  This browser does not support PDFs. Please download the PDF to view it:
-                  <a href="https://wellspire.net/wp-content/uploads/2021/09/PCMH-Patient-Compact.pdf">Download PDF</a>
-                </iframe>
+                  className="rounded border bg-gray-100"
+                />
               </div>
-              <a
-                href="https://wellspire.net/wp-content/uploads/2021/09/PCMH-Patient-Compact.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:underline font-medium"
-              >
-                Download PDF
-              </a>
+              <div className="md:w-1/2 w-full">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-2">PCMH Patient Compact</h3>
+                <p className="text-gray-700 mb-4">
+                  A Patient-Centered Medical Home reflects a trusting partnership between a doctor-led healthcare team and an informed patient. It includes an agreement between the doctor and the patient that acknowledges the role each plays in a total healthcare program.
+                </p>
+                <a
+                  href="/PCMH-Patient-Compact-2.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:underline font-medium"
+                >
+                  Download PDF
+                </a>
+              </div>
             </div>
 
-            {/* Patient Registration Form */}
-            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
-              <h3 className="text-2xl font-semibold text-blue-700 mb-2">Patient Registration Form</h3>
-              <p className="text-gray-700 mb-4">
-                New patients can save time during their first appointment by completing the patient registration form prior to their visit. Simply complete the patient registration form with the information requested, print the form, and bring it with you to your appointment.
-              </p>
-              <div className="mb-4">
+            {/* Patient Information */}
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-8">
+              <div className="md:w-1/2 w-full">
                 <iframe
-                  src="https://wellspire.net/wp-content/uploads/2021/09/Patient-Registration-Form.pdf"
+                  src="/WMG_Patient_Information.pdf"
                   width="100%"
-                  height="500px"
-                  title="Patient Registration Form PDF Preview"
-                  className="rounded border"
-                >
-                  This browser does not support PDFs. Please download the PDF to view it:
-                  <a href="https://wellspire.net/wp-content/uploads/2021/09/Patient-Registration-Form.pdf">Download PDF</a>
-                </iframe>
+                  height="400px"
+                  title="Patient Information PDF Preview"
+                  className="rounded border bg-gray-100"
+                />
               </div>
-              <a
-                href="https://wellspire.net/wp-content/uploads/2021/09/Patient-Registration-Form.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:underline font-medium"
-              >
-                Download PDF
-              </a>
+              <div className="md:w-1/2 w-full">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-2">Patient Information</h3>
+                <p className="text-gray-700 mb-4">
+                  New patients can save time during their first appointment by completing the patient registration form prior to their visit. Simply complete the patient registration form with the information requested, print the form, and bring it with you to your appointment.
+                </p>
+                <a
+                  href="/WMG_Patient_Information.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:underline font-medium"
+                >
+                  Download PDF
+                </a>
+              </div>
             </div>
 
             {/* Wellspire Financial Policy */}
-            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
-              <h3 className="text-2xl font-semibold text-blue-700 mb-2">Wellspire Financial Policy</h3>
-              <p className="text-gray-700 mb-4">
-                We are committed to building a successful physician-patient relationship with you and your family. Your clear understanding of our patient financial policy is important to our professional relationship. Please ask any questions you have about our fees, policies, or your responsibilities. If any of your information, such as insurance coverage changes, it is your responsibility to let us know.
-              </p>
-              <div className="mb-4">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-8">
+              <div className="md:w-1/2 w-full">
                 <iframe
-                  src="https://wellspire.net/wp-content/uploads/2021/09/Wellspire-Financial-Policy.pdf"
+                  src="/Wellspire-Medical-Financial-policy-6.2025.pdf"
                   width="100%"
-                  height="500px"
+                  height="400px"
                   title="Wellspire Financial Policy PDF Preview"
-                  className="rounded border"
-                >
-                  This browser does not support PDFs. Please download the PDF to view it:
-                  <a href="https://wellspire.net/wp-content/uploads/2021/09/Wellspire-Financial-Policy.pdf">Download PDF</a>
-                </iframe>
+                  className="rounded border bg-gray-100"
+                />
               </div>
-              <a
-                href="https://wellspire.net/wp-content/uploads/2021/09/Wellspire-Financial-Policy.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:underline font-medium"
-              >
-                Download PDF
-              </a>
+              <div className="md:w-1/2 w-full">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-2">Wellspire Financial Policy</h3>
+                <p className="text-gray-700 mb-4">
+                  We are committed to building a successful physician-patient relationship with you and your family. Your clear understanding of our patient financial policy is important to our professional relationship. Please ask any questions you have about our fees, policies, or your responsibilities. If any of your information, such as insurance coverage changes, it is your responsibility to let us know.
+                </p>
+                <a
+                  href="/Wellspire-Medical-Financial-policy-6.2025.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:underline font-medium"
+                >
+                  Download PDF
+                </a>
+              </div>
             </div>
 
             {/* Wellspire Medical Records Authorization Form */}
-            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
-              <h3 className="text-2xl font-semibold text-blue-700 mb-2">Wellspire Medical Records Authorization Form</h3>
-              <p className="text-gray-700 mb-4">
-                The privacy of your information is protected by federal and state regulations. This means your medical information is only available to Wellspire Medical Group personnel unless you authorize release of your information to others.
-              </p>
-              <div className="mb-4">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-8">
+              <div className="md:w-1/2 w-full">
                 <iframe
-                  src="https://wellspire.net/wp-content/uploads/2021/09/Medical-Records-Authorization-Form.pdf"
+                  src="/Medical-Records-Form.pdf"
                   width="100%"
-                  height="500px"
+                  height="400px"
                   title="Wellspire Medical Records Authorization Form PDF Preview"
-                  className="rounded border"
-                >
-                  This browser does not support PDFs. Please download the PDF to view it:
-                  <a href="https://wellspire.net/wp-content/uploads/2021/09/Medical-Records-Authorization-Form.pdf">Download PDF</a>
-                </iframe>
+                  className="rounded border bg-gray-100"
+                />
               </div>
-              <a
-                href="https://wellspire.net/wp-content/uploads/2021/09/Medical-Records-Authorization-Form.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:underline font-medium"
-              >
-                Download PDF
-              </a>
+              <div className="md:w-1/2 w-full">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-2">Wellspire Medical Records Authorization Form</h3>
+                <p className="text-gray-700 mb-4">
+                  The privacy of your information is protected by federal and state regulations. This means your medical information is only available to Wellspire Medical Group personnel unless you authorize release of your information to others.
+                </p>
+                <a
+                  href="/Medical-Records-Form.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:underline font-medium"
+                >
+                  Download PDF
+                </a>
+              </div>
             </div>
           </div>
         </div>
