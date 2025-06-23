@@ -15,6 +15,7 @@ import {
   Edit,
   Trash2
 } from 'lucide-react';
+import jsPDF from "jspdf"; // Install with: npm install jspdf
 
 interface DocumentCenterProps {
   userRole: string;
@@ -22,6 +23,31 @@ interface DocumentCenterProps {
 
 const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
   const [activeTab, setActiveTab] = useState('all');
+  const [showForm, setShowForm] = useState(false);
+  const [formStep, setFormStep] = useState(1);
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    dob: "",
+    gender: "",
+    maritalStatus: "",
+    address: "",
+    city: "",
+    state: "",
+    zip: "",
+    phone: "",
+    email: "",
+    insuranceProvider: "",
+    insuranceId: "",
+    primaryPhysician: "",
+    allergies: "",
+    medications: "",
+    medicalHistory: "",
+    emergencyName: "",
+    emergencyRelation: "",
+    emergencyPhone: "",
+  });
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
   // Role-specific content
   const getPageTitle = () => {
@@ -152,6 +178,51 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
     ? documents 
     : documents.filter(doc => doc.category === activeTab);
 
+  // Handle form field changes
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Generate PDF
+  const handleGeneratePDF = () => {
+    const doc = new jsPDF();
+    doc.setFontSize(16);
+    doc.text("Patient Registration Form", 10, 15);
+    doc.setFontSize(12);
+
+    let y = 25;
+    doc.text(`Name: ${formData.firstName} ${formData.lastName}`, 10, y);
+    y += 8;
+    doc.text(`DOB: ${formData.dob}`, 10, y);
+    y += 8;
+    doc.text(`Gender: ${formData.gender}`, 10, y);
+    y += 8;
+    doc.text(`Marital Status: ${formData.maritalStatus}`, 10, y);
+    y += 8;
+    doc.text(`Address: ${formData.address}, ${formData.city}, ${formData.state} ${formData.zip}`, 10, y);
+    y += 8;
+    doc.text(`Phone: ${formData.phone}`, 10, y);
+    y += 8;
+    doc.text(`Email: ${formData.email}`, 10, y);
+    y += 8;
+    doc.text(`Insurance Provider: ${formData.insuranceProvider}`, 10, y);
+    y += 8;
+    doc.text(`Insurance ID: ${formData.insuranceId}`, 10, y);
+    y += 8;
+    doc.text(`Primary Physician: ${formData.primaryPhysician}`, 10, y);
+    y += 8;
+    doc.text(`Allergies: ${formData.allergies}`, 10, y);
+    y += 8;
+    doc.text(`Medications: ${formData.medications}`, 10, y);
+    y += 8;
+    doc.text(`Medical History: ${formData.medicalHistory}`, 10, y);
+    y += 8;
+    doc.text(`Emergency Contact: ${formData.emergencyName} (${formData.emergencyRelation}) - ${formData.emergencyPhone}`, 10, y);
+
+    const pdfBlob = doc.output("blob");
+    setPdfUrl(URL.createObjectURL(pdfBlob));
+  };
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -168,9 +239,18 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
         
         {/* Action Buttons */}
         <div className="flex space-x-4">
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
+          <button
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2"
+          >
             <Upload className="w-4 h-4" />
-            <span>{userRole === 'Doctor' ? 'Upload Results' : 'Upload Document'}</span>
+            <span>Upload Document 123</span>
+          </button>
+          <button
+            className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors duration-200 flex items-center space-x-2"
+            onClick={() => { setShowForm(true); setFormStep(1); }}
+          >
+            <PenTool className="w-4 h-4" />
+            <span>Fill Patient Form</span>
           </button>
           {(userRole === 'Doctor' || userRole === 'HR Manager' || userRole === 'Admin') && (
             <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 flex items-center space-x-2">
@@ -186,6 +266,145 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
           )}
         </div>
       </div>
+
+      {/* Multi-step Patient Form Modal */}
+      {showForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-8 w-full max-w-lg relative">
+            <button
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              onClick={() => setShowForm(false)}
+            >✕</button>
+            <h2 className="text-2xl font-bold mb-4">Patient Registration (Step {formStep}/3)</h2>
+            <form
+              onSubmit={e => {
+                e.preventDefault();
+                if (formStep < 3) setFormStep(formStep + 1);
+                else {
+                  handleGeneratePDF();
+                  setShowForm(false);
+                }
+              }}
+            >
+              {formStep === 1 && (
+                <>
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <label className="block mb-1">First Name</label>
+                      <input name="firstName" value={formData.firstName} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block mb-1">Last Name</label>
+                      <input name="lastName" value={formData.lastName} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                    </div>
+                  </div>
+                  <label className="block mb-1">Date of Birth</label>
+                  <input type="date" name="dob" value={formData.dob} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <label className="block mb-1">Gender</label>
+                      <select name="gender" value={formData.gender} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required>
+                        <option value="">Select</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                      </select>
+                    </div>
+                    <div className="flex-1">
+                      <label className="block mb-1">Marital Status</label>
+                      <select name="maritalStatus" value={formData.maritalStatus} onChange={handleFormChange} className="mb-3 w-full border rounded p-2">
+                        <option value="">Select</option>
+                        <option>Single</option>
+                        <option>Married</option>
+                        <option>Divorced</option>
+                        <option>Widowed</option>
+                      </select>
+                    </div>
+                  </div>
+                  <label className="block mb-1">Address</label>
+                  <input name="address" value={formData.address} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <label className="block mb-1">City</label>
+                      <input name="city" value={formData.city} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block mb-1">State</label>
+                      <input name="state" value={formData.state} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                    </div>
+                    <div className="flex-1">
+                      <label className="block mb-1">Zip</label>
+                      <input name="zip" value={formData.zip} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                    </div>
+                  </div>
+                  <label className="block mb-1">Phone</label>
+                  <input name="phone" value={formData.phone} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                  <label className="block mb-1">Email</label>
+                  <input type="email" name="email" value={formData.email} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                </>
+              )}
+              {formStep === 2 && (
+                <>
+                  <label className="block mb-1">Insurance Provider</label>
+                  <input name="insuranceProvider" value={formData.insuranceProvider} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" />
+                  <label className="block mb-1">Insurance ID</label>
+                  <input name="insuranceId" value={formData.insuranceId} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" />
+                  <label className="block mb-1">Primary Physician</label>
+                  <input name="primaryPhysician" value={formData.primaryPhysician} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" />
+                  <label className="block mb-1">Allergies</label>
+                  <input name="allergies" value={formData.allergies} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" />
+                  <label className="block mb-1">Current Medications</label>
+                  <input name="medications" value={formData.medications} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" />
+                  <label className="block mb-1">Medical History</label>
+                  <textarea name="medicalHistory" value={formData.medicalHistory} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" rows={3} />
+                </>
+              )}
+              {formStep === 3 && (
+                <>
+                  <label className="block mb-1">Emergency Contact Name</label>
+                  <input name="emergencyName" value={formData.emergencyName} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                  <label className="block mb-1">Relationship</label>
+                  <input name="emergencyRelation" value={formData.emergencyRelation} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                  <label className="block mb-1">Emergency Contact Phone</label>
+                  <input name="emergencyPhone" value={formData.emergencyPhone} onChange={handleFormChange} className="mb-3 w-full border rounded p-2" required />
+                </>
+              )}
+              <div className="flex justify-between mt-4">
+                {formStep > 1 && (
+                  <button
+                    type="button"
+                    className="px-4 py-2 bg-gray-200 rounded"
+                    onClick={() => setFormStep(formStep - 1)}
+                  >
+                    Back
+                  </button>
+                )}
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-600 text-white rounded"
+                >
+                  {formStep < 3 ? "Next" : "Submit"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* PDF Download Link */}
+      {pdfUrl && (
+        <div className="bg-green-50 border border-green-200 rounded p-4 my-4 flex items-center space-x-4">
+          <CheckCircle className="w-6 h-6 text-green-600" />
+          <span>Your form is ready:</span>
+          <a
+            href={pdfUrl}
+            download="Patient-Form.pdf"
+            className="text-blue-600 underline font-medium"
+          >
+            Download PDF
+          </a>
+        </div>
+      )}
 
       {/* Document Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
