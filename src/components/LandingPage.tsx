@@ -537,54 +537,107 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         </div>
       </section>
 
-      {/* Solutions Section */}
+      {/* Patient Documents Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Comprehensive Healthcare Solutions
+              Patient Documents
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From supply chain optimization to performance improvement, we provide end-to-end solutions that drive measurable results.
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {solutions.map((solution, index) => {
-              const Icon = solution.icon;
-              return (
-                <div
-                  key={index}
-                  className="bg-white rounded-2xl p-8 border border-gray-100 hover:shadow-xl transition-all duration-300 group relative overflow-hidden"
-                >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-50 to-transparent rounded-full -mr-16 -mt-16 opacity-50"></div>
-                  
-                  <div className={`w-12 h-12 bg-gradient-to-r ${solution.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-200 relative z-10`}>
-                    <Icon className="w-6 h-6 text-white" />
-                  </div>
-                  
-                  <h3 className="text-xl font-semibold text-gray-900 mb-4">{solution.title}</h3>
-                  <p className="text-gray-600 leading-relaxed mb-6">{solution.description}</p>
-                  
-                  <div className="space-y-2 mb-6">
-                    {solution.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center space-x-2">
-                        <CheckCircle className="w-4 h-4 text-green-500" />
-                        <span className="text-sm text-gray-600">{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-green-600">{solution.savings}</span>
-                    <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center space-x-1">
-                      <span>Learn More</span>
-                      <ArrowRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+            {/* PCMH Patient Compact */}
+            <div className="flex flex-col items-center bg-white rounded-2xl p-6 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
+              <iframe
+                src="/PCMH-Patient-Compact-2.pdf"
+                width="100%"
+                height="350px"
+                title="PCMH Patient Compact PDF Preview"
+                className="rounded border bg-gray-100 mb-4"
+              />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">PCMH Patient Compact</h3>
+              <p className="text-gray-700 mb-4 text-center">
+                A Patient-Centered Medical Home reflects a trusting partnership between a doctor-led healthcare team and an informed patient. It includes an agreement between the doctor and the patient that acknowledges the role each plays in a total healthcare program.
+              </p>
+              <a
+                href="/PCMH-Patient-Compact-2.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 hover:underline font-medium"
+              >
+                Download PDF
+              </a>
+            </div>
+
+            {/* Patient Information */}
+            <div className="flex flex-col items-center bg-white rounded-2xl p-6 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
+              <iframe
+                src="/WMG_Patient_Information.pdf"
+                width="100%"
+                height="350px"
+                title="Patient Information PDF Preview"
+                className="rounded border bg-gray-100 mb-4"
+              />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">Patient Information</h3>
+              <p className="text-gray-700 mb-4 text-center">
+                New patients can save time during their first appointment by completing the patient registration form prior to their visit. Simply complete the patient registration form with the information requested, print the form, and bring it with you to your appointment.
+              </p>
+              <a
+                href="/WMG_Patient_Information.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 hover:underline font-medium"
+              >
+                Download PDF
+              </a>
+            </div>
+
+            {/* Wellspire Financial Policy */}
+            <div className="flex flex-col items-center bg-white rounded-2xl p-6 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
+              <iframe
+                src="/Wellspire-Medical-Financial-policy-6.2025.pdf"
+                width="100%"
+                height="350px"
+                title="Wellspire Financial Policy PDF Preview"
+                className="rounded border bg-gray-100 mb-4"
+              />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">Wellspire Financial Policy</h3>
+              <p className="text-gray-700 mb-4 text-center">
+                We are committed to building a successful physician-patient relationship with you and your family. Your clear understanding of our patient financial policy is important to our professional relationship. Please ask any questions you have about our fees, policies, or your responsibilities. If any of your information, such as insurance coverage changes, it is your responsibility to let us know.
+              </p>
+              <a
+                href="/Wellspire-Medical-Financial-policy-6.2025.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 hover:underline font-medium"
+              >
+                Download PDF
+              </a>
+            </div>
+
+            {/* Wellspire Medical Records Authorization Form */}
+            <div className="flex flex-col items-center bg-white rounded-2xl p-6 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
+              <iframe
+                src="/Medical-Records-Form.pdf"
+                width="100%"
+                height="350px"
+                title="Wellspire Medical Records Authorization Form PDF Preview"
+                className="rounded border bg-gray-100 mb-4"
+              />
+              <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">Wellspire Medical Records Authorization Form</h3>
+              <p className="text-gray-700 mb-4 text-center">
+                The privacy of your information is protected by federal and state regulations. This means your medical information is only available to Wellspire Medical Group personnel unless you authorize release of your information to others.
+              </p>
+              <a
+                href="/Medical-Records-Form.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center text-blue-600 hover:underline font-medium"
+              >
+                Download PDF
+              </a>
+            </div>
           </div>
         </div>
       </section>
