@@ -269,13 +269,25 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
 
       {/* Multi-step Patient Form Modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-8 w-full max-w-lg relative">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+          <div
+            className="
+              bg-white rounded-xl
+              w-full max-w-[95vw] sm:max-w-md md:max-w-lg lg:max-w-xl
+              mx-4
+              p-4 sm:p-6 md:p-8
+              relative
+              max-h-[90vh]
+              overflow-y-auto
+              shadow-2xl
+            "
+          >
             <button
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-2xl"
               onClick={() => setShowForm(false)}
+              aria-label="Close"
             >✕</button>
-            <h2 className="text-2xl font-bold mb-4">Patient Registration (Step {formStep}/3)</h2>
+            <h2 className="text-xl sm:text-2xl font-bold mb-4">Patient Registration (Step {formStep}/3)</h2>
             <form
               onSubmit={e => {
                 e.preventDefault();
