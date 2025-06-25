@@ -8,12 +8,11 @@ import Services from './components/Services';
 import HRModule from './components/HRModule';
 import PatientPortal from './components/PatientPortal';
 import AdminSettings from './components/AdminSettings';
-import DocumentCenter from './components/DocumentCenter';
+// import DocumentCenter from './components/DocumentCenter';
 import Onboarding from './components/Onboarding';
 import Contact from './components/Contact';
 import FAQ from './components/FAQ';
 import About from './components/About';
-import { Link } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import LoginModal from './components/LoginModal';
 
@@ -24,51 +23,41 @@ interface Props {
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [user, setUser] = useState({
-    name: 'Dr. Sarah Johnson',
-    role: 'Doctor',
-    avatar: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2'
-  });
+  const [user, setUser] = useState<any>(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [userRole, setUserRole] = useState(null);
 
   const handleLogin = (userData: any) => {
     setUser(userData);
     setIsAuthenticated(true);
-    setActiveTab('dashboard'); // Reset to dashboard when logging in
-  };
-
-  const handleSelectRole = (role: string) => {
-    setUserRole(role);
     setShowLoginModal(false);
   };
 
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard':
-        return <Dashboard setActiveTab={setActiveTab} userRole={user.role} />;
+        return <Dashboard setActiveTab={setActiveTab} userRole={user?.role} />;
       case 'services':
-        return <Services userRole={user.role} />;
+        return <Services userRole={user?.role} />;
       case 'hr':
-        return <HRModule userRole={user.role} />;
+        return <HRModule userRole={user?.role} />;
       case 'patients':
-        return <PatientPortal userRole={user.role} />;
-      case 'documents':
-        return <DocumentCenter userRole={user.role} />;
+        return <PatientPortal userRole={user?.role} />;
+      // case 'documents':
+      //   return <DocumentCenter userRole={user?.role} />;
       case 'onboarding':
-        return <Onboarding userRole={user.role} />;
+        return <Onboarding userRole={user?.role} />;
       case 'admin':
-        return <AdminSettings userRole={user.role} />;
+        return <AdminSettings userRole={user?.role} />;
       default:
-        return <Dashboard setActiveTab={setActiveTab} userRole={user.role} />;
+        return <Dashboard setActiveTab={setActiveTab} userRole={user?.role} />;
     }
   };
 
   let dashboard = null;
-  if (userRole === "Patient") dashboard = <PatientPortal userRole="Patient" />;
-  else if (userRole === "Doctor") dashboard = <PatientPortal userRole="Doctor" />;
-  else if (userRole === "Admin") dashboard = <AdminSettings userRole="Admin" />;
-  else if (userRole === "HR Manager") dashboard = <HRModule userRole="HR Manager" />;
+  if (user?.role === "Patient") dashboard = <PatientPortal userRole="Patient" />;
+  else if (user?.role === "Doctor") dashboard = <PatientPortal userRole="Doctor" />;
+  else if (user?.role === "Admin") dashboard = <AdminSettings userRole="Admin" />;
+  else if (user?.role === "HR Manager") dashboard = <HRModule userRole="HR Manager" />;
 
   if (!isAuthenticated) {
     return (
@@ -76,7 +65,7 @@ function App() {
         <Navbar onLoginClick={() => setShowLoginModal(true)} />
         {showLoginModal && (
           <LoginModal
-            onSelectRole={handleSelectRole}
+            onLogin={handleLogin}
             onClose={() => setShowLoginModal(false)}
           />
         )}
@@ -94,7 +83,7 @@ function App() {
     <Router>
       <Navbar />
       <div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} userRole={user.role} />
+        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} userRole={user?.role} />
         <div className="flex-1 flex flex-col">
           <Header user={user} />
           <main className="flex-1 overflow-y-auto">
