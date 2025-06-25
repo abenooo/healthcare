@@ -26,7 +26,11 @@ import {
   RefreshCw
 } from 'lucide-react';
 
-const HRModule: React.FC = () => {
+interface HRModuleProps {
+  userRole: string;
+}
+
+const HRModule: React.FC<HRModuleProps> = ({ userRole }) => {
   const [activeSection, setActiveSection] = useState('staff');
 
   const staffData = [
