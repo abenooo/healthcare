@@ -51,6 +51,8 @@ import {
   ExternalLink,
   ChevronRight
 } from 'lucide-react';
+import Contact from './Contact';
+import AwesomeHealthcareDashboard from './AwesomeHealthcareDashboard';
 
 interface LandingPageProps {
   onLogin: (userData: any) => void;
@@ -61,6 +63,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [showDemoUsers, setShowDemoUsers] = useState(false);
   const [activeTab, setActiveTab] = useState('solutions');
+  const [showContact, setShowContact] = useState(false);
 
   const demoUsers = [
     {
@@ -105,50 +108,35 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
     });
   };
 
-  const navigationItems = [
+  // Update navigationItems to include FAQ and Contact
+  const navigationItems: ({ name: string; href: string; items?: undefined; } | { name: string; items: { name: string; desc: string; }[]; href?: undefined; })[] = [
     {
-      name: 'Solutions',
+      name: 'Services',
       items: [
-        { name: 'Supply Chain', desc: 'Optimize procurement and inventory' },
-        { name: 'Performance Improvement', desc: 'Drive operational excellence' },
-        { name: 'Population Health', desc: 'Improve community outcomes' },
-        { name: 'Workforce Solutions', desc: 'Enhance staff productivity' },
-        { name: 'Technology Services', desc: 'Digital transformation' },
-        { name: 'Consulting', desc: 'Strategic advisory services' }
-      ]
-    },
-    {
-      name: 'Industries',
-      items: [
-        { name: 'Health Systems', desc: 'Integrated delivery networks' },
-        { name: 'Hospitals', desc: 'Acute care facilities' },
-        { name: 'Physician Groups', desc: 'Ambulatory care practices' },
-        { name: 'Post-Acute Care', desc: 'Skilled nursing & rehab' },
-        { name: 'Alternate Sites', desc: 'Outpatient facilities' },
-        { name: 'Government', desc: 'Public sector healthcare' }
-      ]
-    },
-    {
-      name: 'Insights',
-      items: [
-        { name: 'Research & Analytics', desc: 'Data-driven insights' },
-        { name: 'Benchmarking', desc: 'Performance comparisons' },
-        { name: 'Best Practices', desc: 'Proven methodologies' },
-        { name: 'Case Studies', desc: 'Success stories' },
-        { name: 'White Papers', desc: 'Industry research' },
-        { name: 'Webinars', desc: 'Educational content' }
+        { name: 'Primary Care', desc: 'General health services' },
+        { name: 'Specialty Care', desc: 'Expert medical specialists' },
+        { name: 'Emergency Care', desc: '24/7 emergency services' },
+        { name: 'Preventive Care', desc: 'Health screenings & wellness' },
+        { name: 'Home Care', desc: 'Medical care at home' },
+        { name: 'Telemedicine', desc: 'Virtual consultations' }
       ]
     },
     {
       name: 'About',
       items: [
         { name: 'Our Story', desc: 'Company history & mission' },
-        { name: 'Leadership', desc: 'Executive team' },
-        { name: 'Careers', desc: 'Join our team' },
-        { name: 'News & Events', desc: 'Latest updates' },
-        { name: 'Investor Relations', desc: 'Financial information' },
-        { name: 'Contact Us', desc: 'Get in touch' }
+        { name: 'Our Team', desc: 'Healthcare professionals' },
+        { name: 'Facilities', desc: 'State-of-the-art centers' },
+        { name: 'News & Events', desc: 'Latest updates' }
       ]
+    },
+    {
+      name: 'FAQ',
+      href: '#faq'
+    },
+    {
+      name: 'Contact',
+      href: '#contact'
     }
   ];
 
@@ -315,7 +303,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   <button
                     key={index}
                     onClick={() => handleDemoLogin(user)}
-                    className="p-6 border-2 border-gray-200 rounded-xl text-left hover:border-blue-600 hover:bg-blue-50 transition-all duration-200 group"
+                    className="p-6 border-2 border-gray-200 rounded-xl text-left hover:border-primary hover:bg-primary/10 transition-all duration-200 group"
                   >
                     <div className="flex items-center space-x-4 mb-4">
                       <img
@@ -325,17 +313,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                       />
                       <div className="flex-1">
                         <h3 className="text-xl font-semibold text-gray-900">{user.name}</h3>
-                        <p className="text-blue-600 font-medium">{user.role}</p>
+                        <p className="text-primary font-medium">{user.role}</p>
                         <p className="text-sm text-gray-600">{user.description}</p>
                       </div>
-                      <div className={`w-12 h-12 bg-gradient-to-r ${user.color} rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
+                      <div className={`w-12 h-12 bg-gradient-to-r from-primary to-primary-dark rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200`}>
                         <Icon className="w-6 h-6 text-white" />
                       </div>
                     </div>
                     
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-gray-500">Access {user.role} Dashboard</span>
-                      <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors duration-200" />
+                      <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-primary transition-colors duration-200" />
                     </div>
                   </button>
                 );
@@ -345,302 +333,49 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         </div>
       )}
 
-      {/* Navigation */}
-      <nav className="bg-white border-b border-gray-200 sticky top-0 z-40 backdrop-blur-lg bg-white/95">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-                <Shield className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-gray-900">Premier Healthcare</span>
-            </div>
-
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
-              {navigationItems.map((item) => (
-                <div
-                  key={item.name}
-                  className="relative group"
-                  onMouseEnter={() => setOpenDropdown(item.name)}
-                  onMouseLeave={() => setOpenDropdown(null)}
-                >
-                  <button className="flex items-center space-x-1 text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 py-2">
-                    <span>{item.name}</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </button>
-                  
-                  {openDropdown === item.name && (
-                    <div className="absolute top-full left-0 mt-2 w-80 bg-white rounded-lg shadow-xl border border-gray-100 py-4 z-50">
-                      {item.items.map((subItem) => (
-                        <a
-                          key={subItem.name}
-                          href="#"
-                          className="block px-6 py-3 hover:bg-gray-50 transition-colors duration-200"
-                        >
-                          <div className="font-medium text-gray-900">{subItem.name}</div>
-                          <div className="text-sm text-gray-600">{subItem.desc}</div>
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* CTA Buttons */}
-            <div className="hidden lg:flex items-center space-x-4">
-              <button className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200">
-                Contact Sales
-              </button>
-              <button
-                onClick={() => setShowDemoUsers(true)}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
-              >
-                Request Demo
-              </button>
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="lg:hidden p-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section with Background Image */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
+      <section className="relative min-h-[80vh] flex items-center overflow-hidden bg-white">
         {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <img
-            src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1080&dpr=2"
-            alt="Healthcare Technology Background"
-            className="w-full h-full object-cover"
-          />
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/90 via-blue-800/80 to-blue-700/70"></div>
-        </div>
+        <img
+          src="/backgroundImg.png"
+          alt="Hospital Background"
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          style={{ objectPosition: "right" }}
+        />
 
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
-            <div className="space-y-8">
-              <div className="space-y-6">
-                <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium border border-white/20">
-                  <Award className="w-4 h-4" />
-                  <span>Trusted by 4,400+ Healthcare Organizations</span>
-                </div>
-                
-                <h1 className="text-5xl lg:text-6xl font-bold text-white leading-tight">
-                  Transforming
-                  <span className="block text-blue-200">
-                    Healthcare Together
-                  </span>
-                </h1>
-                
-                <p className="text-xl text-blue-100 leading-relaxed max-w-lg">
-                  Premier is a leading healthcare improvement company, uniting an alliance of approximately 4,400 U.S. hospitals and health systems to transform healthcare.
-                </p>
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button
-                  onClick={() => setShowDemoUsers(true)}
-                  className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-blue-50 transition-all duration-200 font-semibold text-lg flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl"
-                >
-                  <span>Request Demo</span>
-                  <ArrowRight className="w-5 h-5" />
-                </button>
-                
-                <button className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-blue-600 transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2">
-                  <Phone className="w-5 h-5" />
-                  <span>Contact Sales</span>
-                </button>
-              </div>
-
-              {/* Hero Stats */}
-              <div className="grid grid-cols-2 gap-6 pt-8">
-                {heroStats.map((stat, index) => {
-                  const Icon = stat.icon;
-                  return (
-                    <div key={index} className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-white/10 backdrop-blur-sm rounded-lg flex items-center justify-center border border-white/20">
-                        <Icon className="w-5 h-5 text-white" />
-                      </div>
-                      <div>
-                        <div className="font-bold text-white text-lg">{stat.value}</div>
-                        <div className="text-sm text-blue-200">{stat.label}</div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Right Content - Video/Demo Card */}
-            <div className="relative">
-              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 border border-white/20 shadow-2xl">
-                <div className="aspect-video bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center relative overflow-hidden">
-                  <img
-                    src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800&h=600&dpr=2"
-                    alt="Healthcare Dashboard"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                  <div className="absolute inset-0 bg-blue-600 bg-opacity-20 flex items-center justify-center">
-                    <button className="w-16 h-16 bg-white bg-opacity-90 rounded-full flex items-center justify-center hover:bg-opacity-100 transition-all duration-200 shadow-lg">
-                      <Play className="w-6 h-6 text-blue-600 ml-1" />
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="mt-6 text-center">
-                  <h3 className="text-lg font-semibold text-white mb-2">See Premier in Action</h3>
-                  <p className="text-blue-200">Watch how we're transforming healthcare delivery</p>
-                  
-                  {/* Quick Demo Access */}
-                  <div className="mt-6 space-y-3">
-                    <button
-                      onClick={() => setShowDemoUsers(true)}
-                      className="w-full bg-white/20 backdrop-blur-sm text-white px-4 py-3 rounded-lg hover:bg-white/30 transition-all duration-200 font-medium border border-white/30"
-                    >
-                      Access Interactive Demo
-                    </button>
-                    <div className="flex items-center justify-center space-x-4 text-sm text-blue-200">
-                      <span>✓ No signup required</span>
-                      <span>✓ Instant access</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Floating Elements */}
-              <div className="absolute -top-4 -right-4 w-20 h-20 bg-white/10 rounded-full opacity-60 animate-pulse"></div>
-              <div className="absolute -bottom-4 -left-4 w-16 h-16 bg-blue-300/20 rounded-full opacity-60 animate-pulse delay-1000"></div>
-            </div>
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 py-20 flex flex-col lg:flex-row items-center">
+          {/* Left: Text */}
+          <div className="w-full lg:w-1/2 flex flex-col items-start justify-center">
+            <span className="inline-block bg-gray-100 text-gray-700 text-xs font-semibold rounded-full px-4 py-2 mb-6">
+              #1 General Hospital in California
+            </span>
+            <h1 className="text-5xl md:text-6xl font-extrabold text-black mb-6 leading-tight">
+              Not Just<br />
+              Treatment
+              <span className="inline-block align-middle w-12 h-1 bg-black mx-3 mb-2"></span>
+              <br />
+              True Healing.
+            </h1>
+            <p className="text-lg text-gray-700 mb-8 max-w-md">
+              We take health care personally at Holicare General Hospital. Because excellence in health care is about more than just medicine, technology, tests and treatments.
+            </p>
+            <button className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-4 rounded-full text-lg shadow transition mb-10">
+              Find A Doctor
+              <span className="ml-3">
+                <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block">
+                  <path d="M5 11h12M13 7l4 4-4 4" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
+            </button>
           </div>
+          {/* Right: Empty for image focus */}
+          <div className="hidden lg:block w-1/2"></div>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10">
-          <div className="flex flex-col items-center space-y-2 text-white/70">
-            <span className="text-sm">Scroll to explore</span>
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-white/50 rounded-full mt-2 animate-bounce"></div>
-            </div>
-          </div>
-        </div>
       </section>
 
-      {/* Patient Documents Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Patient Documents
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* PCMH Patient Compact */}
-            <div className="flex flex-col items-center bg-white rounded-2xl p-6 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
-              <iframe
-                src="/PCMH-Patient-Compact-2.pdf"
-                width="100%"
-                height="350px"
-                title="PCMH Patient Compact PDF Preview"
-                className="rounded border bg-gray-100 mb-4"
-              />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">PCMH Patient Compact</h3>
-              <p className="text-gray-700 mb-4 text-center">
-                A Patient-Centered Medical Home reflects a trusting partnership between a doctor-led healthcare team and an informed patient. It includes an agreement between the doctor and the patient that acknowledges the role each plays in a total healthcare program.
-              </p>
-              <a
-                href="/PCMH-Patient-Compact-2.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:underline font-medium"
-              >
-                Download PDF
-              </a>
-            </div>
-
-            {/* Patient Information */}
-            <div className="flex flex-col items-center bg-white rounded-2xl p-6 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
-              <iframe
-                src="/WMG_Patient_Information.pdf"
-                width="100%"
-                height="350px"
-                title="Patient Information PDF Preview"
-                className="rounded border bg-gray-100 mb-4"
-              />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">Patient Information</h3>
-              <p className="text-gray-700 mb-4 text-center">
-                New patients can save time during their first appointment by completing the patient registration form prior to their visit. Simply complete the patient registration form with the information requested, print the form, and bring it with you to your appointment.
-              </p>
-              <a
-                href="/WMG_Patient_Information.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:underline font-medium"
-              >
-                Download PDF
-              </a>
-            </div>
-
-            {/* Wellspire Financial Policy */}
-            <div className="flex flex-col items-center bg-white rounded-2xl p-6 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
-              <iframe
-                src="/Wellspire-Medical-Financial-policy-6.2025.pdf"
-                width="100%"
-                height="350px"
-                title="Wellspire Financial Policy PDF Preview"
-                className="rounded border bg-gray-100 mb-4"
-              />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">Wellspire Financial Policy</h3>
-              <p className="text-gray-700 mb-4 text-center">
-                We are committed to building a successful physician-patient relationship with you and your family. Your clear understanding of our patient financial policy is important to our professional relationship. Please ask any questions you have about our fees, policies, or your responsibilities. If any of your information, such as insurance coverage changes, it is your responsibility to let us know.
-              </p>
-              <a
-                href="/Wellspire-Medical-Financial-policy-6.2025.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:underline font-medium"
-              >
-                Download PDF
-              </a>
-            </div>
-
-            {/* Wellspire Medical Records Authorization Form */}
-            <div className="flex flex-col items-center bg-white rounded-2xl p-6 border border-gray-100 shadow hover:shadow-xl transition-all duration-300">
-              <iframe
-                src="/Medical-Records-Form.pdf"
-                width="100%"
-                height="350px"
-                title="Wellspire Medical Records Authorization Form PDF Preview"
-                className="rounded border bg-gray-100 mb-4"
-              />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2 text-center">Wellspire Medical Records Authorization Form</h3>
-              <p className="text-gray-700 mb-4 text-center">
-                The privacy of your information is protected by federal and state regulations. This means your medical information is only available to Wellspire Medical Group personnel unless you authorize release of your information to others.
-              </p>
-              <a
-                href="/Medical-Records-Form.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center text-blue-600 hover:underline font-medium"
-              >
-                Download PDF
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
+      <AwesomeHealthcareDashboard />
 
       {/* Industries Section */}
       <section className="py-20 bg-gray-50">
@@ -677,7 +412,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                   <div className="p-6">
                     <h3 className="text-xl font-semibold text-gray-900 mb-3">{industry.name}</h3>
                     <p className="text-gray-600 mb-4">{industry.description}</p>
-                    <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center space-x-1">
+                    <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
                       <span>Explore Solutions</span>
                       <ChevronRight className="w-4 h-4" />
                     </button>
@@ -689,60 +424,216 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         </div>
       </section>
 
+      {/* Who Benefits from HealthWell? */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Who Benefits from HealthWell?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              HealthWell is a unified healthcare system designed for clinics, hospitals, care teams, and patients—empowering everyone to deliver and receive better care.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="aspect-video relative">
+                <img
+                  src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
+                  alt="Clinic"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Users className="w-6 h-6" />
+                    <span className="font-semibold">1,000+ Clinics</span>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Clinics</h3>
+                <p className="text-gray-600 mb-4">
+                  Manage appointments, patient records, and communication—all in one secure platform.
+                </p>
+                <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
+                  <span>Learn More</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="aspect-video relative">
+                <img
+                  src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80"
+                  alt="Hospital"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Shield className="w-6 h-6" />
+                    <span className="font-semibold">500+ Hospitals</span>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Hospitals</h3>
+                <p className="text-gray-600 mb-4">
+                  Connect departments, enable telemedicine, and improve care coordination with HealthWell.
+                </p>
+                <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
+                  <span>Learn More</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="aspect-video relative">
+                <img
+                  src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd23?auto=format&fit=crop&w=800&q=80"
+                  alt="Care Team"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                <div className="absolute bottom-4 left-4 text-white">
+                  <div className="flex items-center space-x-2 mb-2">
+                    <Heart className="w-6 h-6" />
+                    <span className="font-semibold">10,000+ Care Teams</span>
+                  </div>
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Care Teams</h3>
+                <p className="text-gray-600 mb-4">
+                  Collaborate securely, track patient progress, and deliver personalized care with digital tools.
+                </p>
+                <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
+                  <span>Learn More</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Insights Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-12">
             <div>
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Latest Insights
+                HealthWell in Action
               </h2>
               <p className="text-xl text-gray-600">
-                Stay informed with our research, analysis, and industry expertise.
+                Explore how our healthcare system is making a difference for providers and patients.
               </p>
             </div>
-            <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
+            <button className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition-colors duration-200 font-medium">
               View All Insights
             </button>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {insights.map((insight, index) => (
-              <article key={index} className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                <div className="aspect-video relative">
-                  <img
-                    src={insight.image}
-                    alt={insight.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute top-4 left-4">
-                    <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
-                      {insight.category}
-                    </span>
-                  </div>
+            <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div className="aspect-video relative">
+                <img
+                  src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80"
+                  alt="Patient Portal"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                    Case Study
+                  </span>
                 </div>
-                
-                <div className="p-6">
-                  <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
-                    <Calendar className="w-4 h-4" />
-                    <span>{insight.date}</span>
-                  </div>
-                  
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">{insight.title}</h3>
-                  <p className="text-gray-600 mb-4">{insight.description}</p>
-                  
-                  <div className="flex items-center justify-between">
-                    <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center space-x-1">
-                      <span>Read More</span>
-                      <ExternalLink className="w-4 h-4" />
-                    </button>
-                    <button className="p-2 text-gray-400 hover:text-gray-600">
-                      <Download className="w-4 h-4" />
-                    </button>
-                  </div>
+              </div>
+              <div className="p-6">
+                <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                  <Calendar className="w-4 h-4" />
+                  <span>May 2024</span>
                 </div>
-              </article>
-            ))}
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Patient Portal Success</h3>
+                <p className="text-gray-600 mb-4">
+                  Clinics using HealthWell's patient portal saw a 60% increase in patient engagement and satisfaction.
+                </p>
+                <div className="flex items-center justify-between">
+                  <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
+                    <span>Read More</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </button>
+                  <button className="p-2 text-gray-400 hover:text-gray-600">
+                    <Download className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </article>
+            <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div className="aspect-video relative">
+                <img
+                  src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
+                  alt="Telemedicine"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                    Research
+                  </span>
+                </div>
+              </div>
+              <div className="p-6">
+                <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                  <Calendar className="w-4 h-4" />
+                  <span>April 2024</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Telemedicine Expansion</h3>
+                <p className="text-gray-600 mb-4">
+                  Over 1 million virtual visits were completed through HealthWell, improving access and reducing wait times.
+                </p>
+                <div className="flex items-center justify-between">
+                  <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
+                    <span>Read More</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </button>
+                  <button className="p-2 text-gray-400 hover:text-gray-600">
+                    <Download className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </article>
+            <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300">
+              <div className="aspect-video relative">
+                <img
+                  src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?auto=format&fit=crop&w=400&q=80"
+                  alt="Medication Adherence"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute top-4 left-4">
+                  <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
+                    Report
+                  </span>
+                </div>
+              </div>
+              <div className="p-6">
+                <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
+                  <Calendar className="w-4 h-4" />
+                  <span>March 2024</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Better Medication Adherence</h3>
+                <p className="text-gray-600 mb-4">
+                  HealthWell's reminders and tracking tools helped boost medication adherence by 40% for patients.
+                </p>
+                <div className="flex items-center justify-between">
+                  <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
+                    <span>Read More</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </button>
+                  <button className="p-2 text-gray-400 hover:text-gray-600">
+                    <Download className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </article>
           </div>
         </div>
       </section>
@@ -752,88 +643,124 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Trusted by Healthcare Leaders
+              What Our Users Say
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See how Premier is helping healthcare organizations achieve better outcomes and operational excellence.
+              Real feedback from clinics, hospitals, and patients using HealthWell.
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className="flex items-center space-x-1 mb-6">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                
-                <blockquote className="text-gray-700 mb-6 italic text-lg leading-relaxed">
-                  "{testimonial.quote}"
-                </blockquote>
-                
-                <div className="flex items-center space-x-4">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.author}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-gray-900">{testimonial.author}</h4>
-                    <p className="text-sm text-gray-600">{testimonial.title}</p>
-                    <p className="text-sm text-gray-500">{testimonial.organization}</p>
-                  </div>
-                  <div className="text-2xl">{testimonial.logo}</div>
-                </div>
+            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-300">
+              <div className="flex items-center space-x-1 mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                ))}
               </div>
-            ))}
+              <blockquote className="text-gray-700 mb-6 italic text-lg leading-relaxed">
+                "HealthWell made it easy for our clinic to manage appointments and patient records. Our staff and patients love the new system!"
+              </blockquote>
+              <div className="flex items-center space-x-4">
+                <img
+                  src="https://randomuser.me/api/portraits/men/32.jpg"
+                  alt="Clinic Manager"
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900">Alex Martinez</h4>
+                  <p className="text-sm text-gray-600">Clinic Manager</p>
+                  <p className="text-sm text-gray-500">Sunrise Family Clinic</p>
+                </div>
+                <div className="text-2xl">🏥</div>
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-300">
+              <div className="flex items-center space-x-1 mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <blockquote className="text-gray-700 mb-6 italic text-lg leading-relaxed">
+                "With HealthWell, our hospital improved care coordination and reduced paperwork. The telemedicine feature is a game changer."
+              </blockquote>
+              <div className="flex items-center space-x-4">
+                <img
+                  src="https://randomuser.me/api/portraits/women/44.jpg"
+                  alt="Hospital Director"
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900">Dr. Priya Singh</h4>
+                  <p className="text-sm text-gray-600">Hospital Director</p>
+                  <p className="text-sm text-gray-500">Metro General Hospital</p>
+                </div>
+                <div className="text-2xl">🏨</div>
+              </div>
+            </div>
+            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-300">
+              <div className="flex items-center space-x-1 mb-6">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
+                ))}
+              </div>
+              <blockquote className="text-gray-700 mb-6 italic text-lg leading-relaxed">
+                "I can now book appointments, message my doctor, and view my health records all in one place. HealthWell makes managing my health simple."
+              </blockquote>
+              <div className="flex items-center space-x-4">
+                <img
+                  src="https://randomuser.me/api/portraits/men/65.jpg"
+                  alt="Patient"
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900">John Lee</h4>
+                  <p className="text-sm text-gray-600">Patient</p>
+                  <p className="text-sm text-gray-500">HealthWell User</p>
+                </div>
+                <div className="text-2xl">😊</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-700">
+      <section className="py-20 bg-gradient-to-r from-primary to-primary-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-4">
-            Ready to Transform Your Organization?
+            Ready to Modernize Your Healthcare Experience?
           </h2>
-          <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            Join thousands of healthcare organizations that trust Premier to drive performance improvement and cost reduction.
+          <p className="text-xl text-primary/80 mb-8 max-w-3xl mx-auto">
+            Join thousands of clinics, hospitals, and patients who trust HealthWell to power their healthcare journey.
           </p>
-          
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <button
               onClick={() => setShowDemoUsers(true)}
-              className="bg-white text-blue-600 px-8 py-4 rounded-lg hover:bg-gray-100 transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2"
+              className="bg-white text-primary px-8 py-4 rounded-lg hover:bg-primary/10 transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2"
             >
               <span>Request Demo</span>
               <ArrowRight className="w-5 h-5" />
             </button>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-blue-600 transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2">
+            {/* <button className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-primary transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2">
               <Phone className="w-5 h-5" />
               <span>Contact Sales</span>
-            </button>
+            </button> */}
           </div>
-          
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold text-white mb-2">4,400+</div>
-              <div className="text-blue-100">Healthcare Organizations</div>
+              <div className="text-3xl font-bold text-white mb-2">+3M</div>
+              <div className="text-primary/80">Health Trackers Used</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white mb-2">$65B+</div>
-              <div className="text-blue-100">Annual Purchasing Volume</div>
+              <div className="text-3xl font-bold text-white mb-2">+1.8M</div>
+              <div className="text-primary/80">Active Users</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white mb-2">200M+</div>
-              <div className="text-blue-100">Patients Served</div>
+              <div className="text-3xl font-bold text-white mb-2">+750k</div>
+              <div className="text-primary/80">Appointments Booked</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white mb-2">30+</div>
-              <div className="text-blue-100">Years of Experience</div>
+              <div className="text-3xl font-bold text-white mb-2">+40%</div>
+              <div className="text-primary/80">Medication Adherence</div>
             </div>
           </div>
         </div>
@@ -846,7 +773,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             {/* Company Info */}
             <div className="md:col-span-2 space-y-4">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-r from-primary to-primary-dark rounded-lg flex items-center justify-center">
                   <Shield className="w-5 h-5 text-white" />
                 </div>
                 <span className="text-xl font-bold">Premier Healthcare</span>
@@ -914,6 +841,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           </div>
         </div>
       </footer>
+
+      {showContact && (
+        <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4">
+          <div className="relative bg-white rounded-2xl shadow-xl max-w-3xl w-full overflow-y-auto max-h-[90vh]">
+            <button
+              onClick={() => setShowContact(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            <Contact />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
