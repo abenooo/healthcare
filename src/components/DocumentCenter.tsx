@@ -20,8 +20,8 @@ import jsPDF from "jspdf"; // Install with: npm install jspdf
 interface DocumentCenterProps {
   userRole: string;
 }
-
-const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
+export default function DocumentCenter() {
+// const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
   const [activeTab, setActiveTab] = useState('all');
   const [showForm, setShowForm] = useState(false);
   const [formStep, setFormStep] = useState(1);
@@ -679,4 +679,4 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
   );
 };
 
-export default DocumentCenter;
+// export default DocumentCenter;
