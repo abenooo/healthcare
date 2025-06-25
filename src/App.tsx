@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
@@ -9,6 +10,16 @@ import PatientPortal from './components/PatientPortal';
 import AdminSettings from './components/AdminSettings';
 import DocumentCenter from './components/DocumentCenter';
 import Onboarding from './components/Onboarding';
+import Contact from './components/Contact';
+import FAQ from './components/FAQ';
+import About from './components/About';
+import { Link } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import LoginModal from './components/LoginModal';
+
+interface Props {
+  userRole: string;
+}
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -18,11 +29,18 @@ function App() {
     role: 'Doctor',
     avatar: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2'
   });
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [userRole, setUserRole] = useState(null);
 
   const handleLogin = (userData: any) => {
     setUser(userData);
     setIsAuthenticated(true);
     setActiveTab('dashboard'); // Reset to dashboard when logging in
+  };
+
+  const handleSelectRole = (role: string) => {
+    setUserRole(role);
+    setShowLoginModal(false);
   };
 
   const renderContent = () => {
@@ -46,20 +64,50 @@ function App() {
     }
   };
 
+  let dashboard = null;
+  if (userRole === "Patient") dashboard = <PatientPortal userRole="Patient" />;
+  else if (userRole === "Doctor") dashboard = <PatientPortal userRole="Doctor" />;
+  else if (userRole === "Admin") dashboard = <AdminSettings userRole="Admin" />;
+  else if (userRole === "HR Manager") dashboard = <HRModule userRole="HR Manager" />;
+
   if (!isAuthenticated) {
-    return <LandingPage onLogin={handleLogin} />;
+    return (
+      <Router>
+        <Navbar onLoginClick={() => setShowLoginModal(true)} />
+        {showLoginModal && (
+          <LoginModal
+            onSelectRole={handleSelectRole}
+            onClose={() => setShowLoginModal(false)}
+          />
+        )}
+        <Routes>
+          <Route path="/" element={<LandingPage onLogin={handleLogin} />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/faq" element={<FAQ />} />
+        </Routes>
+      </Router>
+    );
   }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} userRole={user.role} />
-      <div className="flex-1 flex flex-col">
-        <Header user={user} />
-        <main className="flex-1 overflow-y-auto">
-          {renderContent()}
-        </main>
+    <Router>
+      <Navbar />
+      <div className="flex min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
+        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} userRole={user.role} />
+        <div className="flex-1 flex flex-col">
+          <Header user={user} />
+          <main className="flex-1 overflow-y-auto">
+            <Routes>
+              <Route path="/" element={dashboard || renderContent()} />
+              <Route path="/about" element={<About />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/faq" element={<FAQ />} />
+            </Routes>
+          </main>
+        </div>
       </div>
-    </div>
+    </Router>
   );
 }
 
