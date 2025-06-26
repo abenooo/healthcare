@@ -15,6 +15,7 @@ import FAQ from './components/FAQ';
 import About from './components/About';
 import Navbar from './components/Navbar';
 import LoginModal from './components/LoginModal';
+import DoctorPortal from './components/DoctorPortal';
 
 interface Props {
   userRole: string;
@@ -55,7 +56,7 @@ function App() {
 
   let dashboard = null;
   if (user?.role === "Patient") dashboard = <PatientPortal userRole="Patient" />;
-  else if (user?.role === "Doctor") dashboard = <PatientPortal userRole="Doctor" />;
+  else if (user?.role === "Doctor") dashboard = <DoctorPortal userRole="Doctor" />;
   else if (user?.role === "Admin") dashboard = <AdminSettings userRole="Admin" />;
   else if (user?.role === "HR Manager") dashboard = <HRModule userRole="HR Manager" />;
 
