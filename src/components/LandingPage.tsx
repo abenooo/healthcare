@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Shield,
   Menu,
@@ -53,6 +53,7 @@ import {
 } from 'lucide-react';
 import Contact from './Contact';
 import AwesomeHealthcareDashboard from './AwesomeHealthcareDashboard';
+import { PhoneCarousel } from './PhoneCarousel';
 
 interface LandingPageProps {
   onLogin: (userData: any) => void;
@@ -276,6 +277,154 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
     }
   ];
 
+  const patientTestimonials = [
+    {
+      quote: "The online appointment booking is so easy and convenient. I never have to wait on hold anymore!",
+      name: "Emily Carter",
+      role: "Patient",
+      location: "Greenwood Clinic",
+      image: "https://randomuser.me/api/portraits/women/68.jpg",
+      emoji: "🌟"
+    },
+    {
+      quote: "I love being able to message my doctor and get quick responses. It makes me feel cared for.",
+      name: "Michael Brown",
+      role: "Patient",
+      location: "Downtown Health Center",
+      image: "https://randomuser.me/api/portraits/men/75.jpg",
+      emoji: "💬"
+    },
+    {
+      quote: "Accessing my test results online saves me so much time and worry. Highly recommend this system!",
+      name: "Sophia Lee",
+      role: "Patient",
+      location: "Sunrise Medical",
+      image: "https://randomuser.me/api/portraits/women/65.jpg",
+      emoji: "📈"
+    },
+    {
+      quote: "The reminders for medication and appointments help me stay on track with my health.",
+      name: "David Kim",
+      role: "Patient",
+      location: "Metro Family Practice",
+      image: "https://randomuser.me/api/portraits/men/41.jpg",
+      emoji: "⏰"
+    },
+    {
+      quote: "I feel more in control of my health with all my records and history in one place.",
+      name: "Ava Patel",
+      role: "Patient",
+      location: "HealthFirst Clinic",
+      image: "https://randomuser.me/api/portraits/women/22.jpg",
+      emoji: "🗂️"
+    },
+    {
+      quote: "The telemedicine feature let me see my doctor from home when I was sick. It was a lifesaver.",
+      name: "James Wilson",
+      role: "Patient",
+      location: "CarePoint Medical",
+      image: "https://randomuser.me/api/portraits/men/23.jpg",
+      emoji: "💻"
+    },
+    // Add 3 more testimonials for a total of 9
+    {
+      quote: "Booking follow-ups is a breeze and I always get reminders. The system is so user-friendly.",
+      name: "Linda Gomez",
+      role: "Patient",
+      location: "Westside Health",
+      image: "https://randomuser.me/api/portraits/women/12.jpg",
+      emoji: "📅"
+    },
+    {
+      quote: "I appreciate being able to see my vaccination history and upcoming appointments in one place.",
+      name: "Chris Evans",
+      role: "Patient",
+      location: "Central Medical",
+      image: "https://randomuser.me/api/portraits/men/34.jpg",
+      emoji: "💉"
+    },
+    {
+      quote: "The support team is always helpful and quick to respond. I feel valued as a patient.",
+      name: "Sara Ahmed",
+      role: "Patient",
+      location: "Lakeside Clinic",
+      image: "https://randomuser.me/api/portraits/women/50.jpg",
+      emoji: "🤝"
+    }
+  ];
+
+  function PatientTestimonialsCarousel() {
+    const testimonialsPerPage = 6; // 3 columns x 2 rows
+    const totalPages = Math.ceil(patientTestimonials.length / testimonialsPerPage);
+    const [page, setPage] = React.useState(0);
+
+    // Auto-advance
+    React.useEffect(() => {
+      const timer = setInterval(() => {
+        setPage((prev) => (prev + 1) % totalPages);
+      }, 4000);
+      return () => clearInterval(timer);
+    }, [totalPages]);
+
+    // Get testimonials for current page
+    const start = page * testimonialsPerPage;
+    let currentTestimonials = patientTestimonials.slice(start, start + testimonialsPerPage);
+
+    // If at the end and not enough to fill 6, wrap around
+    if (currentTestimonials.length < testimonialsPerPage) {
+      currentTestimonials = [
+        ...currentTestimonials,
+        ...patientTestimonials.slice(0, testimonialsPerPage - currentTestimonials.length)
+      ];
+    }
+
+    return (
+      <div className="relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 transition-all duration-700 ease-in-out">
+          {currentTestimonials.map((testimonial, idx) => (
+            <div
+              key={idx}
+              className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
+            >
+              <div className="flex items-center space-x-1 mb-4 justify-center">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><polygon points="9.9,1.1 7.6,6.6 1.6,7.6 6,11.9 4.8,17.8 9.9,14.8 15,17.8 13.8,11.9 18.2,7.6 12.2,6.6 "/></svg>
+                ))}
+              </div>
+              <blockquote className="text-gray-700 mb-4 italic text-base leading-relaxed text-center">
+                "{testimonial.quote}"
+              </blockquote>
+              <div className="flex items-center space-x-3 justify-center mt-auto">
+                <img
+                  src={testimonial.image}
+                  alt={testimonial.name}
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+                <div className="flex-1 text-left">
+                  <h4 className="font-semibold text-gray-900 text-sm">{testimonial.name}</h4>
+                  <p className="text-xs text-gray-600">{testimonial.role}</p>
+                  <p className="text-xs text-gray-500">{testimonial.location}</p>
+                </div>
+                <div className="text-lg">{testimonial.emoji}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        {/* Dots */}
+        <div className="flex space-x-2 mt-8 justify-center">
+          {Array.from({ length: totalPages }).map((_, idx) => (
+            <button
+              key={idx}
+              className={`w-3 h-3 rounded-full ${idx === page ? "bg-primary" : "bg-gray-300"}`}
+              onClick={() => setPage(idx)}
+              aria-label={`Go to testimonial page ${idx + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Demo Users Modal */}
@@ -376,203 +525,177 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       </section>
 
       <AwesomeHealthcareDashboard />
+      <PhoneCarousel />
 
-      {/* Industries Section */}
+      {/* Our Healthcare Services Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Industries We Serve
+              Our Healthcare Services
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Tailored solutions for every healthcare setting, from large health systems to specialized care facilities.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {industries.map((industry, index) => {
-              const Icon = industry.icon;
-              return (
-                <div key={index} className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-                  <div className="aspect-video relative">
-                    <img
-                      src={industry.image}
-                      alt={industry.name}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div className="absolute bottom-4 left-4 text-white">
-                      <div className="flex items-center space-x-2 mb-2">
-                        <Icon className="w-6 h-6" />
-                        <span className="font-semibold">{industry.stats}</span>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="p-6">
-                    <h3 className="text-xl font-semibold text-gray-900 mb-3">{industry.name}</h3>
-                    <p className="text-gray-600 mb-4">{industry.description}</p>
-                    <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
-                      <span>Explore Solutions</span>
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* Who Benefits from HealthWell? */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Who Benefits from HealthWell?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              HealthWell is a unified healthcare system designed for clinics, hospitals, care teams, and patients—empowering everyone to deliver and receive better care.
+              Discover the comprehensive healthcare services we offer to support your well-being at every stage of life.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Primary Care */}
             <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="aspect-video relative">
                 <img
                   src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80"
-                  alt="Clinic"
+                  alt="Primary Care"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Users className="w-6 h-6" />
-                    <span className="font-semibold">1,000+ Clinics</span>
-                  </div>
-                </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Clinics</h3>
-                <p className="text-gray-600 mb-4">
-                  Manage appointments, patient records, and communication—all in one secure platform.
-                </p>
-                <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
-                  <span>Learn More</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Primary Care</h3>
+                <p className="text-gray-600 mb-4">Personalized, preventive, and ongoing care for individuals and families, focusing on long-term health and wellness.</p>
               </div>
             </div>
+            {/* Telemedicine */}
             <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="aspect-video relative">
                 <img
-                  src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80"
-                  alt="Hospital"
+                  src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80"
+                  alt="Telemedicine"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Shield className="w-6 h-6" />
-                    <span className="font-semibold">500+ Hospitals</span>
-                  </div>
-                </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Hospitals</h3>
-                <p className="text-gray-600 mb-4">
-                  Connect departments, enable telemedicine, and improve care coordination with HealthWell.
-                </p>
-                <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
-                  <span>Learn More</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Telemedicine</h3>
+                <p className="text-gray-600 mb-4">Connect with healthcare professionals from the comfort of your home through secure video consultations and remote monitoring.</p>
               </div>
             </div>
+            {/* Patient Portal */}
             <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <div className="aspect-video relative">
                 <img
                   src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd23?auto=format&fit=crop&w=800&q=80"
-                  alt="Care Team"
+                  alt="Patient Portal"
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                <div className="absolute bottom-4 left-4 text-white">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <Heart className="w-6 h-6" />
-                    <span className="font-semibold">10,000+ Care Teams</span>
-                  </div>
-                </div>
               </div>
               <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Care Teams</h3>
-                <p className="text-gray-600 mb-4">
-                  Collaborate securely, track patient progress, and deliver personalized care with digital tools.
-                </p>
-                <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
-                  <span>Learn More</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Patient Portal</h3>
+                <p className="text-gray-600 mb-4">Access your health records, schedule appointments, and communicate securely with your care team online.</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Insights Section */}
+      {/* Who Benefits from Our Healthcare System? */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Who Benefits from Our Healthcare System?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Our platform is designed to empower patients, providers, and administrators with seamless, secure, and efficient healthcare solutions.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Patients */}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="aspect-video relative">
+                <img
+                  src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=800&q=80"
+                  alt="Patients"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Patients</h3>
+                <p className="text-gray-600 mb-4">
+                  Enjoy easy access to care, health records, and communication with your care team—anytime, anywhere.
+                </p>
+              </div>
+            </div>
+            {/* Providers */}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="aspect-video relative">
+                <img
+                  src="https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=800&q=80"
+                  alt="Providers"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Providers</h3>
+                <p className="text-gray-600 mb-4">
+                  Streamline workflows, coordinate care, and make informed decisions with real-time patient data and analytics.
+                </p>
+              </div>
+            </div>
+            {/* Administrators */}
+            <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <div className="aspect-video relative">
+                <img
+                  src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?auto=format&fit=crop&w=800&q=80"
+                  alt="Administrators"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Administrators</h3>
+                <p className="text-gray-600 mb-4">
+                  Enhance operational efficiency, ensure compliance, and manage resources effectively across your organization.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Impact in Healthcare */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-12">
             <div>
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                HealthWell in Action
+                Our Impact in Healthcare
               </h2>
               <p className="text-xl text-gray-600">
-                Explore how our healthcare system is making a difference for providers and patients.
+                See how our solutions are transforming care delivery, improving outcomes, and enhancing patient experiences.
               </p>
             </div>
             <button className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition-colors duration-200 font-medium">
-              View All Insights
+              View All Stories
             </button>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {/* Patient Engagement */}
             <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <div className="aspect-video relative">
                 <img
                   src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=400&q=80"
-                  alt="Patient Portal"
+                  alt="Patient Engagement"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-4 left-4">
                   <span className="bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">
-                    Case Study
+                    Success Story
                   </span>
                 </div>
               </div>
               <div className="p-6">
                 <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
-                  <Calendar className="w-4 h-4" />
                   <span>May 2024</span>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Patient Portal Success</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Boosting Patient Engagement</h3>
                 <p className="text-gray-600 mb-4">
-                  Clinics using HealthWell's patient portal saw a 60% increase in patient engagement and satisfaction.
+                  Our patient portal increased engagement by 60%, helping patients stay informed and proactive about their health.
                 </p>
-                <div className="flex items-center justify-between">
-                  <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
-                    <span>Read More</span>
-                    <ExternalLink className="w-4 h-4" />
-                  </button>
-                  <button className="p-2 text-gray-400 hover:text-gray-600">
-                    <Download className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
             </article>
+            {/* Virtual Care */}
             <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <div className="aspect-video relative">
                 <img
                   src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
-                  alt="Telemedicine"
+                  alt="Virtual Care"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-4 left-4">
@@ -583,29 +706,20 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               </div>
               <div className="p-6">
                 <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
-                  <Calendar className="w-4 h-4" />
                   <span>April 2024</span>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Telemedicine Expansion</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Expanding Virtual Care</h3>
                 <p className="text-gray-600 mb-4">
-                  Over 1 million virtual visits were completed through HealthWell, improving access and reducing wait times.
+                  Over 1 million virtual visits completed, improving access and reducing wait times for patients.
                 </p>
-                <div className="flex items-center justify-between">
-                  <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
-                    <span>Read More</span>
-                    <ExternalLink className="w-4 h-4" />
-                  </button>
-                  <button className="p-2 text-gray-400 hover:text-gray-600">
-                    <Download className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
             </article>
+            {/* Medication Management */}
             <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300">
               <div className="aspect-video relative">
                 <img
                   src="https://images.unsplash.com/photo-1504439468489-c8920d796a29?auto=format&fit=crop&w=400&q=80"
-                  alt="Medication Adherence"
+                  alt="Medication Management"
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute top-4 left-4">
@@ -616,110 +730,30 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               </div>
               <div className="p-6">
                 <div className="flex items-center space-x-2 text-sm text-gray-500 mb-3">
-                  <Calendar className="w-4 h-4" />
                   <span>March 2024</span>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">Better Medication Adherence</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">Medication Management</h3>
                 <p className="text-gray-600 mb-4">
-                  HealthWell's reminders and tracking tools helped boost medication adherence by 40% for patients.
+                  Our digital tools helped boost medication adherence by 40%, supporting better health outcomes.
                 </p>
-                <div className="flex items-center justify-between">
-                  <button className="text-primary hover:text-primary-dark font-medium flex items-center space-x-1">
-                    <span>Read More</span>
-                    <ExternalLink className="w-4 h-4" />
-                  </button>
-                  <button className="p-2 text-gray-400 hover:text-gray-600">
-                    <Download className="w-4 h-4" />
-                  </button>
-                </div>
               </div>
             </article>
           </div>
         </div>
       </section>
 
-      {/* Testimonials Section */}
+      {/* Patient Testimonials Carousel */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              What Our Users Say
+              What Our Patients Say
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Real feedback from clinics, hospitals, and patients using HealthWell.
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Real stories from patients who trust our healthcare system for their well-being.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-300">
-              <div className="flex items-center space-x-1 mb-6">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <blockquote className="text-gray-700 mb-6 italic text-lg leading-relaxed">
-                "HealthWell made it easy for our clinic to manage appointments and patient records. Our staff and patients love the new system!"
-              </blockquote>
-              <div className="flex items-center space-x-4">
-                <img
-                  src="https://randomuser.me/api/portraits/men/32.jpg"
-                  alt="Clinic Manager"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900">Alex Martinez</h4>
-                  <p className="text-sm text-gray-600">Clinic Manager</p>
-                  <p className="text-sm text-gray-500">Sunrise Family Clinic</p>
-                </div>
-                <div className="text-2xl">🏥</div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-300">
-              <div className="flex items-center space-x-1 mb-6">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <blockquote className="text-gray-700 mb-6 italic text-lg leading-relaxed">
-                "With HealthWell, our hospital improved care coordination and reduced paperwork. The telemedicine feature is a game changer."
-              </blockquote>
-              <div className="flex items-center space-x-4">
-                <img
-                  src="https://randomuser.me/api/portraits/women/44.jpg"
-                  alt="Hospital Director"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900">Dr. Priya Singh</h4>
-                  <p className="text-sm text-gray-600">Hospital Director</p>
-                  <p className="text-sm text-gray-500">Metro General Hospital</p>
-                </div>
-                <div className="text-2xl">🏨</div>
-              </div>
-            </div>
-            <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm hover:shadow-lg transition-shadow duration-300">
-              <div className="flex items-center space-x-1 mb-6">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                ))}
-              </div>
-              <blockquote className="text-gray-700 mb-6 italic text-lg leading-relaxed">
-                "I can now book appointments, message my doctor, and view my health records all in one place. HealthWell makes managing my health simple."
-              </blockquote>
-              <div className="flex items-center space-x-4">
-                <img
-                  src="https://randomuser.me/api/portraits/men/65.jpg"
-                  alt="Patient"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div className="flex-1">
-                  <h4 className="font-semibold text-gray-900">John Lee</h4>
-                  <p className="text-sm text-gray-600">Patient</p>
-                  <p className="text-sm text-gray-500">HealthWell User</p>
-                </div>
-                <div className="text-2xl">😊</div>
-              </div>
-            </div>
-          </div>
+          <PatientTestimonialsCarousel />
         </div>
       </section>
 
@@ -727,17 +761,17 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       <section className="py-20 bg-gradient-to-r from-primary to-primary-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-4">
-            Ready to Modernize Your Healthcare Experience?
+            Transform Your Healthcare Experience Today
           </h2>
-          <p className="text-xl text-primary/80 mb-8 max-w-3xl mx-auto">
-            Join thousands of clinics, hospitals, and patients who trust HealthWell to power their healthcare journey.
+          <p className="text-xl text-white mb-8 max-w-3xl mx-auto">
+            Empower your organization and patients with a modern, secure, and connected healthcare system. Join leading clinics, hospitals, and care teams who trust our platform to deliver better outcomes and seamless care.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <button
               onClick={() => setShowDemoUsers(true)}
               className="bg-white text-primary px-8 py-4 rounded-lg hover:bg-primary/10 transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2"
             >
-              <span>Request Demo</span>
+              <span>Get Started</span>
               <ArrowRight className="w-5 h-5" />
             </button>
             {/* <button className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-primary transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2">
@@ -748,19 +782,19 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-3xl font-bold text-white mb-2">+3M</div>
-              <div className="text-primary/80">Health Trackers Used</div>
+              <div className="text-white">Digital Health Records Managed</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-white mb-2">+1.8M</div>
-              <div className="text-primary/80">Active Users</div>
+              <div className="text-white">Empowered Patients</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-white mb-2">+750k</div>
-              <div className="text-primary/80">Appointments Booked</div>
+              <div className="text-white">Appointments Scheduled</div>
             </div>
             <div>
               <div className="text-3xl font-bold text-white mb-2">+40%</div>
-              <div className="text-primary/80">Medication Adherence</div>
+              <div className="text-white">Increase in Medication Adherence</div>
             </div>
           </div>
         </div>
@@ -778,14 +812,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
                 </div>
                 <span className="text-xl font-bold">Premier Healthcare</span>
               </div>
-              <p className="text-gray-400 max-w-md">
+              <p className="text-white max-w-md">
                 A leading healthcare improvement company, uniting an alliance of hospitals and health systems to transform healthcare.
               </p>
               <div className="flex space-x-4">
-                <Linkedin className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors duration-200" />
-                <Twitter className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors duration-200" />
-                <Facebook className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors duration-200" />
-                <Instagram className="w-5 h-5 text-gray-400 hover:text-white cursor-pointer transition-colors duration-200" />
+                <Linkedin className="w-5 h-5 text-white hover:opacity-80 cursor-pointer transition-colors duration-200" />
+                <Twitter className="w-5 h-5 text-white hover:opacity-80 cursor-pointer transition-colors duration-200" />
+                <Facebook className="w-5 h-5 text-white hover:opacity-80 cursor-pointer transition-colors duration-200" />
+                <Instagram className="w-5 h-5 text-white hover:opacity-80 cursor-pointer transition-colors duration-200" />
               </div>
             </div>
 
@@ -793,11 +827,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <div>
               <h3 className="text-lg font-semibold mb-4">Solutions</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Supply Chain</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Performance Improvement</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Population Health</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Workforce Solutions</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Technology Services</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Supply Chain</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Performance Improvement</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Population Health</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Workforce Solutions</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Technology Services</a></li>
               </ul>
             </div>
 
@@ -805,11 +839,11 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <div>
               <h3 className="text-lg font-semibold mb-4">Industries</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Health Systems</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Hospitals</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Physician Groups</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Post-Acute Care</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Government</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Health Systems</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Hospitals</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Physician Groups</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Post-Acute Care</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Government</a></li>
               </ul>
             </div>
 
@@ -817,25 +851,25 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <div>
               <h3 className="text-lg font-semibold mb-4">Company</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">About Us</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Leadership</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Careers</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">News & Events</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Contact Us</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">About Us</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Leadership</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Careers</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">News & Events</a></li>
+                <li><a href="#" className="text-white hover:underline transition-colors duration-200">Contact Us</a></li>
               </ul>
             </div>
           </div>
 
           <div className="border-t border-gray-800 mt-12 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
-              <p className="text-gray-400">
+              <p className="text-white">
                 © 2024 Premier Healthcare. All rights reserved.
               </p>
               <div className="flex space-x-6 mt-4 md:mt-0">
-                <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Privacy Policy</a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Terms of Service</a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Cookie Policy</a>
-                <a href="#" className="text-gray-400 hover:text-white transition-colors duration-200">Accessibility</a>
+                <a href="#" className="text-white hover:underline transition-colors duration-200">Privacy Policy</a>
+                <a href="#" className="text-white hover:underline transition-colors duration-200">Terms of Service</a>
+                <a href="#" className="text-white hover:underline transition-colors duration-200">Cookie Policy</a>
+                <a href="#" className="text-white hover:underline transition-colors duration-200">Accessibility</a>
               </div>
             </div>
           </div>
