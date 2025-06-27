@@ -44,7 +44,7 @@ export default function Navbar({ onLoginClick }: { onLoginClick?: () => void }) 
               onClick={onLoginClick}
               className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
             >
-              Request Demo
+              Login
             </button>
           </div>
           {/* Mobile Menu Button */}
