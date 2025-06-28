@@ -72,7 +72,7 @@ const Footer = () => {
           <div className="flex items-center gap-3 mb-4">
             <MdEmail className="text-blue-400 text-lg" />
             <div>
-              <div className="text-white font-semibold text-base">info@al-medi.com</div>
+              <div className="text-white font-semibold text-base">codexafrica.com</div>
               <div className="text-xs text-[#7B8CA6]">Email address</div>
             </div>
           </div>
@@ -107,7 +107,7 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="flex flex-col md:flex-row items-center justify-between mt-12 border-t border-[#22344A] pt-7 text-sm">
         <div className="text-[#7B8CA6]">
-          © Example 2024 · All Rights Reserved by <span className="text-blue-400">FramerDevs</span>
+           All Rights Reserved by <span className="text-blue-400">Codex Africa</span>
         </div>
         <div className="flex items-center gap-8 mt-4 md:mt-0">
           <span className="hover:text-white cursor-pointer transition">Terms & Conditions</span>
