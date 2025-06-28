@@ -483,13 +483,12 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       )}
 
       {/* Hero Section with Background Image */}
-      <section className="relative min-h-[80vh] flex items-center overflow-hidden bg-white">
+      <section className="relative min-h-[60vh] md:min-h-[80vh] flex items-center overflow-hidden bg-white">
         {/* Background Image */}
         <img
           src="/backgroundImg.png"
           alt="Hospital Background"
-          className="absolute inset-0 w-full h-full object-cover z-0"
-          style={{ objectPosition: "right" }}
+          className="absolute inset-0 w-full h-full object-cover z-0 object-center lg:object-right"
         />
 
         {/* Content */}
