@@ -16,16 +16,35 @@ import {
   Star,
   MoreHorizontal,
   Edit,
-  Trash2
+  Trash2,
+  FileDown,
+  Plus
 } from 'lucide-react';
+import DocumentForm from './DocumentForm';
 
 interface DocumentCenterProps {
   userRole: string;
 }
 
+type DocumentType = {
+  id: number;
+  name: string;
+  type: string;
+  category: string;
+  date: string;
+  size: string;
+  status: string;
+  urgent: boolean;
+  patient?: string;
+  doctor?: string;
+  employee?: string;
+  department?: string;
+};
+
 const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showDocumentForm, setShowDocumentForm] = useState(false);
 
   const getDocuments = () => {
     switch (userRole) {
@@ -98,6 +117,17 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
             size: '8.7 MB',
             status: 'Ready',
             doctor: 'Dr. Michael Chen',
+            urgent: false
+          },
+          {
+            id: 4,
+            name: 'Insurance Claim Form',
+            type: 'Insurance',
+            category: 'insurance',
+            date: '2024-01-12',
+            size: '1.1 MB',
+            status: 'Submitted',
+            doctor: 'Dr. Sarah Johnson',
             urgent: false
           }
         ];
@@ -194,7 +224,8 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
           { id: 'lab', name: 'Lab Results', icon: FileText },
           { id: 'prescription', name: 'Prescriptions', icon: FileText },
           { id: 'imaging', name: 'Imaging', icon: FileText },
-          { id: 'visit', name: 'Visit Summaries', icon: FileText }
+          { id: 'visit', name: 'Visit Summaries', icon: FileText },
+          { id: 'insurance', name: 'Insurance', icon: FileText }
         ];
       case 'HR Manager':
         return [
@@ -217,7 +248,7 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
     }
   };
 
-  const documents = getDocuments();
+  const documents: DocumentType[] = getDocuments();
   const categories = getCategories();
 
   const filteredDocuments = documents.filter(doc => {
@@ -238,6 +269,7 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
         return 'bg-yellow-100 text-yellow-800';
       case 'sent':
       case 'updated':
+      case 'submitted':
         return 'bg-blue-100 text-blue-800';
       default:
         return 'bg-gray-100 text-gray-800';
@@ -274,6 +306,42 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
     }
   };
 
+  const handleExportAll = () => {
+    // Simulate export functionality
+    const exportData = {
+      exportDate: new Date().toISOString(),
+      totalDocuments: documents.length,
+      documents: documents.map(doc => ({
+        name: doc.name,
+        type: doc.type,
+        date: doc.date,
+        status: doc.status,
+        size: doc.size
+      }))
+    };
+    
+    const dataStr = JSON.stringify(exportData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `medical-documents-export-${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  if (showDocumentForm) {
+    return (
+      <DocumentForm 
+        onClose={() => setShowDocumentForm(false)}
+        onSubmit={(formData) => {
+          console.log('Form submitted:', formData);
+          setShowDocumentForm(false);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -307,12 +375,32 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
             </button>
           </div>
           
-          {(userRole === 'Doctor' || userRole === 'HR Manager' || userRole === 'Admin') && (
-            <button className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors duration-200 flex items-center space-x-2">
-              <Upload className="w-4 h-4" />
-              <span>Upload Document</span>
-            </button>
-          )}
+          <div className="flex items-center space-x-3">
+            {userRole === 'Patient' && (
+              <>
+                <button 
+                  onClick={handleExportAll}
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 flex items-center space-x-2"
+                >
+                  <FileDown className="w-4 h-4" />
+                  <span>Export All</span>
+                </button>
+                <button 
+                  onClick={() => setShowDocumentForm(true)}
+                  className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors duration-200 flex items-center space-x-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  <span>Add Document</span>
+                </button>
+              </>
+            )}
+            {(userRole === 'Doctor' || userRole === 'HR Manager' || userRole === 'Admin') && (
+              <button className="bg-amber-600 text-white px-4 py-2 rounded-lg hover:bg-amber-700 transition-colors duration-200 flex items-center space-x-2">
+                <Upload className="w-4 h-4" />
+                <span>Upload Document</span>
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -395,19 +483,19 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
                       {userRole === 'Doctor' && (
                         <span className="text-xs text-gray-500 flex items-center space-x-1">
                           <User className="w-3 h-3" />
-                          <span>{document.patient}</span>
+                          <span>{document.patient ?? document.doctor ?? document.employee ?? document.department}</span>
                         </span>
                       )}
                       {userRole === 'Patient' && (
                         <span className="text-xs text-gray-500 flex items-center space-x-1">
                           <User className="w-3 h-3" />
-                          <span>{document.doctor}</span>
+                          <span>{document.doctor ?? document.employee ?? document.department}</span>
                         </span>
                       )}
                       {userRole === 'HR Manager' && (
                         <span className="text-xs text-gray-500 flex items-center space-x-1">
                           <User className="w-3 h-3" />
-                          <span>{document.employee}</span>
+                          <span>{document.employee ?? document.department}</span>
                         </span>
                       )}
                       {userRole === 'Admin' && (
@@ -432,6 +520,11 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
                     <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200" title="Download">
                       <Download className="w-4 h-4" />
                     </button>
+                    {userRole === 'Patient' && (
+                      <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200" title="Export">
+                        <FileDown className="w-4 h-4" />
+                      </button>
+                    )}
                     {(userRole === 'Doctor' || userRole === 'HR Manager') && (
                       <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200" title="Share">
                         <Share2 className="w-4 h-4" />
@@ -464,3 +557,4 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole }) => {
 };
 
 export default DocumentCenter;
+
