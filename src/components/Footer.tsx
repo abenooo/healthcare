@@ -3,119 +3,118 @@ import { MdEmail } from "react-icons/md";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#18273A] text-[#C3C8D1] pt-16 pb-6 px-4 md:px-0">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
+    <footer className="bg-[#18273A] text-[#C3C8D1] pt-16 pb-6 px-4 md:px-0 font-sans">
+      {/* Top Grid */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
         {/* Logo & Description */}
         <div>
-          <div className="flex items-center gap-2 mb-4">
-            {/* Logo */}
-            <span className="bg-blue-500 rounded p-2">
-              {/* Simple medical cross icon */}
+          <div className="flex items-center gap-3 mb-5">
+            <span className="bg-blue-500 rounded-lg p-2 flex items-center justify-center">
               <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
                 <rect x="14" y="4" width="4" height="24" rx="2" fill="#fff"/>
                 <rect x="4" y="14" width="24" height="4" rx="2" fill="#fff"/>
               </svg>
             </span>
-            <span className="text-2xl font-semibold text-white">Premier Healthcare</span>
+            <span className="text-2xl font-bold text-white tracking-tight">Premier Healthcare</span>
           </div>
-          <p className="mb-6 text-sm">
+          <p className="mb-7 text-sm leading-relaxed text-[#C3C8D1]">
             Hospitals provide care for patients who need to stay overnight or longer for surgeries, serious illnesses, or recovery from complex procedures.
           </p>
           {/* Awards */}
-          <div className="flex gap-6 mb-6">
+          <div className="flex gap-6 mb-7">
             <img src="https://framerusercontent.com/images/awards1.svg" alt="Ultra" className="h-8" />
             <img src="https://framerusercontent.com/images/awards2.svg" alt="Hyper Best" className="h-8" />
             <img src="https://framerusercontent.com/images/awards3.svg" alt="Award" className="h-8" />
           </div>
           {/* Socials */}
-          <div className="flex items-center gap-2">
-            <span className="font-medium">Follow us:</span>
-            <FaFacebookF className="hover:text-white cursor-pointer" />
-            <FaTwitter className="hover:text-white cursor-pointer" />
-            <FaBehance className="hover:text-white cursor-pointer" />
-            <FaYoutube className="hover:text-white cursor-pointer" />
+          <div className="flex items-center gap-3 mt-2">
+            <span className="font-medium text-[#C3C8D1]">Follow us:</span>
+            <FaFacebookF className="hover:text-white text-[#C3C8D1] transition" />
+            <FaTwitter className="hover:text-white text-[#C3C8D1] transition" />
+            <FaBehance className="hover:text-white text-[#C3C8D1] transition" />
+            <FaYoutube className="hover:text-white text-[#C3C8D1] transition" />
           </div>
         </div>
         {/* Essential */}
         <div>
-          <h3 className="text-white font-semibold text-xl mb-4">+ Essential</h3>
-          <ul className="space-y-2">
-            <li>About Us</li>
-            <li>Our team</li>
-            <li>Case Studies</li>
-            <li>Services</li>
-            <li>Faq</li>
-            <li>Contact Us</li>
+          <h3 className="text-white font-bold text-xl mb-5 tracking-tight">+ Essential</h3>
+          <ul className="space-y-3 text-base">
+            <li className="hover:text-white cursor-pointer transition">About Us</li>
+            <li className="hover:text-white cursor-pointer transition">Our team</li>
+            <li className="hover:text-white cursor-pointer transition">Case Studies</li>
+            <li className="hover:text-white cursor-pointer transition">Services</li>
+            <li className="hover:text-white cursor-pointer transition">Faq</li>
+            <li className="hover:text-white cursor-pointer transition">Contact Us</li>
           </ul>
         </div>
         {/* Our Services */}
         <div>
-          <h3 className="text-white font-semibold text-xl mb-4">+ Our Services</h3>
-          <ul className="space-y-2">
-            <li>Diagnostic</li>
-            <li>Health Care</li>
-            <li>Surgical</li>
-            <li>Emergency</li>
-            <li>Geriatric</li>
-            <li>Preventive</li>
+          <h3 className="text-white font-bold text-xl mb-5 tracking-tight">+ Our Services</h3>
+          <ul className="space-y-3 text-base">
+            <li className="hover:text-white cursor-pointer transition">Diagnostic</li>
+            <li className="hover:text-white cursor-pointer transition">Health Care</li>
+            <li className="hover:text-white cursor-pointer transition">Surgical</li>
+            <li className="hover:text-white cursor-pointer transition">Emergency</li>
+            <li className="hover:text-white cursor-pointer transition">Geriatric</li>
+            <li className="hover:text-white cursor-pointer transition">Preventive</li>
           </ul>
         </div>
         {/* Get In Touch */}
         <div>
-          <h3 className="text-white font-semibold text-xl mb-4">+ Get In Touch</h3>
-          <div className="flex items-center gap-3 mb-2">
-            <FaPhoneAlt className="text-blue-400" />
+          <h3 className="text-white font-bold text-xl mb-5 tracking-tight">+ Get In Touch</h3>
+          <div className="flex items-center gap-3 mb-4">
+            <FaPhoneAlt className="text-blue-400 text-lg" />
             <div>
-              <div className="text-white font-medium">+(123) 456 789 00</div>
-              <div className="text-xs">Phone number</div>
+              <div className="text-white font-semibold text-base">+(123) 456 789 00</div>
+              <div className="text-xs text-[#7B8CA6]">Phone number</div>
             </div>
           </div>
-          <div className="flex items-center gap-3 mb-2">
-            <MdEmail className="text-blue-400" />
+          <div className="flex items-center gap-3 mb-4">
+            <MdEmail className="text-blue-400 text-lg" />
             <div>
-              <div className="text-white font-medium">info@al-medi.com</div>
-              <div className="text-xs">Email address</div>
+              <div className="text-white font-semibold text-base">info@al-medi.com</div>
+              <div className="text-xs text-[#7B8CA6]">Email address</div>
             </div>
           </div>
           <div className="flex items-center gap-3">
-            <FaLocationArrow className="text-blue-400" />
+            <FaLocationArrow className="text-blue-400 text-lg" />
             <div>
-              <div className="text-white font-medium">Address</div>
-              <div className="text-xs">12/A, New Booston Tower</div>
+              <div className="text-white font-semibold text-base">Address</div>
+              <div className="text-xs text-[#7B8CA6]">12/A, New Booston Tower</div>
             </div>
           </div>
         </div>
       </div>
       {/* Newsletter */}
-      <div className="max-w-5xl mx-auto mt-16 bg-[#1C2A3A] rounded-lg flex flex-col md:flex-row items-center justify-between px-8 py-8">
-        <div className="text-2xl md:text-3xl font-semibold text-white mb-4 md:mb-0">
+      <div className="max-w-5xl mx-auto mt-16 bg-[#1C2A3A] rounded-2xl flex flex-col md:flex-row items-center justify-between px-8 py-10 shadow-lg">
+        <div className="text-2xl md:text-3xl font-bold text-white mb-6 md:mb-0 leading-tight">
           Ready to get the smile you always deserved?
         </div>
         <form className="flex w-full md:w-auto">
           <input
             type="email"
             placeholder="Business email"
-            className="rounded-l-full px-6 py-3 outline-none bg-[#22344A] text-white placeholder-[#C3C8D1] w-full md:w-72"
+            className="rounded-l-full px-6 py-4 outline-none bg-[#22344A] text-white placeholder-[#C3C8D1] w-full md:w-80 text-base"
           />
           <button
             type="submit"
-            className="rounded-r-full bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 font-semibold transition"
+            className="rounded-r-full bg-blue-500 hover:bg-blue-600 text-white px-10 py-4 font-semibold text-base transition"
           >
             Subscribe now
           </button>
         </form>
       </div>
       {/* Bottom bar */}
-      <div className="flex flex-col md:flex-row items-center justify-between mt-10 border-t border-[#22344A] pt-6 text-sm">
-        <div>
+      <div className="flex flex-col md:flex-row items-center justify-between mt-12 border-t border-[#22344A] pt-7 text-sm">
+        <div className="text-[#7B8CA6]">
           © Example 2024 · All Rights Reserved by <span className="text-blue-400">FramerDevs</span>
         </div>
         <div className="flex items-center gap-8 mt-4 md:mt-0">
-          <span>Terms & Conditions</span>
-          <span>Privacy & Policy</span>
+          <span className="hover:text-white cursor-pointer transition">Terms & Conditions</span>
+          <span className="hover:text-white cursor-pointer transition">Privacy & Policy</span>
           <div className="flex items-center gap-2">
-            <span className="text-xl font-semibold text-white flex items-center gap-2">
-              <span className="bg-blue-500 rounded p-1">
+            <span className="text-xl font-bold text-white flex items-center gap-2">
+              <span className="bg-blue-500 rounded p-1 flex items-center justify-center">
                 <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
                   <rect x="14" y="4" width="4" height="24" rx="2" fill="#fff"/>
                   <rect x="4" y="14" width="24" height="4" rx="2" fill="#fff"/>
