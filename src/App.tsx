@@ -11,6 +11,7 @@ import AdminSettings from './components/AdminSettings';
 import DocumentCenter from './components/DocumentCenter';
 import Onboarding from './components/Onboarding';
 import Contact from './components/Contact';
+import BlogPage from "./components/BlogPage";
 import FAQ from './components/FAQ';
 import About from './components/About';
 import Navbar from './components/Navbar';
@@ -211,6 +212,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/blog" element={<BlogPage />} />
         </Routes>
         <Footer />
       </Router>
