@@ -15,9 +15,7 @@ import FAQ from './components/FAQ';
 import About from './components/About';
 import Navbar from './components/Navbar';
 import LoginModal from './components/LoginModal';
-import DoctorPortal from './components/DoctorPortal';
 import Analytics from './components/Analytics';
-import ServiceBooking from './components/ServiceBooking';
 import { Menu } from 'lucide-react';
 
 interface Props {
