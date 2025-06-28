@@ -29,6 +29,7 @@ const navigationItems = [
   { name: "About", to: "/about" },
   { name: "FAQ", to: "/faq" },
   { name: "Contact", to: "/contact" },
+  {name:"Blog", to: "/blog"}
 ];
 
 export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, userRole, onLogout, user }: NavbarProps) {
