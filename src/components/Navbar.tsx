@@ -349,12 +349,12 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
           ) : (
             /* Login Button - Show when not logged in */
             <div className="hidden lg:flex items-center space-x-4">
-              <button
+              {/* <button
                 onClick={onLoginClick}
                 className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
               >
                 Login
-              </button>
+              </button> */}
               <button
                 onClick={onDemoClick}
                 className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium"
