@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LandingPage from './components/LandingPage';
 import Sidebar from './components/Sidebar';
@@ -17,6 +17,7 @@ import Navbar from './components/Navbar';
 import LoginModal from './components/LoginModal';
 import Analytics from './components/Analytics';
 import { Menu } from 'lucide-react';
+import Footer from './components/Footer';
 
 interface Props {
   userRole: string;
@@ -211,6 +212,7 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
         </Routes>
+        <Footer />
       </Router>
     );
   }
@@ -285,6 +287,7 @@ function App() {
           </main>
         </div>
       </div>
+      <Footer />
     </Router>
   );
 }
