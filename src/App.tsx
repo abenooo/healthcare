@@ -229,12 +229,13 @@ function App() {
         {/* Mobile Menu Button */}
         <button
           onClick={toggleMobileSidebar}
-          className="lg:hidden fixed top-4 left-4 z-30 p-2 bg-white rounded-lg shadow-md border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
+          className="lg:hidden fixed top-4 left-4 z-50 p-2 bg-white rounded-lg shadow-md border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
+          aria-label="Open sidebar"
         >
           <Menu className="w-5 h-5 text-gray-600" />
         </button>
 
-        {/* Sidebar */}
+        {/* Sidebar (works for both mobile and desktop) */}
         <Sidebar
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -242,32 +243,33 @@ function App() {
           isMobileOpen={isMobileSidebarOpen}
           onMobileToggle={toggleMobileSidebar}
         />
+
+        {/* Main Content */}
         <div className="flex-1 flex flex-col">
           <Header user={user} />
-          
           {/* Demo Role Switcher - Only show for demo users */}
           {user?.isDemo && (
             <div className="bg-white shadow-sm border-b border-gray-100 p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                  <h1 className="text-2xl font-bold text-gray-900">
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                {/* Left Side: Title */}
+                <div className="flex items-center space-x-3 min-w-0">
+                  <h1 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">
                     {user.role === 'Doctor' && 'Clinical Dashboard'}
                     {user.role === 'Patient' && 'Patient Portal'}
                     {user.role === 'HR Manager' && 'HR Management System'}
                     {user.role === 'Admin' && 'Hospital Administration'}
                   </h1>
-                  <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                  <span className="flex-shrink-0 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-xs sm:text-sm font-medium">
                     Demo Mode
                   </span>
                 </div>
-                
-                {/* Demo Role Switcher */}
-                <div className="flex items-center space-x-4">
-                  <span className="text-sm text-gray-600">Switch Role:</span>
+                {/* Right Side: Role Switcher */}
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-gray-600 hidden sm:inline">Switch Role:</span>
                   <select
                     value={user.role}
                     onChange={(e) => handleDemoLogin(e.target.value)}
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                    className="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                   >
                     <option value="Doctor">👨‍⚕️ Doctor Portal</option>
                     <option value="Patient">🏥 Patient Portal</option>
@@ -278,7 +280,6 @@ function App() {
               </div>
             </div>
           )}
-          
           <main className="flex-1 overflow-auto">
             <Routes>
               <Route path="/" element={renderContent()} />
