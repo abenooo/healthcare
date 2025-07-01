@@ -15,7 +15,7 @@ const Footer = () => {
                 <rect x="4" y="14" width="24" height="4" rx="2" fill="#fff"/>
               </svg>
             </span>
-            <span className="text-2xl font-bold text-white tracking-tight">Premier Healthcare</span>
+            <span className="text-2xl font-bold text-white tracking-tight">Shalom Health Care Services</span>
           </div>
           <p className="mb-7 text-sm leading-relaxed text-[#C3C8D1]">
             Hospitals provide care for patients who need to stay overnight or longer for surgeries, serious illnesses, or recovery from complex procedures.
@@ -120,7 +120,7 @@ const Footer = () => {
                   <rect x="4" y="14" width="24" height="4" rx="2" fill="#fff"/>
                 </svg>
               </span>
-              Premier Healthcare
+              Shalom Health Care Services
             </span>
           </div>
         </div>
