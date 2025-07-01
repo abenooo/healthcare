@@ -1,27 +1,28 @@
-import React, { useState } from "react";
-import { 
-  Shield, 
-  ChevronDown, 
-  X, 
-  Menu, 
-  User, 
-  Settings, 
-  LogOut, 
+"use client"
+
+import { useState } from "react"
+import {
+  ChevronDown,
+  X,
+  Menu,
+  User,
+  Settings,
+  LogOut,
   Bell,
   MessageCircle,
   Heart,
   Stethoscope,
   Users,
-  Building2
-} from "lucide-react";
+  Building2,
+} from "lucide-react"
 
 interface NavbarProps {
-  onLoginClick?: () => void;
-  onDemoClick?: () => void;
-  isLoggedIn?: boolean;
-  userRole?: 'Doctor' | 'Patient' | 'HR Manager' | 'Admin';
-  onLogout?: () => void;
-  user?: any;
+  onLoginClick?: () => void
+  onDemoClick?: () => void
+  isLoggedIn?: boolean
+  userRole?: "Doctor" | "Patient" | "HR Manager" | "Admin"
+  onLogout?: () => void
+  user?: any
 }
 
 const navigationItems = [
@@ -29,108 +30,117 @@ const navigationItems = [
   { name: "About", to: "/about" },
   { name: "FAQ", to: "/faq" },
   { name: "Contact", to: "/contact" },
-  {name:"Blog", to: "/blog"}
-];
+  { name: "Blog", to: "/blog" },
+]
 
-export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, userRole, onLogout, user }: NavbarProps) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
+export default function Navbar({
+  onLoginClick,
+  onDemoClick,
+  isLoggedIn = false,
+  userRole,
+  onLogout,
+  user,
+}: NavbarProps) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
 
-  const isUserLoggedIn = isLoggedIn || !!user;
+  const isUserLoggedIn = isLoggedIn || !!user
 
   const getUserInfo = () => {
     switch (userRole) {
-      case 'Doctor':
+      case "Doctor":
         return {
-          name: 'Dr. Sarah Johnson',
-          title: 'Cardiologist',
-          avatar: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2',
+          name: "Dr. Sarah Johnson",
+          title: "Cardiologist",
+          avatar:
+            "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2",
           icon: Stethoscope,
-          gradient: 'from-blue-500 to-cyan-500',
-          status: 'On Call',
-          statusColor: 'bg-green-500'
-        };
-      case 'Patient':
+          gradient: "from-purple-500 to-green-500",
+          status: "On Call",
+          statusColor: "bg-green-500",
+        }
+      case "Patient":
         return {
-          name: 'John Smith',
-          title: 'Patient ID: #12345',
-          avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2',
+          name: "John Smith",
+          title: "Patient ID: #12345",
+          avatar:
+            "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2",
           icon: Heart,
-          gradient: 'from-rose-500 to-pink-500',
-          status: 'Active',
-          statusColor: 'bg-blue-500'
-        };
-      case 'HR Manager':
+          gradient: "from-green-500 to-purple-500",
+          status: "Active",
+          statusColor: "bg-purple-500",
+        }
+      case "HR Manager":
         return {
-          name: 'Emily Davis',
-          title: 'HR Manager',
-          avatar: 'https://images.pexels.com/photos/5452268/pexels-photo-5452268.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2',
+          name: "Emily Davis",
+          title: "HR Manager",
+          avatar:
+            "https://images.pexels.com/photos/5452268/pexels-photo-5452268.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2",
           icon: Users,
-          gradient: 'from-purple-500 to-indigo-500',
-          status: 'Available',
-          statusColor: 'bg-green-500'
-        };
-      case 'Admin':
+          gradient: "from-purple-600 to-green-400",
+          status: "Available",
+          statusColor: "bg-green-500",
+        }
+      case "Admin":
         return {
-          name: 'System Admin',
-          title: 'Administrator',
-          avatar: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2',
+          name: "System Admin",
+          title: "Administrator",
+          avatar:
+            "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2",
           icon: Building2,
-          gradient: 'from-gray-500 to-slate-600',
-          status: 'Online',
-          statusColor: 'bg-green-500'
-        };
+          gradient: "from-purple-700 to-green-600",
+          status: "Online",
+          statusColor: "bg-green-500",
+        }
       default:
         return {
-          name: 'User',
-          title: 'Guest',
-          avatar: '',
+          name: "User",
+          title: "Guest",
+          avatar: "",
           icon: User,
-          gradient: 'from-gray-500 to-gray-600',
-          status: 'Active',
-          statusColor: 'bg-gray-500'
-        };
+          gradient: "from-purple-500 to-green-500",
+          status: "Active",
+          statusColor: "bg-gray-500",
+        }
     }
-  };
+  }
 
-  const userInfo = getUserInfo();
+  const userInfo = getUserInfo()
 
   const getNotificationCount = () => {
     switch (userRole) {
-      case 'Doctor':
-        return 5; // Critical alerts, lab results, etc.
-      case 'Patient':
-        return 2; // Appointment reminders, test results
-      case 'HR Manager':
-        return 8; // Staff notifications, compliance alerts
-      case 'Admin':
-        return 3; // System alerts, security notifications
+      case "Doctor":
+        return 5
+      case "Patient":
+        return 2
+      case "HR Manager":
+        return 8
+      case "Admin":
+        return 3
       default:
-        return 0;
+        return 0
     }
-  };
+  }
 
-  const notificationCount = getNotificationCount();
+  const notificationCount = getNotificationCount()
 
   return (
-    <nav className="bg-white border-b border-gray-200 sticky top-0 z-40 backdrop-blur-lg bg-white/95 shadow-sm">
+    <nav className="bg-gradient-to-r from-white to-purple-50 border-b border-purple-100 sticky top-0 z-40 backdrop-blur-lg bg-white/95 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">
-              <a href="/">
-                {isUserLoggedIn ? (
-                  userRole === 'Doctor' ? 'MedConnect Pro' :
-                  userRole === 'Patient' ? 'MyHealth Portal' :
-                  userRole === 'HR Manager' ? 'StaffCare System' :
-                  userRole === 'Admin' ? 'HospitalOS' : 'Premier Healthcare'
-                ) : 'Premier Healthcare'}
+            {/* <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center"> */}
+              {/* <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center"> */}
+                <img src="/logo.webp" className="w-20 h-20 text-white" />
+              {/* </div> */}
+            {/* </div> */}
+            <div>
+              <a href="/" className="block">
+                <span className="text-xl font-bold text-purple-900">SHALOM</span>
+                <div className="text-xs text-purple-700 font-medium -mt-1">HEALTH CARE SERVICES</div>
               </a>
-            </span>
+            </div>
           </div>
 
           {/* Desktop Navigation - Only show if not logged in */}
@@ -140,7 +150,7 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
                 <a
                   key={item.name}
                   href={item.to}
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 py-2"
+                  className="text-gray-700 hover:text-purple-600 font-medium transition-colors duration-200 py-2"
                 >
                   {item.name}
                 </a>
@@ -153,9 +163,12 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
             <div className="flex items-center space-x-4">
               {/* Quick Actions for different roles */}
               <div className="hidden md:flex items-center space-x-3">
-                {userRole === 'Doctor' && (
+                {userRole === "Doctor" && (
                   <>
-                    <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200" title="Emergency Alerts">
+                    <button
+                      className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors duration-200"
+                      title="Emergency Alerts"
+                    >
                       <div className="relative">
                         <Bell className="w-5 h-5" />
                         <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
@@ -163,36 +176,48 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
                         </span>
                       </div>
                     </button>
-                    <button className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200" title="Patient Messages">
+                    <button
+                      className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200"
+                      title="Patient Messages"
+                    >
                       <MessageCircle className="w-5 h-5" />
                     </button>
                   </>
                 )}
 
-                {userRole === 'Patient' && (
+                {userRole === "Patient" && (
                   <>
-                    <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors duration-200" title="Notifications">
+                    <button
+                      className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors duration-200"
+                      title="Notifications"
+                    >
                       <div className="relative">
                         <Bell className="w-5 h-5" />
                         {notificationCount > 0 && (
-                          <span className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full text-xs text-white flex items-center justify-center">
+                          <span className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full text-xs text-white flex items-center justify-center">
                             {notificationCount}
                           </span>
                         )}
                       </div>
                     </button>
-                    <button className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors duration-200" title="Care Team Messages">
+                    <button
+                      className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200"
+                      title="Care Team Messages"
+                    >
                       <MessageCircle className="w-5 h-5" />
                     </button>
                   </>
                 )}
 
-                {(userRole === 'HR Manager' || userRole === 'Admin') && (
-                  <button className="p-2 text-gray-600 hover:text-orange-600 hover:bg-orange-50 rounded-lg transition-colors duration-200" title="System Notifications">
+                {(userRole === "HR Manager" || userRole === "Admin") && (
+                  <button
+                    className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors duration-200"
+                    title="System Notifications"
+                  >
                     <div className="relative">
                       <Bell className="w-5 h-5" />
                       {notificationCount > 0 && (
-                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-orange-500 rounded-full text-xs text-white flex items-center justify-center">
+                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full text-xs text-white flex items-center justify-center">
                           {notificationCount}
                         </span>
                       )}
@@ -205,15 +230,17 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
               <div className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                  className="flex items-center space-x-3 p-2 rounded-lg hover:bg-purple-50 transition-colors duration-200"
                 >
                   <div className="relative">
                     <img
-                      src={userInfo.avatar}
+                      src={userInfo.avatar || "/placeholder.svg"}
                       alt={userInfo.name}
-                      className="w-8 h-8 rounded-full object-cover border-2 border-gray-200"
+                      className="w-8 h-8 rounded-full object-cover border-2 border-purple-200"
                     />
-                    <div className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 ${userInfo.statusColor} rounded-full border-2 border-white`}></div>
+                    <div
+                      className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 ${userInfo.statusColor} rounded-full border-2 border-white`}
+                    ></div>
                   </div>
                   <div className="hidden md:block text-left">
                     <p className="text-sm font-medium text-gray-900">{userInfo.name}</p>
@@ -224,17 +251,19 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
 
                 {/* Dropdown Menu */}
                 {isProfileOpen && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-gray-200 py-2 z-50">
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-purple-100 py-2 z-50">
                     {/* User Info Header */}
-                    <div className="px-4 py-3 border-b border-gray-100">
+                    <div className="px-4 py-3 border-b border-purple-100">
                       <div className="flex items-center space-x-3">
                         <div className="relative">
                           <img
-                            src={userInfo.avatar}
+                            src={userInfo.avatar || "/placeholder.svg"}
                             alt={userInfo.name}
-                            className="w-12 h-12 rounded-full object-cover"
+                            className="w-12 h-12 rounded-full object-cover border-2 border-purple-200"
                           />
-                          <div className={`absolute -bottom-1 -right-1 w-4 h-4 ${userInfo.statusColor} rounded-full border-2 border-white`}></div>
+                          <div
+                            className={`absolute -bottom-1 -right-1 w-4 h-4 ${userInfo.statusColor} rounded-full border-2 border-white`}
+                          ></div>
                         </div>
                         <div className="flex-1">
                           <h3 className="font-semibold text-gray-900">{userInfo.name}</h3>
@@ -248,13 +277,13 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
                     </div>
 
                     {/* Role-specific quick stats */}
-                    <div className="px-4 py-3 border-b border-gray-100">
+                    <div className="px-4 py-3 border-b border-purple-100">
                       <div className="grid grid-cols-2 gap-3 text-center">
-                        {userRole === 'Doctor' && (
+                        {userRole === "Doctor" && (
                           <>
-                            <div className="bg-blue-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-blue-600">14</div>
-                              <div className="text-xs text-blue-700">Today's Patients</div>
+                            <div className="bg-purple-50 rounded-lg p-2">
+                              <div className="text-lg font-bold text-purple-600">14</div>
+                              <div className="text-xs text-purple-700">Today's Patients</div>
                             </div>
                             <div className="bg-red-50 rounded-lg p-2">
                               <div className="text-lg font-bold text-red-600">3</div>
@@ -262,35 +291,35 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
                             </div>
                           </>
                         )}
-                        {userRole === 'Patient' && (
+                        {userRole === "Patient" && (
                           <>
                             <div className="bg-green-50 rounded-lg p-2">
                               <div className="text-lg font-bold text-green-600">95%</div>
                               <div className="text-xs text-green-700">Health Score</div>
                             </div>
-                            <div className="bg-blue-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-blue-600">Jan 15</div>
-                              <div className="text-xs text-blue-700">Next Appointment</div>
+                            <div className="bg-purple-50 rounded-lg p-2">
+                              <div className="text-lg font-bold text-purple-600">Jan 15</div>
+                              <div className="text-xs text-purple-700">Next Appointment</div>
                             </div>
                           </>
                         )}
-                        {userRole === 'HR Manager' && (
+                        {userRole === "HR Manager" && (
                           <>
                             <div className="bg-purple-50 rounded-lg p-2">
                               <div className="text-lg font-bold text-purple-600">247</div>
                               <div className="text-xs text-purple-700">Active Staff</div>
                             </div>
-                            <div className="bg-orange-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-orange-600">12</div>
-                              <div className="text-xs text-orange-700">Credentials Due</div>
+                            <div className="bg-green-50 rounded-lg p-2">
+                              <div className="text-lg font-bold text-green-600">12</div>
+                              <div className="text-xs text-green-700">Credentials Due</div>
                             </div>
                           </>
                         )}
-                        {userRole === 'Admin' && (
+                        {userRole === "Admin" && (
                           <>
-                            <div className="bg-blue-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-blue-600">87%</div>
-                              <div className="text-xs text-blue-700">Bed Occupancy</div>
+                            <div className="bg-purple-50 rounded-lg p-2">
+                              <div className="text-lg font-bold text-purple-600">87%</div>
+                              <div className="text-xs text-purple-700">Bed Occupancy</div>
                             </div>
                             <div className="bg-green-50 rounded-lg p-2">
                               <div className="text-lg font-bold text-green-600">99.9%</div>
@@ -303,22 +332,22 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
 
                     {/* Menu Items */}
                     <div className="py-2">
-                      <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200">
+                      <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-purple-50 transition-colors duration-200">
                         <User className="w-4 h-4 text-gray-500" />
                         <span className="text-sm text-gray-700">My Profile</span>
                       </button>
-                      <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200">
+                      <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-purple-50 transition-colors duration-200">
                         <Settings className="w-4 h-4 text-gray-500" />
                         <span className="text-sm text-gray-700">Settings</span>
                       </button>
-                      {userRole === 'Patient' && (
-                        <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200">
+                      {userRole === "Patient" && (
+                        <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-purple-50 transition-colors duration-200">
                           <Heart className="w-4 h-4 text-gray-500" />
                           <span className="text-sm text-gray-700">Health Dashboard</span>
                         </button>
                       )}
-                      {(userRole === 'Doctor' || userRole === 'HR Manager' || userRole === 'Admin') && (
-                        <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors duration-200">
+                      {(userRole === "Doctor" || userRole === "HR Manager" || userRole === "Admin") && (
+                        <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-purple-50 transition-colors duration-200">
                           <Bell className="w-4 h-4 text-gray-500" />
                           <span className="text-sm text-gray-700">Notifications</span>
                           {notificationCount > 0 && (
@@ -331,11 +360,11 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
                     </div>
 
                     {/* Logout */}
-                    <div className="border-t border-gray-100 pt-2">
+                    <div className="border-t border-purple-100 pt-2">
                       <button
                         onClick={() => {
-                          setIsProfileOpen(false);
-                          onLogout?.();
+                          setIsProfileOpen(false)
+                          onLogout?.()
                         }}
                         className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-red-50 transition-colors duration-200 text-red-600"
                       >
@@ -350,15 +379,9 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
           ) : (
             /* Login Button - Show when not logged in */
             <div className="hidden lg:flex items-center space-x-4">
-              {/* <button
-                onClick={onLoginClick}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium"
-              >
-                Login
-              </button> */}
               <button
                 onClick={onDemoClick}
-                className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium"
+                className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors duration-200 font-medium"
               >
                 Try Demo
               </button>
@@ -368,7 +391,7 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 text-gray-700 hover:text-blue-600 transition-colors duration-200"
+            className="lg:hidden p-2 text-gray-700 hover:text-purple-600 transition-colors duration-200"
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -377,7 +400,7 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="lg:hidden border-t border-gray-200 bg-white">
+        <div className="lg:hidden border-t border-purple-200 bg-gradient-to-r from-white to-purple-50">
           <div className="px-4 py-4 space-y-3">
             {!isUserLoggedIn ? (
               <>
@@ -385,7 +408,7 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
                   <a
                     key={item.name}
                     href={item.to}
-                    className="block text-gray-700 hover:text-blue-600 font-medium transition-colors duration-200 py-2"
+                    className="block text-gray-700 hover:text-purple-600 font-medium transition-colors duration-200 py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
@@ -393,22 +416,22 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
                 ))}
                 <button
                   onClick={() => {
-                    onLoginClick?.();
-                    setIsMenuOpen(false);
+                    onDemoClick?.()
+                    setIsMenuOpen(false)
                   }}
-                  className="w-full bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium mt-4"
+                  className="w-full bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors duration-200 font-medium mt-4"
                 >
-                  Login
+                  Try Demo
                 </button>
               </>
             ) : (
               <div className="space-y-3">
                 {/* Mobile User Info */}
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-3 p-3 bg-purple-50 rounded-lg">
                   <img
-                    src={userInfo.avatar}
+                    src={userInfo.avatar || "/placeholder.svg"}
                     alt={userInfo.name}
-                    className="w-10 h-10 rounded-full object-cover"
+                    className="w-10 h-10 rounded-full object-cover border-2 border-purple-200"
                   />
                   <div>
                     <p className="font-medium text-gray-900">{userInfo.name}</p>
@@ -417,18 +440,18 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
                 </div>
 
                 {/* Mobile Menu Items */}
-                <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors duration-200">
+                <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-purple-50 rounded-lg transition-colors duration-200">
                   <User className="w-5 h-5 text-gray-500" />
                   <span className="text-gray-700">My Profile</span>
                 </button>
-                <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-gray-50 rounded-lg transition-colors duration-200">
+                <button className="w-full flex items-center space-x-3 p-3 text-left hover:bg-purple-50 rounded-lg transition-colors duration-200">
                   <Settings className="w-5 h-5 text-gray-500" />
                   <span className="text-gray-700">Settings</span>
                 </button>
                 <button
                   onClick={() => {
-                    onLogout?.();
-                    setIsMenuOpen(false);
+                    onLogout?.()
+                    setIsMenuOpen(false)
                   }}
                   className="w-full flex items-center space-x-3 p-3 text-left hover:bg-red-50 rounded-lg transition-colors duration-200 text-red-600"
                 >
@@ -442,12 +465,7 @@ export default function Navbar({ onLoginClick, onDemoClick, isLoggedIn = false, 
       )}
 
       {/* Click outside to close dropdown */}
-      {isProfileOpen && (
-        <div
-          className="fixed inset-0 z-40"
-          onClick={() => setIsProfileOpen(false)}
-        />
-      )}
+      {isProfileOpen && <div className="fixed inset-0 z-40" onClick={() => setIsProfileOpen(false)} />}
     </nav>
-  );
+  )
 }
