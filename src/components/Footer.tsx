@@ -18,7 +18,7 @@ const Footer = () => {
             <span className="text-2xl font-bold text-white tracking-tight">Shalom Health Care Services</span>
           </div>
           <p className="mb-7 text-sm leading-relaxed text-[#C3C8D1]">
-            Hospitals provide care for patients who need to stay overnight or longer for surgeries, serious illnesses, or recovery from complex procedures.
+          As a home care company or service provider, you know how challenging it is to be found online by someone looking for a home care provider they can trust in their hour of need.
           </p>
          
           {/* Socials */}
@@ -37,9 +37,8 @@ const Footer = () => {
           <ul className="space-y-3 text-base">
             <li className="hover:text-white cursor-pointer transition">About Us</li>
             <li className="hover:text-white cursor-pointer transition">Our team</li>
-            <li className="hover:text-white cursor-pointer transition">Case Studies</li>
-            <li className="hover:text-white cursor-pointer transition">Services</li>
             <li className="hover:text-white cursor-pointer transition">Faq</li>
+            <li className="hover:text-white cursor-pointer transition">Blog</li>
             <li className="hover:text-white cursor-pointer transition">Contact Us</li>
           </ul>
         </div>
@@ -47,12 +46,15 @@ const Footer = () => {
         <div>
           <h3 className="text-white font-bold text-xl mb-5 tracking-tight">+ Our Services</h3>
           <ul className="space-y-3 text-base">
-            <li className="hover:text-white cursor-pointer transition">Diagnostic</li>
-            <li className="hover:text-white cursor-pointer transition">Health Care</li>
-            <li className="hover:text-white cursor-pointer transition">Surgical</li>
-            <li className="hover:text-white cursor-pointer transition">Emergency</li>
-            <li className="hover:text-white cursor-pointer transition">Geriatric</li>
-            <li className="hover:text-white cursor-pointer transition">Preventive</li>
+            <li className="hover:text-white cursor-pointer transition">In-Home Service</li>
+            <li className="hover:text-white cursor-pointer transition">Respite Care Service</li>
+            <li className="hover:text-white cursor-pointer transition">Direct Support Professional</li>
+            <li className="hover:text-white cursor-pointer transition">Host Home Provider</li>
+            <li className="hover:text-white cursor-pointer transition">Companion Services</li>
+            <li className="hover:text-white cursor-pointer transition">Professional Behavioral Support</li>
+            <li className="hover:text-white cursor-pointer transition">Employment Specialist</li>
+            <li className="hover:text-white cursor-pointer transition">Support Living Without Transportation</li>
+            <li className="hover:text-white cursor-pointer transition">Day Habilitation</li>
           </ul>
         </div>
         {/* Get In Touch */}
