@@ -81,6 +81,17 @@ export function PhoneCarousel() {
           </div>
         </div>
       </div>
+      <div className="text-center mb-12">
+          <div className="flex items-center justify-center mb-6">
+            <div>
+              <h1 className="text-4xl font-bold text-purple-900 mb-2">The Practice</h1>
+            </div>
+          </div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Providing compassionate, professional healthcare services with a commitment to excellence and dignity for
+            every individual we serve.
+          </p>
+        </div>
 
       {/* Desktop: Carousel with 3 slides, center active */}
       <div className="hidden md:flex w-full max-w-5xl justify-center items-center space-x-6">
