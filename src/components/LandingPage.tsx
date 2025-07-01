@@ -495,18 +495,15 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-8 py-20 flex flex-col lg:flex-row items-center">
           {/* Left: Text */}
           <div className="w-full lg:w-1/2 flex flex-col items-start justify-center">
-            <span className="inline-block bg-gray-100 text-gray-700 text-xs font-semibold rounded-full px-4 py-2 mb-6">
-              #1 General Hospital in California
-            </span>
+           
             <h1 className="text-5xl md:text-6xl font-extrabold text-black mb-6 leading-tight">
-              Not Just<br />
-              Treatment
+            Shalom Health Care Services<br /> 
+              
               <span className="inline-block align-middle w-12 h-1 bg-black mx-3 mb-2"></span>
               <br />
-              True Healing.
             </h1>
             <p className="text-lg text-gray-700 mb-8 max-w-md">
-              We take health care personally at Holicare General Hospital. Because excellence in health care is about more than just medicine, technology, tests and treatments.
+            A licensed Medicaid provider for DDS that assesses each person to create a custom community involvement plan tailored to and for the person. We are dedicate to not only educate the person but also their family members so the person may live a positive day-to-day life within our communities
             </p>
             <button className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-4 rounded-full text-lg shadow transition mb-10">
               Find A Doctor
