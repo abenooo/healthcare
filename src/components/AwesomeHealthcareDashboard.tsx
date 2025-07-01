@@ -195,29 +195,7 @@ export default function ShalomHealthcareServices() {
           })}
         </div>
 
-        {/* Contact CTA Section */}
-        <div className="mt-16 text-center">
-          <div className="bg-white rounded-3xl shadow-xl p-8 max-w-4xl mx-auto border border-purple-100">
-            <h2 className="text-3xl font-bold text-purple-900 mb-4">Ready to Get Started?</h2>
-            <p className="text-lg text-gray-600 mb-6">
-              Contact Shalom Healthcare Services today to discuss your care needs and create a personalized care plan.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-6">
-              <button className="bg-purple-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-purple-700 transition-colors duration-200 flex items-center justify-center space-x-2">
-                <Phone className="w-5 h-5" />
-                <span>Call Now</span>
-              </button>
-              <button className="border-2 border-purple-300 text-purple-700 px-8 py-3 rounded-xl font-semibold hover:border-purple-400 transition-colors duration-200 flex items-center justify-center space-x-2">
-                <Mail className="w-5 h-5" />
-                <span>Email Us</span>
-              </button>
-            </div>
-            <div className="flex items-center justify-center space-x-2 text-gray-600">
-              <MapPin className="w-4 h-4" />
-              <span className="text-sm">Serving communities with compassionate care</span>
-            </div>
-          </div>
-        </div>
+      
       </div>
     </section>
   )
