@@ -135,12 +135,12 @@ export default function Navbar({
                 <img src="/logo.webp" className="w-20 h-20 text-white" />
               {/* </div> */}
             {/* </div> */}
-            <div>
+            {/* <div>
               <a href="/" className="block">
                 <span className="text-xl font-bold text-purple-900">SHALOM</span>
                 <div className="text-xs text-purple-700 font-medium -mt-1">HEALTH CARE SERVICES</div>
               </a>
-            </div>
+            </div> */}
           </div>
 
           {/* Desktop Navigation - Only show if not logged in */}
