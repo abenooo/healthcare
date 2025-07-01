@@ -1,55 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Shield,
-  Menu,
   X,
-  ChevronDown,
   ArrowRight,
-  Play,
   Users,
-  Star,
   Heart,
-  Activity,
-  Calendar,
-  CheckCircle,
-  Clock,
   TrendingUp,
   Stethoscope,
-  Brain,
-  Award,
-  Lock,
-  Smartphone,
-  Globe,
-  MessageCircle,
-  Phone,
-  Mail,
-  MapPin,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Instagram,
-  UserCheck,
   Settings,
-  FileText,
-  Database,
   Zap,
-  CreditCard,
-  Video,
-  BarChart3,
   Workflow,
-  AlertTriangle,
-  Headphones,
   Building2,
   Target,
   Lightbulb,
-  PieChart,
-  Briefcase,
-  GraduationCap,
-  Search,
-  Filter,
-  Download,
-  ExternalLink,
-  ChevronRight
 } from 'lucide-react';
 import Contact from './Contact';
 import AwesomeHealthcareDashboard from './AwesomeHealthcareDashboard';
@@ -60,8 +23,8 @@ interface LandingPageProps {
 }
 
 const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  // const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [showDemoUsers, setShowDemoUsers] = useState(false);
   const [activeTab, setActiveTab] = useState('solutions');
   const [showContact, setShowContact] = useState(false);
