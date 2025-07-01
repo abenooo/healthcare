@@ -61,7 +61,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-white to-blue-50">
       {/* Hero Section */}
-      <section className="pt-32 pb-20">
+      <section className="pt-10 pb-20">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-8 leading-tight">
@@ -79,8 +79,8 @@ export default function ContactPage() {
 
       {/* Main Contact Section */}
       <section className="py-20 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-16">
+        <div className="container mx-auto max-w-3xl px-2">
+          <div className="grid lg:grid-cols-2 gap-x-16 gap-y-12">
             {/* Contact Form */}
             <div>
               <div className="mb-8">
