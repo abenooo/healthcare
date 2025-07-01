@@ -1,4 +1,4 @@
-import { FaFacebookF, FaTwitter, FaBehance, FaYoutube, FaPhoneAlt, FaLocationArrow } from "react-icons/fa";
+import { FaFacebookF, FaTwitter, FaYoutube, FaPhoneAlt, FaLocationArrow, FaLinkedinIn, FaTiktok } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 
 const Footer = () => {
@@ -20,19 +20,15 @@ const Footer = () => {
           <p className="mb-7 text-sm leading-relaxed text-[#C3C8D1]">
             Hospitals provide care for patients who need to stay overnight or longer for surgeries, serious illnesses, or recovery from complex procedures.
           </p>
-          {/* Awards */}
-          <div className="flex gap-6 mb-7">
-            <img src="https://framerusercontent.com/images/awards1.svg" alt="Ultra" className="h-8" />
-            <img src="https://framerusercontent.com/images/awards2.svg" alt="Hyper Best" className="h-8" />
-            <img src="https://framerusercontent.com/images/awards3.svg" alt="Award" className="h-8" />
-          </div>
+         
           {/* Socials */}
           <div className="flex items-center gap-3 mt-2">
             <span className="font-medium text-[#C3C8D1]">Follow us:</span>
             <FaFacebookF className="hover:text-white text-[#C3C8D1] transition" />
             <FaTwitter className="hover:text-white text-[#C3C8D1] transition" />
-            <FaBehance className="hover:text-white text-[#C3C8D1] transition" />
+            <FaLinkedinIn className="hover:text-white text-[#C3C8D1] transition" />
             <FaYoutube className="hover:text-white text-[#C3C8D1] transition" />
+            <FaTiktok className="hover:text-white text-[#C3C8D1] transition" />
           </div>
         </div>
         {/* Essential */}
