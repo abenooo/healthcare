@@ -16,6 +16,7 @@ import {
   ClipboardCheck,
   UserPlus,
 } from "lucide-react"
+import ProgressNoteSidebar from "./ProgressNoteSidebar"
 
 interface SidebarProps {
   activeTab: string
@@ -36,6 +37,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [touchStart, setTouchStart] = useState<number | null>(null)
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const sidebarRef = useRef<HTMLDivElement>(null)
+  const [showProgressNote, setShowProgressNote] = useState(false)
 
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50
@@ -82,6 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({
           { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-600", shortLabel: "Dash" },
           { id: "assigned-patients", label: "Assigned Patients", icon: Heart, color: "text-rose-600", shortLabel: "Patients" },
           { id: "services", label: "Provide Services", icon: Stethoscope, color: "text-emerald-600", shortLabel: "Services" },
+          { id: "progress-note", label: "Progress Note", icon: FileText, color: "text-blue-600", shortLabel: "Progress" },
         ]
       case "HR":
         return [
@@ -109,10 +112,13 @@ const Sidebar: React.FC<SidebarProps> = ({
     }[userRole] || "Portal"
 
   const handleMenuItemClick = (tabId: string) => {
-    setActiveTab(tabId)
-    // Close mobile sidebar when item is clicked
+    if (tabId === "progress-note") {
+      setShowProgressNote(true);
+      return;
+    }
+    setActiveTab(tabId);
     if (onMobileToggle) {
-      onMobileToggle()
+      onMobileToggle();
     }
   }
 
@@ -258,6 +264,16 @@ const Sidebar: React.FC<SidebarProps> = ({
               </div>
             </div>
           </div>
+
+          {userRole === "Care Giver" && (
+            <button
+              onClick={() => setShowProgressNote(true)}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 mt-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            >
+              <FileText className="w-4 h-4" />
+              <span>Add Progress Note</span>
+            </button>
+          )}
         </div>
 
         {/* Resize Handle for Desktop */}
@@ -287,6 +303,23 @@ const Sidebar: React.FC<SidebarProps> = ({
           })}
         </div>
       </div>
+
+      {/* Progress Note Sidebar */}
+      {userRole === "Care Giver" && (
+        <ProgressNoteSidebar
+          open={showProgressNote}
+          onClose={() => setShowProgressNote(false)}
+          patients={[
+            { id: 1, name: "Maria Rodriguez" },
+            { id: 2, name: "James Wilson" },
+            { id: 3, name: "Emily Davis" },
+          ]}
+          hourlyAmount={25}
+          onSubmit={(data) => {
+            alert("Progress note sent to HR!");
+          }}
+        />
+      )}
     </>
   )
 }
