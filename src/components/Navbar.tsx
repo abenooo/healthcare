@@ -14,11 +14,13 @@ import {
   Stethoscope,
   Users,
   Building2,
+  Calendar,
 } from "lucide-react"
 
 interface NavbarProps {
   onLoginClick?: () => void
   onDemoClick?: () => void
+  onBookNowClick?: () => void
   isLoggedIn?: boolean
   userRole?: "Doctor" | "Patient" | "HR Manager" | "Admin"
   onLogout?: () => void
@@ -36,6 +38,7 @@ const navigationItems = [
 export default function Navbar({
   onLoginClick,
   onDemoClick,
+  onBookNowClick,
   isLoggedIn = false,
   userRole,
   onLogout,
@@ -55,9 +58,9 @@ export default function Navbar({
           avatar:
             "https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2",
           icon: Stethoscope,
-          gradient: "from-purple-500 to-green-500",
+          gradient: "from-[#77658B] to-[#9AC15D]",
           status: "On Call",
-          statusColor: "bg-green-500",
+          statusColor: "bg-[#9AC15D]",
         }
       case "Patient":
         return {
@@ -66,9 +69,9 @@ export default function Navbar({
           avatar:
             "https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2",
           icon: Heart,
-          gradient: "from-green-500 to-purple-500",
+          gradient: "from-[#9AC15D] to-[#77658B]",
           status: "Active",
-          statusColor: "bg-purple-500",
+          statusColor: "bg-[#77658B]",
         }
       case "HR Manager":
         return {
@@ -77,9 +80,9 @@ export default function Navbar({
           avatar:
             "https://images.pexels.com/photos/5452268/pexels-photo-5452268.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2",
           icon: Users,
-          gradient: "from-purple-600 to-green-400",
+          gradient: "from-[#77658B] to-[#9AC15D]",
           status: "Available",
-          statusColor: "bg-green-500",
+          statusColor: "bg-[#9AC15D]",
         }
       case "Admin":
         return {
@@ -88,9 +91,9 @@ export default function Navbar({
           avatar:
             "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2",
           icon: Building2,
-          gradient: "from-purple-700 to-green-600",
+          gradient: "from-[#77658B] to-[#9AC15D]",
           status: "Online",
-          statusColor: "bg-green-500",
+          statusColor: "bg-[#9AC15D]",
         }
       default:
         return {
@@ -98,7 +101,7 @@ export default function Navbar({
           title: "Guest",
           avatar: "",
           icon: User,
-          gradient: "from-purple-500 to-green-500",
+          gradient: "from-[#77658B] to-[#9AC15D]",
           status: "Active",
           statusColor: "bg-gray-500",
         }
@@ -130,17 +133,7 @@ export default function Navbar({
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-3">
-            {/* <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center"> */}
-              {/* <div className="w-6 h-6 bg-green-400 rounded-full flex items-center justify-center"> */}
-                <img src="/logo.webp" className="w-20 h-20 text-white" />
-              {/* </div> */}
-            {/* </div> */}
-            {/* <div>
-              <a href="/" className="block">
-                <span className="text-xl font-bold text-purple-900">SHALOM</span>
-                <div className="text-xs text-purple-700 font-medium -mt-1">HEALTH CARE SERVICES</div>
-              </a>
-            </div> */}
+            <img src="/logo.webp" className="w-20 h-20 text-white" alt="Shalom Health Care Services" />
           </div>
 
           {/* Desktop Navigation - Only show if not logged in */}
@@ -150,7 +143,7 @@ export default function Navbar({
                 <a
                   key={item.name}
                   href={item.to}
-                  className="text-gray-700 hover:text-purple-600 font-medium transition-colors duration-200 py-2"
+                  className="text-gray-700 hover:text-[#77658B] font-medium transition-colors duration-200 py-2"
                 >
                   {item.name}
                 </a>
@@ -166,7 +159,7 @@ export default function Navbar({
                 {userRole === "Doctor" && (
                   <>
                     <button
-                      className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors duration-200"
+                      className="p-2 text-gray-600 hover:text-[#77658B] hover:bg-purple-50 rounded-lg transition-colors duration-200"
                       title="Emergency Alerts"
                     >
                       <div className="relative">
@@ -177,7 +170,7 @@ export default function Navbar({
                       </div>
                     </button>
                     <button
-                      className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200"
+                      className="p-2 text-gray-600 hover:text-[#9AC15D] hover:bg-green-50 rounded-lg transition-colors duration-200"
                       title="Patient Messages"
                     >
                       <MessageCircle className="w-5 h-5" />
@@ -188,20 +181,20 @@ export default function Navbar({
                 {userRole === "Patient" && (
                   <>
                     <button
-                      className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors duration-200"
+                      className="p-2 text-gray-600 hover:text-[#77658B] hover:bg-purple-50 rounded-lg transition-colors duration-200"
                       title="Notifications"
                     >
                       <div className="relative">
                         <Bell className="w-5 h-5" />
                         {notificationCount > 0 && (
-                          <span className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full text-xs text-white flex items-center justify-center">
+                          <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#77658B] rounded-full text-xs text-white flex items-center justify-center">
                             {notificationCount}
                           </span>
                         )}
                       </div>
                     </button>
                     <button
-                      className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-lg transition-colors duration-200"
+                      className="p-2 text-gray-600 hover:text-[#9AC15D] hover:bg-green-50 rounded-lg transition-colors duration-200"
                       title="Care Team Messages"
                     >
                       <MessageCircle className="w-5 h-5" />
@@ -211,13 +204,13 @@ export default function Navbar({
 
                 {(userRole === "HR Manager" || userRole === "Admin") && (
                   <button
-                    className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-colors duration-200"
+                    className="p-2 text-gray-600 hover:text-[#77658B] hover:bg-purple-50 rounded-lg transition-colors duration-200"
                     title="System Notifications"
                   >
                     <div className="relative">
                       <Bell className="w-5 h-5" />
                       {notificationCount > 0 && (
-                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-purple-500 rounded-full text-xs text-white flex items-center justify-center">
+                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#77658B] rounded-full text-xs text-white flex items-center justify-center">
                           {notificationCount}
                         </span>
                       )}
@@ -282,8 +275,8 @@ export default function Navbar({
                         {userRole === "Doctor" && (
                           <>
                             <div className="bg-purple-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-purple-600">14</div>
-                              <div className="text-xs text-purple-700">Today's Patients</div>
+                              <div className="text-lg font-bold text-[#77658B]">14</div>
+                              <div className="text-xs text-[#77658B]">Today's Patients</div>
                             </div>
                             <div className="bg-red-50 rounded-lg p-2">
                               <div className="text-lg font-bold text-red-600">3</div>
@@ -294,36 +287,36 @@ export default function Navbar({
                         {userRole === "Patient" && (
                           <>
                             <div className="bg-green-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-green-600">95%</div>
-                              <div className="text-xs text-green-700">Health Score</div>
+                              <div className="text-lg font-bold text-[#9AC15D]">95%</div>
+                              <div className="text-xs text-[#9AC15D]">Health Score</div>
                             </div>
                             <div className="bg-purple-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-purple-600">Jan 15</div>
-                              <div className="text-xs text-purple-700">Next Appointment</div>
+                              <div className="text-lg font-bold text-[#77658B]">Jan 15</div>
+                              <div className="text-xs text-[#77658B]">Next Appointment</div>
                             </div>
                           </>
                         )}
                         {userRole === "HR Manager" && (
                           <>
                             <div className="bg-purple-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-purple-600">247</div>
-                              <div className="text-xs text-purple-700">Active Staff</div>
+                              <div className="text-lg font-bold text-[#77658B]">247</div>
+                              <div className="text-xs text-[#77658B]">Active Staff</div>
                             </div>
                             <div className="bg-green-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-green-600">12</div>
-                              <div className="text-xs text-green-700">Credentials Due</div>
+                              <div className="text-lg font-bold text-[#9AC15D]">12</div>
+                              <div className="text-xs text-[#9AC15D]">Credentials Due</div>
                             </div>
                           </>
                         )}
                         {userRole === "Admin" && (
                           <>
                             <div className="bg-purple-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-purple-600">87%</div>
-                              <div className="text-xs text-purple-700">Bed Occupancy</div>
+                              <div className="text-lg font-bold text-[#77658B]">87%</div>
+                              <div className="text-xs text-[#77658B]">Bed Occupancy</div>
                             </div>
                             <div className="bg-green-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-green-600">99.9%</div>
-                              <div className="text-xs text-green-700">System Uptime</div>
+                              <div className="text-lg font-bold text-[#9AC15D]">99.9%</div>
+                              <div className="text-xs text-[#9AC15D]">System Uptime</div>
                             </div>
                           </>
                         )}
@@ -377,11 +370,18 @@ export default function Navbar({
               </div>
             </div>
           ) : (
-            /* Login Button - Show when not logged in */
+            /* Action Buttons - Show when not logged in */
             <div className="hidden lg:flex items-center space-x-4">
               <button
+                onClick={onBookNowClick}
+                className="bg-[#77658B] text-white px-6 py-2 rounded-lg hover:bg-[#77658B]/90 transition-colors duration-200 font-medium flex items-center space-x-2"
+              >
+                <Calendar className="w-4 h-4" />
+                <span>Book Now</span>
+              </button>
+              <button
                 onClick={onDemoClick}
-                className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors duration-200 font-medium"
+                className="bg-[#9AC15D] text-white px-6 py-2 rounded-lg hover:bg-[#9AC15D]/90 transition-colors duration-200 font-medium"
               >
                 Try Demo
               </button>
@@ -391,7 +391,7 @@ export default function Navbar({
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="lg:hidden p-2 text-gray-700 hover:text-purple-600 transition-colors duration-200"
+            className="lg:hidden p-2 text-gray-700 hover:text-[#77658B] transition-colors duration-200"
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -408,7 +408,7 @@ export default function Navbar({
                   <a
                     key={item.name}
                     href={item.to}
-                    className="block text-gray-700 hover:text-purple-600 font-medium transition-colors duration-200 py-2"
+                    className="block text-gray-700 hover:text-[#77658B] font-medium transition-colors duration-200 py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {item.name}
@@ -416,10 +416,20 @@ export default function Navbar({
                 ))}
                 <button
                   onClick={() => {
+                    onBookNowClick?.()
+                    setIsMenuOpen(false)
+                  }}
+                  className="w-full bg-[#77658B] text-white px-6 py-2 rounded-lg hover:bg-[#77658B]/90 transition-colors duration-200 font-medium mt-4 flex items-center justify-center space-x-2"
+                >
+                  <Calendar className="w-4 h-4" />
+                  <span>Book Now</span>
+                </button>
+                <button
+                  onClick={() => {
                     onDemoClick?.()
                     setIsMenuOpen(false)
                   }}
-                  className="w-full bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors duration-200 font-medium mt-4"
+                  className="w-full bg-[#9AC15D] text-white px-6 py-2 rounded-lg hover:bg-[#9AC15D]/90 transition-colors duration-200 font-medium"
                 >
                   Try Demo
                 </button>
