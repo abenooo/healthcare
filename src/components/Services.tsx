@@ -47,8 +47,12 @@ const Services: React.FC<ServicesProps> = ({ userRole }) => {
     paymentMethod: 'insurance'
   });
 
-  // Role-specific content
+  // Add a check for healthcare giver role
+  const isHealthcareGiver = userRole === 'Healthcare Giver' || userRole === 'Doctor' || userRole === 'Nurse';
+
+  // Update page title/description for healthcare giver
   const getPageTitle = () => {
+    if (isHealthcareGiver) return 'Healthcare Giver Service Management';
     switch (userRole) {
       case 'Doctor':
         return 'Medical Services Management';
@@ -64,6 +68,7 @@ const Services: React.FC<ServicesProps> = ({ userRole }) => {
   };
 
   const getPageDescription = () => {
+    if (isHealthcareGiver) return 'Manage your services, appointments, and patient care.';
     switch (userRole) {
       case 'Doctor':
         return 'Manage and provide medical services to patients';
@@ -225,9 +230,10 @@ const Services: React.FC<ServicesProps> = ({ userRole }) => {
 
   const selectedCategoryData = serviceCategories.find(cat => cat.id === selectedCategory);
 
+  // Update handleBookService to prevent booking for healthcare givers
   const handleBookService = (service: any) => {
-    if (userRole !== 'Patient') {
-      alert(`Service management available for ${userRole} role. Booking flow is for patients.`);
+    if (isHealthcareGiver) {
+      alert('Service management for healthcare givers. Booking is only available for patients.');
       return;
     }
     setSelectedService(service);
@@ -800,7 +806,9 @@ const Services: React.FC<ServicesProps> = ({ userRole }) => {
                     }`}
                   >
                     <Calendar className="w-4 h-4" />
-                    <span>{userRole === 'Patient' ? 'Book Now' : 'Manage'}</span>
+                    <span>
+                      {isHealthcareGiver ? 'Manage' : userRole === 'Patient' ? 'Book Now' : 'Manage'}
+                    </span>
                   </button>
                   <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors duration-200">
                     Details
