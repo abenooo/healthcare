@@ -23,6 +23,7 @@ import {
   Star,
   MessageCircle
 } from 'lucide-react';
+import OnboardingForm from "./OnboardingForm";
 
 interface OnboardingProps {
   userRole: string;
@@ -31,6 +32,8 @@ interface OnboardingProps {
 const Onboarding: React.FC<OnboardingProps> = ({ userRole }) => {
   const [activeTab, setActiveTab] = useState('new_hires');
   const [selectedCandidate, setSelectedCandidate] = useState<any>(null);
+  const [showOnboardModal, setShowOnboardModal] = useState(false);
+  const [onboardType, setOnboardType] = useState<'employee' | 'patient' | null>(null);
 
   const newHires = [
     {
@@ -133,7 +136,15 @@ const Onboarding: React.FC<OnboardingProps> = ({ userRole }) => {
       }
     }
   ];
-
+  const [form, setForm] = useState({
+    name: "",
+    position: "",
+    department: "",
+    age: "",
+    condition: "",
+    email: "",
+    phone: "",
+  })
   const patientOnboarding = [
     {
       id: 1,
@@ -249,7 +260,7 @@ const Onboarding: React.FC<OnboardingProps> = ({ userRole }) => {
                   {getStatusIcon(candidate.status)}
                   <span className="ml-1">{candidate.status.replace('_', ' ').charAt(0).toUpperCase() + candidate.status.replace('_', ' ').slice(1)}</span>
                 </span>
-                <span className="text-sm text-gray-600">Start Date: {candidate.startDate}</span>
+                <span className="text-sm text-gray-600">{'startDate' in candidate ? `Start: ${candidate.startDate}` : `Enrolled: ${candidate.enrollmentDate}`}</span>
               </div>
             </div>
             <div className="text-right">
@@ -465,6 +476,21 @@ const Onboarding: React.FC<OnboardingProps> = ({ userRole }) => {
             Patient Onboarding
           </button>
         </div>
+
+        <div className="flex space-x-2 mt-4">
+          <button
+            onClick={() => { setOnboardType('employee'); setShowOnboardModal(true); }}
+            className="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700 transition-colors duration-200"
+          >
+            + Onboard Employee
+          </button>
+          <button
+            onClick={() => { setOnboardType('patient'); setShowOnboardModal(true); }}
+            className="bg-cyan-600 text-white px-4 py-2 rounded-lg hover:bg-cyan-700 transition-colors duration-200"
+          >
+            + Onboard Patient
+          </button>
+        </div>
       </div>
 
       {/* Onboarding List */}
@@ -495,15 +521,15 @@ const Onboarding: React.FC<OnboardingProps> = ({ userRole }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600 mb-3">
                       <div className="flex items-center space-x-2">
                         <Briefcase className="w-4 h-4" />
-                        <span>{activeTab === 'new_hires' ? item.position : `Age: ${item.age}`}</span>
+                        <span>{'position' in item ? item.position : `Age: ${item.age}`}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Users className="w-4 h-4" />
-                        <span>{activeTab === 'new_hires' ? item.department : item.condition}</span>
+                        <span>{'department' in item ? item.department : item.condition}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Calendar className="w-4 h-4" />
-                        <span>{activeTab === 'new_hires' ? `Start: ${item.startDate}` : `Enrolled: ${item.enrollmentDate}`}</span>
+                        <span>{'startDate' in item ? `Start: ${item.startDate}` : `Enrolled: ${item.enrollmentDate}`}</span>
                       </div>
                       <div className="flex items-center space-x-2">
                         <Star className="w-4 h-4" />
@@ -568,6 +594,19 @@ const Onboarding: React.FC<OnboardingProps> = ({ userRole }) => {
         <OnboardingDetailModal
           candidate={selectedCandidate}
           onClose={() => setSelectedCandidate(null)}
+        />
+      )}
+
+      {showOnboardModal && onboardType && (
+        <OnboardingForm
+          type={onboardType}
+          onClose={() => { setShowOnboardModal(false); setOnboardType(null); }}
+          onSubmit={(data) => {
+            // handle the submitted data here (e.g., add to list, show confirmation, etc.)
+            setShowOnboardModal(false);
+            setOnboardType(null);
+            // Optionally show a confirmation modal
+          }}
         />
       )}
     </div>
