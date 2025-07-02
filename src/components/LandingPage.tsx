@@ -600,10 +600,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
       <section className="py-20 bg-gradient-to-r from-primary to-primary-dark">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-4">
-            Transform Your Healthcare Experience Today
+            Shalom Health Care Services: Your Community, Your Care
           </h2>
           <p className="text-xl text-white mb-8 max-w-3xl mx-auto">
-            Empower your organization and patients with a modern, secure, and connected healthcare system. Join leading clinics, hospitals, and care teams who trust our platform to deliver better outcomes and seamless care.
+            We provide innovative, high-quality, person-centered services for individuals with disabilities, supporting integration, independence, and well-being in every neighborhood in the District of Columbia.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <button
@@ -613,28 +613,28 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               <span>Get Started</span>
               <ArrowRight className="w-5 h-5" />
             </button>
-            {/* <button className="border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-primary transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2">
-              <Phone className="w-5 h-5" />
-              <span>Contact Sales</span>
-            </button> */}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
-              <div className="text-3xl font-bold text-white mb-2">+3M</div>
-              <div className="text-white">Digital Health Records Managed</div>
+              <div className="text-3xl font-bold text-white mb-2">201+</div>
+              <div className="text-white">Community Members Supported</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white mb-2">+1.8M</div>
-              <div className="text-white">Empowered Patients</div>
+              <div className="text-3xl font-bold text-white mb-2">24/7</div>
+              <div className="text-white">Emergency Service Availability</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white mb-2">+750k</div>
-              <div className="text-white">Appointments Scheduled</div>
+              <div className="text-3xl font-bold text-white mb-2">10+</div>
+              <div className="text-white">Years of Experience</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white mb-2">+40%</div>
-              <div className="text-white">Increase in Medication Adherence</div>
+              <div className="text-3xl font-bold text-white mb-2">8AM–8PM</div>
+              <div className="text-white">Weekday Office Hours</div>
             </div>
+          </div>
+          <div className="mt-8 text-white">
+            <div>Address: 7826 Eastern Ave NW, Suite 201, Washington, DC 20012</div>
+            <div>Office Number: 1(202) 621-8792</div>
           </div>
         </div>
       </section>
