@@ -1,29 +1,25 @@
 import React, { useState } from 'react';
 import {
-  User,
+  Heart,
   Calendar,
+  Clock,
+  MapPin,
+  Phone,
+  MessageCircle,
+  Star,
+  Activity,
+  AlertTriangle,
+  CheckCircle,
+  User,
   FileText,
   Pill,
-  CreditCard,
-  MessageCircle,
-  Download,
-  Upload,
-  Heart,
-  Activity,
-  Clock,
-  CheckCircle,
-  Stethoscope,
-  TrendingUp,
-  AlertTriangle,
-  Phone,
-  Video,
-  Star,
   Thermometer,
-  Weight,
-  Zap,
+  TrendingUp,
   Eye,
-  MapPin,
-  Shield
+  Edit,
+  Plus,
+  Filter,
+  Search
 } from 'lucide-react';
 
 interface PatientPortalProps {
@@ -31,687 +27,494 @@ interface PatientPortalProps {
 }
 
 const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState('assigned');
+  const [selectedPatient, setSelectedPatient] = useState<any>(null);
 
-  // Role-specific content
-  const getPageTitle = () => {
-    switch (userRole) {
-      case 'Doctor':
-        return 'Patient Management System';
-      case 'Patient':
-        return 'MyHealth Portal';
-      case 'HR Manager':
-        return 'Employee Health Dashboard';
-      case 'Admin':
-        return 'Patient Administration';
-      default:
-        return 'Patient Portal';
-    }
-  };
-
-  const getPageDescription = () => {
-    switch (userRole) {
-      case 'Doctor':
-        return 'Comprehensive patient care management and clinical workflows';
-      case 'Patient':
-        return 'Access your complete health record, care team, and medical services';
-      case 'HR Manager':
-        return 'Monitor employee health programs and occupational wellness';
-      case 'Admin':
-        return 'Oversee patient services, quality metrics, and system operations';
-      default:
-        return 'Manage your health information and care';
-    }
-  };
-
-  const patientTabs = [
-    { id: 'overview', name: 'Health Overview', icon: Heart },
-    { id: 'appointments', name: userRole === 'Doctor' ? 'Patient Schedule' : 'My Appointments', icon: Calendar },
-    { id: 'records', name: userRole === 'Doctor' ? 'Medical Records' : 'Health Records', icon: FileText },
-    { id: 'medications', name: userRole === 'Doctor' ? 'Medication Management' : 'My Medications', icon: Pill },
-    { id: 'billing', name: 'Billing & Insurance', icon: CreditCard },
-    { id: 'messages', name: 'Care Team Messages', icon: MessageCircle }
-  ];
-
-  const upcomingAppointments = [
+  const assignedPatients = [
     {
       id: 1,
-      date: '2024-01-15',
-      time: '10:00 AM',
-      provider: userRole === 'Patient' ? 'Dr. Sarah Johnson, MD' : 'Maria Rodriguez',
-      specialty: 'Cardiology',
-      type: 'Follow-up Visit',
-      location: 'Cardiology Clinic - Room 302',
-      status: 'Confirmed',
-      mrn: 'MRN: 123456789',
-      reason: 'Post-surgical follow-up, wound check'
+      name: 'Maria Rodriguez',
+      age: 78,
+      condition: 'Diabetes Type 2',
+      address: '123 Oak Street, Springfield',
+      phone: '(555) 123-4567',
+      emergencyContact: 'Carlos Rodriguez (Son) - (555) 987-6543',
+      lastVisit: '2024-01-18',
+      nextAppointment: '2024-01-25',
+      status: 'stable',
+      priority: 'medium',
+      careLevel: 'moderate',
+      avatar: 'https://images.pexels.com/photos/5452268/pexels-photo-5452268.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
+      medications: ['Metformin 500mg', 'Lisinopril 10mg', 'Aspirin 81mg'],
+      allergies: ['Penicillin', 'Shellfish'],
+      notes: 'Patient requires insulin monitoring every 2 hours. Family very supportive.',
+      vitals: {
+        bloodPressure: '140/90',
+        heartRate: '72 bpm',
+        temperature: '98.6°F',
+        bloodSugar: '145 mg/dL'
+      },
+      recentServices: [
+        { date: '2024-01-18', service: 'Medication Management', duration: '2 hours', status: 'completed' },
+        { date: '2024-01-15', service: 'Meal Preparation', duration: '3 hours', status: 'completed' }
+      ]
     },
     {
       id: 2,
-      date: '2024-01-22',
-      time: '2:30 PM',
-      provider: userRole === 'Patient' ? 'Dr. Michael Chen, MD' : 'James Wilson',
-      specialty: 'Endocrinology',
-      type: 'Consultation',
-      location: 'Specialty Clinic - Room 415',
-      status: 'Pending Confirmation',
-      mrn: 'MRN: 123456789',
-      reason: 'Diabetes management review'
-    }
-  ];
-
-  const medicalRecords = [
-    {
-      id: 1,
-      date: '2024-01-10',
-      type: 'Laboratory Results',
-      title: 'Comprehensive Metabolic Panel',
-      status: 'Abnormal - Requires Follow-up',
-      provider: 'Dr. Sarah Johnson',
-      category: 'Lab',
+      name: 'James Wilson',
+      age: 82,
+      condition: 'Mild Dementia',
+      address: '456 Pine Avenue, Springfield',
+      phone: '(555) 234-5678',
+      emergencyContact: 'Susan Wilson (Daughter) - (555) 876-5432',
+      lastVisit: '2024-01-20',
+      nextAppointment: '2024-01-27',
+      status: 'needs_attention',
       priority: 'high',
-      summary: 'Elevated glucose levels detected'
-    },
-    {
-      id: 2,
-      date: '2024-01-08',
-      type: 'Imaging Study',
-      title: 'Chest X-Ray - PA & Lateral',
-      status: 'Normal',
-      provider: 'Dr. Michael Chen',
-      category: 'Radiology',
-      priority: 'normal',
-      summary: 'Clear lung fields, normal heart size'
-    },
-    {
-      id: 3,
-      date: '2024-01-05',
-      type: 'Progress Note',
-      title: 'Cardiology Consultation',
-      status: 'Completed',
-      provider: 'Dr. Sarah Johnson',
-      category: 'Clinical',
-      priority: 'normal',
-      summary: 'Post-operative recovery progressing well'
-    },
-    {
-      id: 4,
-      date: '2024-01-01',
-      type: 'Procedure Report',
-      title: 'Cardiac Catheterization',
-      status: 'Completed',
-      provider: 'Dr. Robert Williams',
-      category: 'Procedure',
-      priority: 'normal',
-      summary: 'Successful PCI with stent placement'
-    }
-  ];
-
-  const medications = [
-    {
-      id: 1,
-      name: 'Lisinopril',
-      dosage: '10mg',
-      frequency: 'Once daily',
-      prescribed: '2024-01-01',
-      prescriber: 'Dr. Sarah Johnson',
-      refills: 2,
-      status: 'Active',
-      indication: 'Hypertension',
-      nextRefill: '2024-02-15',
-      pharmacy: 'CVS Pharmacy - Main St'
-    },
-    {
-      id: 2,
-      name: 'Metformin',
-      dosage: '500mg',
-      frequency: 'Twice daily with meals',
-      prescribed: '2024-01-01',
-      prescriber: 'Dr. Michael Chen',
-      refills: 3,
-      status: 'Active',
-      indication: 'Type 2 Diabetes',
-      nextRefill: '2024-02-01',
-      pharmacy: 'CVS Pharmacy - Main St'
+      careLevel: 'intensive',
+      avatar: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
+      medications: ['Donepezil 10mg', 'Vitamin D', 'Multivitamin'],
+      allergies: ['None known'],
+      notes: 'Patient shows signs of confusion in the evening. Requires constant supervision.',
+      vitals: {
+        bloodPressure: '130/85',
+        heartRate: '68 bpm',
+        temperature: '98.2°F',
+        bloodSugar: 'N/A'
+      },
+      recentServices: [
+        { date: '2024-01-20', service: 'Companion Care', duration: '6 hours', status: 'completed' },
+        { date: '2024-01-17', service: 'Behavioral Support', duration: '4 hours', status: 'completed' }
+      ]
     },
     {
       id: 3,
-      name: 'Atorvastatin',
-      dosage: '20mg',
-      frequency: 'Once daily at bedtime',
-      prescribed: '2023-12-15',
-      prescriber: 'Dr. Sarah Johnson',
-      refills: 0,
-      status: 'Refill Needed',
-      indication: 'High Cholesterol',
-      nextRefill: 'Overdue',
-      pharmacy: 'CVS Pharmacy - Main St'
+      name: 'Emily Davis',
+      age: 45,
+      condition: 'Intellectual Disability',
+      address: '789 Maple Drive, Springfield',
+      phone: '(555) 345-6789',
+      emergencyContact: 'Robert Davis (Father) - (555) 765-4321',
+      lastVisit: '2024-01-19',
+      nextAppointment: '2024-01-26',
+      status: 'stable',
+      priority: 'medium',
+      careLevel: 'moderate',
+      avatar: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
+      medications: ['Seizure medication', 'Vitamin supplements'],
+      allergies: ['Latex'],
+      notes: 'Patient enjoys social activities and responds well to routine. Very friendly and cooperative.',
+      vitals: {
+        bloodPressure: '120/80',
+        heartRate: '75 bpm',
+        temperature: '98.4°F',
+        bloodSugar: 'N/A'
+      },
+      recentServices: [
+        { date: '2024-01-19', service: 'Community Activities', duration: '5 hours', status: 'completed' },
+        { date: '2024-01-16', service: 'Transportation', duration: '2 hours', status: 'completed' }
+      ]
     }
   ];
 
-  const vitalSigns = [
-    { label: 'Blood Pressure', value: '128/82', unit: 'mmHg', status: 'elevated', lastUpdated: '2 hours ago' },
-    { label: 'Heart Rate', value: '72', unit: 'bpm', status: 'normal', lastUpdated: '2 hours ago' },
-    { label: 'Temperature', value: '98.6', unit: '°F', status: 'normal', lastUpdated: '2 hours ago' },
-    { label: 'Weight', value: '165', unit: 'lbs', status: 'normal', lastUpdated: '1 week ago' },
-    { label: 'Oxygen Saturation', value: '98', unit: '%', status: 'normal', lastUpdated: '2 hours ago' },
-    { label: 'BMI', value: '24.2', unit: '', status: 'normal', lastUpdated: '1 week ago' }
-  ];
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'stable':
+        return 'bg-green-100 text-green-800 border-green-200';
+      case 'needs_attention':
+        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'critical':
+        return 'bg-red-100 text-red-800 border-red-200';
+      default:
+        return 'bg-gray-100 text-gray-800 border-gray-200';
+    }
+  };
 
-  const renderOverview = () => (
-    <div className="space-y-6">
-      {/* Health Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center">
-              <Heart className="w-6 h-6 text-red-600" />
-            </div>
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">Stable</span>
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-1">Good</h3>
-          <p className="text-gray-600 text-sm">Overall Health</p>
-          <p className="text-xs text-gray-500 mt-2">Last assessment: Today</p>
-        </div>
-        
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
-              <Activity className="w-6 h-6 text-blue-600" />
-            </div>
-            <span className="text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded-full">Monitor</span>
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-1">128/82</h3>
-          <p className="text-gray-600 text-sm">Blood Pressure</p>
-          <p className="text-xs text-gray-500 mt-2">Slightly elevated</p>
-        </div>
-        
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
-              <CheckCircle className="w-6 h-6 text-green-600" />
-            </div>
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">On Track</span>
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-1">3/4</h3>
-          <p className="text-gray-600 text-sm">Medications Taken</p>
-          <p className="text-xs text-gray-500 mt-2">Today's compliance</p>
-        </div>
-        
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
-              <Calendar className="w-6 h-6 text-purple-600" />
-            </div>
-            <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full">Upcoming</span>
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-1">Jan 15</h3>
-          <p className="text-gray-600 text-sm">Next Appointment</p>
-          <p className="text-xs text-gray-500 mt-2">Dr. Johnson - Cardiology</p>
-        </div>
-      </div>
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high':
+        return 'text-red-600';
+      case 'medium':
+        return 'text-yellow-600';
+      case 'low':
+        return 'text-green-600';
+      default:
+        return 'text-gray-600';
+    }
+  };
 
-      {/* Vital Signs */}
-      <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-        <h3 className="text-xl font-semibold text-gray-900 mb-6">Current Vital Signs</h3>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {vitalSigns.map((vital, index) => (
-            <div key={index} className="text-center p-4 bg-gray-50 rounded-lg">
-              <div className={`w-8 h-8 mx-auto mb-2 rounded-full flex items-center justify-center ${
-                vital.status === 'normal' ? 'bg-green-100' :
-                vital.status === 'elevated' ? 'bg-yellow-100' : 'bg-red-100'
-              }`}>
-                {vital.label.includes('Blood') && <Heart className="w-4 h-4 text-red-600" />}
-                {vital.label.includes('Heart') && <Activity className="w-4 h-4 text-blue-600" />}
-                {vital.label.includes('Temperature') && <Thermometer className="w-4 h-4 text-orange-600" />}
-                {vital.label.includes('Weight') && <Weight className="w-4 h-4 text-purple-600" />}
-                {vital.label.includes('Oxygen') && <Zap className="w-4 h-4 text-green-600" />}
-                {vital.label.includes('BMI') && <TrendingUp className="w-4 h-4 text-blue-600" />}
-              </div>
-              <div className="text-lg font-bold text-gray-900">{vital.value}</div>
-              <div className="text-xs text-gray-600">{vital.unit}</div>
-              <div className="text-xs text-gray-500 mt-1">{vital.label}</div>
-              <div className="text-xs text-gray-400 mt-1">{vital.lastUpdated}</div>
-            </div>
-          ))}
-        </div>
-      </div>
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'stable':
+        return <CheckCircle className="w-4 h-4 text-green-600" />;
+      case 'needs_attention':
+        return <AlertTriangle className="w-4 h-4 text-yellow-600" />;
+      case 'critical':
+        return <AlertTriangle className="w-4 h-4 text-red-600" />;
+      default:
+        return <Activity className="w-4 h-4 text-gray-600" />;
+    }
+  };
 
-      {/* Care Team */}
-      <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-        <h3 className="text-xl font-semibold text-gray-900 mb-6">Your Care Team</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div className="p-4 border border-gray-200 rounded-lg">
-            <div className="flex items-center space-x-3 mb-3">
-              <img
-                src="https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2"
-                alt="Dr. Sarah Johnson"
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div>
-                <h4 className="font-semibold text-gray-900">Dr. Sarah Johnson</h4>
-                <p className="text-sm text-gray-600">Cardiologist</p>
-                <div className="flex items-center space-x-1 mt-1">
-                  <Star className="w-3 h-3 text-yellow-400 fill-current" />
-                  <span className="text-xs text-gray-500">4.9 rating</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button className="flex-1 bg-blue-600 text-white py-2 px-3 rounded text-sm hover:bg-blue-700 transition-colors">
-                Message
-              </button>
-              <button className="p-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-                <Phone className="w-4 h-4 text-gray-600" />
-              </button>
-            </div>
-          </div>
-
-          <div className="p-4 border border-gray-200 rounded-lg">
-            <div className="flex items-center space-x-3 mb-3">
-              <img
-                src="https://images.pexels.com/photos/6129967/pexels-photo-6129967.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2"
-                alt="Dr. Michael Chen"
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div>
-                <h4 className="font-semibold text-gray-900">Dr. Michael Chen</h4>
-                <p className="text-sm text-gray-600">Endocrinologist</p>
-                <div className="flex items-center space-x-1 mt-1">
-                  <Star className="w-3 h-3 text-yellow-400 fill-current" />
-                  <span className="text-xs text-gray-500">4.8 rating</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button className="flex-1 bg-blue-600 text-white py-2 px-3 rounded text-sm hover:bg-blue-700 transition-colors">
-                Message
-              </button>
-              <button className="p-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-                <Phone className="w-4 h-4 text-gray-600" />
-              </button>
-            </div>
-          </div>
-
-          <div className="p-4 border border-gray-200 rounded-lg">
-            <div className="flex items-center space-x-3 mb-3">
-              <img
-                src="https://images.pexels.com/photos/5452268/pexels-photo-5452268.jpeg?auto=compress&cs=tinysrgb&w=100&h=100&dpr=2"
-                alt="Nurse Emily Davis"
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div>
-                <h4 className="font-semibold text-gray-900">Emily Davis, RN</h4>
-                <p className="text-sm text-gray-600">Care Coordinator</p>
-                <div className="flex items-center space-x-1 mt-1">
-                  <Star className="w-3 h-3 text-yellow-400 fill-current" />
-                  <span className="text-xs text-gray-500">4.9 rating</span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <button className="flex-1 bg-blue-600 text-white py-2 px-3 rounded text-sm hover:bg-blue-700 transition-colors">
-                Message
-              </button>
-              <button className="p-2 border border-gray-300 rounded hover:bg-gray-50 transition-colors">
-                <Phone className="w-4 h-4 text-gray-600" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Recent Activity & Alerts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Recent Activity</h3>
-          <div className="space-y-4">
-            <div className="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
-              <FileText className="w-5 h-5 text-blue-600 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-gray-900">Lab results available</p>
-                <p className="text-xs text-gray-600">Comprehensive Metabolic Panel - Review required</p>
-                <p className="text-xs text-gray-500">2 hours ago</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
-              <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-gray-900">Prescription refilled</p>
-                <p className="text-xs text-gray-600">Lisinopril 10mg - Ready for pickup</p>
-                <p className="text-xs text-gray-500">Yesterday</p>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3 p-3 bg-purple-50 rounded-lg">
-              <Calendar className="w-5 h-5 text-purple-600 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-gray-900">Appointment confirmed</p>
-                <p className="text-xs text-gray-600">Jan 15 with Dr. Johnson - Cardiology follow-up</p>
-                <p className="text-xs text-gray-500">2 days ago</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">Health Alerts</h3>
-          <div className="space-y-4">
-            <div className="flex items-start space-x-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <AlertTriangle className="w-5 h-5 text-yellow-600 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-yellow-900">Blood pressure elevated</p>
-                <p className="text-xs text-yellow-700">Consider lifestyle modifications and follow-up</p>
-                <button className="text-xs text-yellow-800 underline mt-1">View recommendations</button>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <Pill className="w-5 h-5 text-red-600 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-red-900">Medication refill overdue</p>
-                <p className="text-xs text-red-700">Atorvastatin prescription needs renewal</p>
-                <button className="text-xs text-red-800 underline mt-1">Request refill</button>
-              </div>
-            </div>
-            <div className="flex items-start space-x-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-              <Calendar className="w-5 h-5 text-blue-600 mt-0.5" />
-              <div>
-                <p className="text-sm font-medium text-blue-900">Annual screening due</p>
-                <p className="text-xs text-blue-700">Mammogram and colonoscopy recommended</p>
-                <button className="text-xs text-blue-800 underline mt-1">Schedule screening</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderAppointments = () => (
-    <div className="space-y-6">
-      <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
+  const PatientDetailModal = ({ patient, onClose }: { patient: any; onClose: () => void }) => (
+    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-gray-900">
-            {userRole === 'Doctor' ? 'Patient Appointments' : 'My Appointments'}
-          </h3>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
-            {userRole === 'Doctor' ? 'Schedule Patient' : 'Book Appointment'}
+          <h2 className="text-2xl font-bold text-gray-900">Patient Details</h2>
+          <button
+            onClick={onClose}
+            className="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+          >
+            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
           </button>
         </div>
-        
-        <div className="space-y-4">
-          {upcomingAppointments.map((appointment) => (
-            <div key={appointment.id} className="p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <h4 className="font-semibold text-gray-900">{appointment.type}</h4>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      appointment.status === 'Confirmed'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-yellow-100 text-yellow-800'
-                    }`}>
-                      {appointment.status}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    {userRole === 'Doctor' ? `Patient: ${appointment.provider}` : appointment.provider}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-1">{appointment.specialty}</p>
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span className="flex items-center space-x-1">
-                      <Calendar className="w-4 h-4" />
-                      <span>{appointment.date} at {appointment.time}</span>
-                    </span>
-                    <span className="flex items-center space-x-1">
-                      <MapPin className="w-4 h-4" />
-                      <span>{appointment.location}</span>
-                    </span>
-                  </div>
-                  {userRole === 'Patient' && (
-                    <p className="text-xs text-gray-500 mt-2">{appointment.mrn}</p>
-                  )}
-                  <p className="text-sm text-gray-700 mt-2">
-                    <strong>Reason:</strong> {appointment.reason}
-                  </p>
+
+        <div className="space-y-6">
+          {/* Patient Header */}
+          <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
+            <img
+              src={patient.avatar}
+              alt={patient.name}
+              className="w-16 h-16 rounded-full object-cover"
+            />
+            <div className="flex-1">
+              <h3 className="text-xl font-semibold text-gray-900">{patient.name}</h3>
+              <p className="text-gray-600">Age: {patient.age} • {patient.condition}</p>
+              <div className="flex items-center space-x-4 mt-2">
+                <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(patient.status)}`}>
+                  {getStatusIcon(patient.status)}
+                  <span className="ml-1">{patient.status.replace('_', ' ').charAt(0).toUpperCase() + patient.status.replace('_', ' ').slice(1)}</span>
+                </span>
+                <span className={`text-sm font-medium ${getPriorityColor(patient.priority)}`}>
+                  {patient.priority.toUpperCase()} PRIORITY
+                </span>
+                <span className="text-sm text-gray-600">Care Level: {patient.careLevel}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Patient Information Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Contact Information */}
+            <div className="space-y-4">
+              <h4 className="font-semibold text-gray-900">Contact Information</h4>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-start space-x-2">
+                  <MapPin className="w-4 h-4 text-gray-500 mt-0.5" />
+                  <span>{patient.address}</span>
                 </div>
-                
-                <div className="flex items-center space-x-2 ml-4">
-                  {userRole === 'Doctor' && (
-                    <>
-                      <button className="p-2 text-green-600 hover:text-green-800 border border-green-200 rounded hover:bg-green-50 transition-colors" title="Start Video Call">
-                        <Video className="w-4 h-4" />
-                      </button>
-                      <button className="p-2 text-blue-600 hover:text-blue-800 border border-blue-200 rounded hover:bg-blue-50 transition-colors" title="Call Patient">
-                        <Phone className="w-4 h-4" />
-                      </button>
-                    </>
-                  )}
-                  <button className="text-blue-600 hover:text-blue-800 text-sm font-medium px-3 py-2 border border-blue-200 rounded hover:bg-blue-50 transition-colors">
-                    {userRole === 'Doctor' ? 'View Chart' : 'Manage'}
-                  </button>
+                <div className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4 text-gray-500" />
+                  <span>{patient.phone}</span>
+                </div>
+                <div className="flex items-start space-x-2">
+                  <User className="w-4 h-4 text-gray-500 mt-0.5" />
+                  <div>
+                    <p className="font-medium">Emergency Contact:</p>
+                    <p>{patient.emergencyContact}</p>
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
 
-  const renderMedicalRecords = () => (
-    <div className="space-y-6">
-      <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-gray-900">
-            {userRole === 'Doctor' ? 'Patient Medical Records' : 'My Health Records'}
-          </h3>
-          <div className="flex items-center space-x-3">
-            <select className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-              <option>All Records</option>
-              <option>Lab Results</option>
-              <option>Imaging</option>
-              <option>Clinical Notes</option>
-              <option>Procedures</option>
-            </select>
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
-              <Upload className="w-4 h-4" />
-              <span>{userRole === 'Doctor' ? 'Add Record' : 'Upload Document'}</span>
+            {/* Medical Information */}
+            <div className="space-y-4">
+              <h4 className="font-semibold text-gray-900">Medical Information</h4>
+              <div className="space-y-3 text-sm">
+                <div>
+                  <p className="font-medium text-gray-700">Medications:</p>
+                  <ul className="list-disc list-inside text-gray-600 ml-2">
+                    {patient.medications.map((med: string, index: number) => (
+                      <li key={index}>{med}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p className="font-medium text-gray-700">Allergies:</p>
+                  <p className="text-gray-600">{patient.allergies.join(', ')}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Current Vitals */}
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-4">Current Vitals</h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="p-3 bg-blue-50 rounded-lg text-center">
+                <p className="text-xs text-blue-600 font-medium">Blood Pressure</p>
+                <p className="text-lg font-bold text-blue-900">{patient.vitals.bloodPressure}</p>
+              </div>
+              <div className="p-3 bg-green-50 rounded-lg text-center">
+                <p className="text-xs text-green-600 font-medium">Heart Rate</p>
+                <p className="text-lg font-bold text-green-900">{patient.vitals.heartRate}</p>
+              </div>
+              <div className="p-3 bg-orange-50 rounded-lg text-center">
+                <p className="text-xs text-orange-600 font-medium">Temperature</p>
+                <p className="text-lg font-bold text-orange-900">{patient.vitals.temperature}</p>
+              </div>
+              <div className="p-3 bg-purple-50 rounded-lg text-center">
+                <p className="text-xs text-purple-600 font-medium">Blood Sugar</p>
+                <p className="text-lg font-bold text-purple-900">{patient.vitals.bloodSugar}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Care Notes */}
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-2">Care Notes</h4>
+            <p className="text-gray-700 text-sm leading-relaxed bg-gray-50 p-4 rounded-lg">{patient.notes}</p>
+          </div>
+
+          {/* Recent Services */}
+          <div>
+            <h4 className="font-semibold text-gray-900 mb-4">Recent Services</h4>
+            <div className="space-y-3">
+              {patient.recentServices.map((service: any, index: number) => (
+                <div key={index} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg">
+                  <div>
+                    <p className="font-medium text-gray-900">{service.service}</p>
+                    <p className="text-sm text-gray-600">Duration: {service.duration}</p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-sm text-gray-500">{service.date}</p>
+                    <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                      {service.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex space-x-4 pt-4 border-t border-gray-200">
+            <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center space-x-2">
+              <Calendar className="w-4 h-4" />
+              <span>Schedule Service</span>
+            </button>
+            <button className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 flex items-center justify-center space-x-2">
+              <MessageCircle className="w-4 h-4" />
+              <span>Contact Family</span>
+            </button>
+            <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 flex items-center space-x-2">
+              <Edit className="w-4 h-4" />
+              <span>Update Notes</span>
             </button>
           </div>
         </div>
-        
-        <div className="space-y-4">
-          {medicalRecords.map((record) => (
-            <div key={record.id} className="p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <h4 className="font-semibold text-gray-900">{record.title}</h4>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      record.priority === 'high' ? 'bg-red-100 text-red-800' :
-                      record.status === 'Normal' ? 'bg-green-100 text-green-800' :
-                      'bg-blue-100 text-blue-800'
-                    }`}>
-                      {record.status}
-                    </span>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      record.category === 'Lab' ? 'bg-purple-100 text-purple-700' :
-                      record.category === 'Radiology' ? 'bg-blue-100 text-blue-700' :
-                      record.category === 'Clinical' ? 'bg-green-100 text-green-700' :
-                      'bg-orange-100 text-orange-700'
-                    }`}>
-                      {record.category}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-1">{record.type}</p>
-                  <p className="text-sm text-gray-700 mb-2">{record.summary}</p>
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
-                    <span>{record.date}</span>
-                    {userRole === 'Patient' && (
-                      <span>Provider: {record.provider}</span>
-                    )}
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-2 ml-4">
-                  <button className="p-2 text-blue-600 hover:text-blue-800 border border-blue-200 rounded hover:bg-blue-50 transition-colors" title="View">
-                    <Eye className="w-4 h-4" />
-                  </button>
-                  <button className="p-2 text-green-600 hover:text-green-800 border border-green-200 rounded hover:bg-green-50 transition-colors" title="Download">
-                    <Download className="w-4 h-4" />
-                  </button>
-                  {userRole === 'Doctor' && (
-                    <button className="p-2 text-purple-600 hover:text-purple-800 border border-purple-200 rounded hover:bg-purple-50 transition-colors" title="Add Note">
-                      <FileText className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   );
-
-  const renderMedications = () => (
-    <div className="space-y-6">
-      <div className="bg-white rounded-xl p-6 border border-gray-100 shadow-sm">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-gray-900">
-            {userRole === 'Doctor' ? 'Patient Medications' : 'My Medications'}
-          </h3>
-          {userRole === 'Doctor' && (
-            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
-              Prescribe Medication
-            </button>
-          )}
-        </div>
-        
-        <div className="space-y-4">
-          {medications.map((medication) => (
-            <div key={medication.id} className="p-6 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <h4 className="font-semibold text-gray-900">{medication.name} {medication.dosage}</h4>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      medication.status === 'Active'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {medication.status}
-                    </span>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <strong>Frequency:</strong> {medication.frequency}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-1">
-                    <strong>Indication:</strong> {medication.indication}
-                  </p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-3 text-sm text-gray-500">
-                    <div>
-                      <span className="font-medium">Prescribed:</span> {medication.prescribed}
-                    </div>
-                    <div>
-                      <span className="font-medium">Prescriber:</span> {medication.prescriber}
-                    </div>
-                    <div>
-                      <span className="font-medium">Refills:</span> {medication.refills} remaining
-                    </div>
-                    <div>
-                      <span className="font-medium">Pharmacy:</span> {medication.pharmacy}
-                    </div>
-                  </div>
-                  <div className="mt-2">
-                    <span className={`text-sm ${
-                      medication.status === 'Refill Needed' ? 'text-red-600 font-medium' : 'text-gray-600'
-                    }`}>
-                      Next refill: {medication.nextRefill}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-2 ml-4">
-                  {medication.status === 'Refill Needed' && (
-                    <button className="bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700 transition-colors duration-200">
-                      {userRole === 'Doctor' ? 'Renew' : 'Request Refill'}
-                    </button>
-                  )}
-                  {userRole === 'Doctor' && (
-                    <button className="text-blue-600 hover:text-blue-800 text-sm font-medium px-3 py-2 border border-blue-200 rounded hover:bg-blue-50 transition-colors">
-                      Modify
-                    </button>
-                  )}
-                  <button className="p-2 text-gray-600 hover:text-gray-800 border border-gray-200 rounded hover:bg-gray-50 transition-colors" title="View Details">
-                    <Eye className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'overview':
-        return renderOverview();
-      case 'appointments':
-        return renderAppointments();
-      case 'records':
-        return renderMedicalRecords();
-      case 'medications':
-        return renderMedications();
-      case 'billing':
-        return <div className="bg-white rounded-xl p-6 border border-gray-100"><p>Billing and insurance information coming soon...</p></div>;
-      case 'messages':
-        return <div className="bg-white rounded-xl p-6 border border-gray-100"><p>Secure messaging with care team coming soon...</p></div>;
-      default:
-        return renderOverview();
-    }
-  };
 
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm">
+      <div className="bg-white rounded-2xl p-8 border border-gray-100">
         <div className="flex items-center space-x-4 mb-6">
-          <div className="w-12 h-12 bg-gradient-to-r from-rose-500 to-pink-500 rounded-xl flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-500 rounded-xl flex items-center justify-center">
             <Heart className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">{getPageTitle()}</h1>
-            <p className="text-gray-600">{getPageDescription()}</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              {userRole === 'Care Giver' ? 'Assigned Patients' : 'Patient Management'}
+            </h1>
+            <p className="text-gray-600">
+              {userRole === 'Care Giver' 
+                ? 'Manage your assigned patients and provide quality care'
+                : 'Overview of all patients in the system'
+              }
+            </p>
           </div>
         </div>
-        
-        {/* Navigation Tabs */}
-        <div className="flex space-x-2 overflow-x-auto">
-          {patientTabs.map((tab) => {
-            const Icon = tab.icon;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg whitespace-nowrap transition-colors duration-200 ${
-                  activeTab === tab.id
-                    ? 'bg-rose-100 text-rose-700'
-                    : 'text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                <Icon className="w-4 h-4" />
-                <span className="font-medium">{tab.name}</span>
-              </button>
-            );
-          })}
+
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+          <div className="bg-blue-50 rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-blue-600 text-sm font-medium">Total Patients</p>
+                <p className="text-2xl font-bold text-blue-900">{assignedPatients.length}</p>
+              </div>
+              <Heart className="w-8 h-8 text-blue-600" />
+            </div>
+          </div>
+
+          <div className="bg-green-50 rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-green-600 text-sm font-medium">Stable</p>
+                <p className="text-2xl font-bold text-green-900">
+                  {assignedPatients.filter(p => p.status === 'stable').length}
+                </p>
+              </div>
+              <CheckCircle className="w-8 h-8 text-green-600" />
+            </div>
+          </div>
+
+          <div className="bg-yellow-50 rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-yellow-600 text-sm font-medium">Need Attention</p>
+                <p className="text-2xl font-bold text-yellow-900">
+                  {assignedPatients.filter(p => p.status === 'needs_attention').length}
+                </p>
+              </div>
+              <AlertTriangle className="w-8 h-8 text-yellow-600" />
+            </div>
+          </div>
+
+          <div className="bg-purple-50 rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-purple-600 text-sm font-medium">High Priority</p>
+                <p className="text-2xl font-bold text-purple-900">
+                  {assignedPatients.filter(p => p.priority === 'high').length}
+                </p>
+              </div>
+              <Star className="w-8 h-8 text-purple-600" />
+            </div>
+          </div>
+        </div>
+
+        {/* Controls */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
+          <div className="flex space-x-2">
+            <button
+              onClick={() => setActiveTab('assigned')}
+              className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
+                activeTab === 'assigned'
+                  ? 'bg-pink-100 text-pink-700'
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              Assigned Patients 
+            </button>
+            <button
+              onClick={() => setActiveTab('schedule')}
+              className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
+                activeTab === 'schedule'
+                  ? 'bg-pink-100 text-pink-700'
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              Today's Schedule
+            </button>
+          </div>
+
+          <div className="flex space-x-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <input
+                type="text"
+                placeholder="Search patients..."
+                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              />
+            </div>
+            <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+              <Filter className="w-4 h-4" />
+              <span>Filter</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Content */}
-      {renderContent()}
+      {/* Patients List */}
+      <div className="bg-white rounded-xl p-6 border border-gray-100">
+        <div className="space-y-4">
+          {assignedPatients.map((patient) => (
+            <div
+              key={patient.id}
+              className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex items-start space-x-4 flex-1">
+                  <img
+                    src={patient.avatar}
+                    alt={patient.name}
+                    className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                  />
+                  
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <h3 className="font-semibold text-gray-900">{patient.name}</h3>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(patient.status)}`}>
+                        {getStatusIcon(patient.status)}
+                        <span className="ml-1">{patient.status.replace('_', ' ').charAt(0).toUpperCase() + patient.status.replace('_', ' ').slice(1)}</span>
+                      </span>
+                      <span className={`text-xs font-medium ${getPriorityColor(patient.priority)}`}>
+                        {patient.priority.toUpperCase()} PRIORITY
+                      </span>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600 mb-2">
+                      <div className="flex items-center space-x-2">
+                        <User className="w-4 h-4" />
+                        <span>Age: {patient.age}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Activity className="w-4 h-4" />
+                        <span>{patient.condition}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>Next: {patient.nextAppointment}</span>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Heart className="w-4 h-4" />
+                        <span>Care Level: {patient.careLevel}</span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start space-x-2 text-sm">
+                      <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                      <span className="text-gray-700">{patient.address}</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="flex items-center space-x-2 ml-4">
+                  <button
+                    onClick={() => setSelectedPatient(patient)}
+                    className="p-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                    title="View Details"
+                  >
+                    <Eye className="w-4 h-4" />
+                  </button>
+                  <button
+                    className="p-2 text-green-600 hover:text-green-800 transition-colors duration-200"
+                    title="Schedule Service"
+                  >
+                    <Calendar className="w-4 h-4" />
+                  </button>
+                  <button
+                    className="p-2 text-purple-600 hover:text-purple-800 transition-colors duration-200"
+                    title="Contact"
+                  >
+                    <MessageCircle className="w-4 h-4" />
+                  </button>
+                  <button
+                    className="p-2 text-gray-600 hover:text-gray-800 transition-colors duration-200"
+                    title="Edit Notes"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Patient Detail Modal */}
+      {selectedPatient && (
+        <PatientDetailModal
+          patient={selectedPatient}
+          onClose={() => setSelectedPatient(null)}
+        />
+      )}
     </div>
   );
 };
