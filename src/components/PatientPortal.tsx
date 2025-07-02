@@ -21,6 +21,7 @@ import {
   Filter,
   Search
 } from 'lucide-react';
+import ProgressNoteSidebar from "./ProgressNoteSidebar"; // adjust path as needed
 
 interface PatientPortalProps {
   userRole: string;
@@ -29,6 +30,7 @@ interface PatientPortalProps {
 const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
   const [activeTab, setActiveTab] = useState('assigned');
   const [selectedPatient, setSelectedPatient] = useState<any>(null);
+  const [showProgressNote, setShowProgressNote] = useState(false);
 
   const assignedPatients = [
     {
@@ -115,6 +117,39 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
         { date: '2024-01-16', service: 'Transportation', duration: '2 hours', status: 'completed' }
       ]
     }
+  ];
+
+  const todaySchedule = [
+    {
+      id: 1,
+      patientName: 'Maria Rodriguez',
+      avatar: 'https://images.pexels.com/photos/5452268/pexels-photo-5452268.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
+      time: '09:00 AM',
+      service: 'Medication Management',
+      address: '123 Oak Street, Springfield',
+      status: 'upcoming',
+      phone: '(555) 123-4567',
+    },
+    {
+      id: 2,
+      patientName: 'James Wilson',
+      avatar: 'https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
+      time: '11:30 AM',
+      service: 'Companion Care',
+      address: '456 Pine Avenue, Springfield',
+      status: 'upcoming',
+      phone: '(555) 234-5678',
+    },
+    {
+      id: 3,
+      patientName: 'Emily Davis',
+      avatar: 'https://images.pexels.com/photos/5215024/pexels-photo-5215024.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2',
+      time: '02:00 PM',
+      service: 'Community Activities',
+      address: '789 Maple Drive, Springfield',
+      status: 'upcoming',
+      phone: '(555) 345-6789',
+    },
   ];
 
   const getStatusColor = (status: string) => {
@@ -319,7 +354,7 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
-              {userRole === 'Care Giver' ? 'Assigned Patients' : 'Patient Management'}
+              {userRole === 'Care Giver' ? 'Assigned Patients 123' : 'Patient Management'}
             </h1>
             <p className="text-gray-600">
               {userRole === 'Care Giver' 
@@ -400,7 +435,7 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
                   : 'text-gray-600 hover:bg-gray-100'
               }`}
             >
-              Today's Schedule
+              Today's Schedule 
             </button>
           </div>
 
@@ -421,92 +456,162 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
         </div>
       </div>
 
-      {/* Patients List */}
-      <div className="bg-white rounded-xl p-6 border border-gray-100">
-        <div className="space-y-4">
-          {assignedPatients.map((patient) => (
-            <div
-              key={patient.id}
-              className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex items-start space-x-4 flex-1">
-                  <img
-                    src={patient.avatar}
-                    alt={patient.name}
-                    className="w-12 h-12 rounded-full object-cover flex-shrink-0"
-                  />
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="font-semibold text-gray-900">{patient.name}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(patient.status)}`}>
-                        {getStatusIcon(patient.status)}
-                        <span className="ml-1">{patient.status.replace('_', ' ').charAt(0).toUpperCase() + patient.status.replace('_', ' ').slice(1)}</span>
-                      </span>
-                      <span className={`text-xs font-medium ${getPriorityColor(patient.priority)}`}>
-                        {patient.priority.toUpperCase()} PRIORITY
-                      </span>
-                    </div>
+      {/* Patients List or Today's Schedule */}
+      {activeTab === 'assigned' ? (
+        <div className="bg-white rounded-xl p-6 border border-gray-100">
+          <div className="space-y-4">
+            {assignedPatients.map((patient) => (
+              <div
+                key={patient.id}
+                className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-start space-x-4 flex-1">
+                    <img
+                      src={patient.avatar}
+                      alt={patient.name}
+                      className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                    />
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600 mb-2">
-                      <div className="flex items-center space-x-2">
-                        <User className="w-4 h-4" />
-                        <span>Age: {patient.age}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <h3 className="font-semibold text-gray-900">{patient.name}</h3>
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(patient.status)}`}>
+                          {getStatusIcon(patient.status)}
+                          <span className="ml-1">{patient.status.replace('_', ' ').charAt(0).toUpperCase() + patient.status.replace('_', ' ').slice(1)}</span>
+                        </span>
+                        <span className={`text-xs font-medium ${getPriorityColor(patient.priority)}`}>
+                          {patient.priority.toUpperCase()} PRIORITY
+                        </span>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Activity className="w-4 h-4" />
-                        <span>{patient.condition}</span>
+                      
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600 mb-2">
+                        <div className="flex items-center space-x-2">
+                          <User className="w-4 h-4" />
+                          <span>Age: {patient.age}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Activity className="w-4 h-4" />
+                          <span>{patient.condition}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Calendar className="w-4 h-4" />
+                          <span>Next: {patient.nextAppointment}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Heart className="w-4 h-4" />
+                          <span>Care Level: {patient.careLevel}</span>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="w-4 h-4" />
-                        <span>Next: {patient.nextAppointment}</span>
+                      
+                      <div className="flex items-start space-x-2 text-sm">
+                        <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700">{patient.address}</span>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Heart className="w-4 h-4" />
-                        <span>Care Level: {patient.careLevel}</span>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start space-x-2 text-sm">
-                      <MapPin className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700">{patient.address}</span>
                     </div>
                   </div>
-                </div>
-                
-                <div className="flex items-center space-x-2 ml-4">
-                  <button
-                    onClick={() => setSelectedPatient(patient)}
-                    className="p-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
-                    title="View Details"
-                  >
-                    <Eye className="w-4 h-4" />
-                  </button>
-                  <button
-                    className="p-2 text-green-600 hover:text-green-800 transition-colors duration-200"
-                    title="Schedule Service"
-                  >
-                    <Calendar className="w-4 h-4" />
-                  </button>
-                  <button
-                    className="p-2 text-purple-600 hover:text-purple-800 transition-colors duration-200"
-                    title="Contact"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                  </button>
-                  <button
-                    className="p-2 text-gray-600 hover:text-gray-800 transition-colors duration-200"
-                    title="Edit Notes"
-                  >
-                    <Edit className="w-4 h-4" />
-                  </button>
+                  
+                  <div className="flex items-center space-x-2 ml-4">
+                    <button
+                      onClick={() => setSelectedPatient(patient)}
+                      className="p-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                      title="View Details"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                    <button
+                      className="p-2 text-green-600 hover:text-green-800 transition-colors duration-200"
+                      title="Schedule Service"
+                    >
+                      <Calendar className="w-4 h-4" />
+                    </button>
+                    <button
+                      className="p-2 text-purple-600 hover:text-purple-800 transition-colors duration-200"
+                      title="Contact"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                    </button>
+                    <button
+                      className="p-2 text-gray-600 hover:text-gray-800 transition-colors duration-200"
+                      title="Edit Notes"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
+          <button
+            onClick={() => setShowProgressNote(true)}
+            className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          >
+            <FileText className="w-4 h-4" />
+            <span>Add Progress Note</span>
+          </button>
         </div>
-      </div>
+      ) : (
+        <div className="bg-white rounded-xl p-6 border border-gray-100">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Today's Schedule</h2>
+          <div className="space-y-4">
+            {todaySchedule.length === 0 ? (
+              <div className="text-center text-gray-500 py-12">
+                <Calendar className="mx-auto mb-2 w-10 h-10 text-gray-300" />
+                <p>No appointments scheduled for today.</p>
+              </div>
+            ) : (
+              todaySchedule.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <div className="flex items-center space-x-4">
+                    <img
+                      src={item.avatar}
+                      alt={item.patientName}
+                      className="w-12 h-12 rounded-full object-cover"
+                    />
+                    <div>
+                      <h3 className="font-semibold text-gray-900">{item.patientName}</h3>
+                      <div className="flex items-center space-x-2 text-sm text-gray-600">
+                        <Calendar className="w-4 h-4" />
+                        <span>{item.time}</span>
+                        <span>•</span>
+                        <span>{item.service}</span>
+                      </div>
+                      <div className="flex items-center space-x-2 text-xs text-gray-500 mt-1">
+                        <MapPin className="w-4 h-4" />
+                        <span>{item.address}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      className="p-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
+                      title="Call"
+                      onClick={() => window.open(`tel:${item.phone}`)}
+                    >
+                      <Phone className="w-4 h-4" />
+                    </button>
+                    <button
+                      className="p-2 text-green-600 hover:text-green-800 transition-colors duration-200"
+                      title="Mark as Done"
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                    </button>
+                    <button
+                      className="p-2 text-gray-600 hover:text-gray-800 transition-colors duration-200"
+                      title="View Details"
+                    >
+                      <Eye className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Patient Detail Modal */}
       {selectedPatient && (
@@ -515,6 +620,17 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
           onClose={() => setSelectedPatient(null)}
         />
       )}
+
+      <ProgressNoteSidebar
+        open={showProgressNote}
+        onClose={() => setShowProgressNote(false)}
+        patients={assignedPatients.map(p => ({ id: p.id, name: p.name }))}
+        hourlyAmount={25} // or your dynamic value
+        onSubmit={(data) => {
+          // handle the submitted progress note here (e.g., send to backend, show toast, etc.)
+          alert("Progress note sent to HR!");
+        }}
+      />
     </div>
   );
 };
