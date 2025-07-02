@@ -7,17 +7,14 @@ import {
   Stethoscope,
   Users,
   FileText,
-  UserCheck,
   Heart,
-  Settings,
   Shield,
-  Calendar,
-  CreditCard,
-  MessageCircle,
   BarChart3,
   X,
   ChevronLeft,
   ChevronRight,
+  ClipboardCheck,
+  UserPlus,
 } from "lucide-react"
 
 interface SidebarProps {
@@ -80,59 +77,20 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Define menu items based on user role
   const getMenuItems = () => {
     switch (userRole) {
-      case "Doctor":
+      case "Care Giver":
         return [
           { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-600", shortLabel: "Dash" },
-          {
-            id: "services",
-            label: "Medical Services",
-            icon: Stethoscope,
-            color: "text-emerald-600",
-            shortLabel: "Services",
-          },
-          { id: "patients", label: "Patient Management", icon: Heart, color: "text-rose-600", shortLabel: "Patients" },
-          { id: "documents", label: "Medical Records", icon: FileText, color: "text-amber-600", shortLabel: "Records" },
-          { id: "analytics", label: "Analytics", icon: BarChart3, color: "text-purple-600", shortLabel: "Analytics" },
+          { id: "assigned-patients", label: "Assigned Patients", icon: Heart, color: "text-rose-600", shortLabel: "Patients" },
+          { id: "services", label: "Provide Services", icon: Stethoscope, color: "text-emerald-600", shortLabel: "Services" },
         ]
-      case "Patient":
+      case "HR":
         return [
-          { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-600", shortLabel: "Home" },
-          { id: "services", label: "Book Services", icon: Calendar, color: "text-emerald-600", shortLabel: "Book" },
-          { id: "patients", label: "My Health", icon: Heart, color: "text-rose-600", shortLabel: "Health" },
-          { id: "documents", label: "My Documents", icon: FileText, color: "text-amber-600", shortLabel: "Docs" },
-          { id: "billing", label: "Billing", icon: CreditCard, color: "text-green-600", shortLabel: "Bills" },
-          { id: "messages", label: "Messages", icon: MessageCircle, color: "text-blue-600", shortLabel: "Messages" },
-        ]
-      case "HR Manager":
-        return [
-          { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-600", shortLabel: "Dash" },
-          { id: "hr", label: "HR Management", icon: Users, color: "text-purple-600", shortLabel: "HR" },
-          { id: "documents", label: "Employee Documents", icon: FileText, color: "text-amber-600", shortLabel: "Docs" },
-          { id: "documents", label: "Employee Documents", icon: FileText, color: "text-amber-600", shortLabel: "Docs" },
-          { id: 'documents', name: 'Patient Documents', icon: FileText  },
-          { id: "onboarding", label: "Onboarding", icon: UserCheck, color: "text-teal-600", shortLabel: "Onboard" },
-          {
-            id: "analytics 23",
-            label: "HR Analytics",
-            icon: BarChart3,
-            color: "text-indigo-600",
-            shortLabel: "Analytics",
-          },
-        ]
-      case "Admin":
-        return [
-          { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-600", shortLabel: "Dash" },
-          { id: "admin", label: "System Settings", icon: Settings, color: "text-gray-600", shortLabel: "Settings" },
-          { id: "hr", label: "HR Overview", icon: Users, color: "text-purple-600", shortLabel: "HR" },
-          { id: "documents", label: "Document Center", icon: FileText, color: "text-amber-600", shortLabel: "Docs" },
-          {
-            id: "analytics",
-            label: "System Analytics",
-            icon: BarChart3,
-            color: "text-indigo-600",
-            shortLabel: "Analytics",
-          },
-          { id: "security", label: "Security", icon: Shield, color: "text-red-600", shortLabel: "Security" },
+          { id: "hr", label: "Dashboard", icon: Users, color: "text-purple-600", shortLabel: "HR" },
+          { id: "service-approvals", label: "Service Approvals", icon: ClipboardCheck, color: "text-orange-600", shortLabel: "Approvals" },
+          { id: "patient-documents", label: "Patient Documents", icon: FileText, color: "text-amber-600", shortLabel: "Patient Docs" },
+          { id: "employee-documents", label: "Employee Documents", icon: FileText, color: "text-green-600", shortLabel: "Employee Docs" },
+          { id: "onboarding", label: "Onboarding", icon: UserPlus, color: "text-teal-600", shortLabel: "Onboard" },
+          { id: "reports", label: "Reports & Analytics", icon: BarChart3, color: "text-indigo-600", shortLabel: "Reports" },
         ]
       default:
         return [
@@ -146,10 +104,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Sidebar header text based on role
   const portalName =
     {
-      Doctor: "Doctor Portal",
-      Patient: "Patient Portal",
-      "HR Manager": "HR Portal",
-      Admin: "Admin Portal",
+      "Care Giver": "Care Giver Portal",
+      "HR": "HR Management Portal",
     }[userRole] || "Portal"
 
   const handleMenuItemClick = (tabId: string) => {
@@ -204,7 +160,7 @@ const Sidebar: React.FC<SidebarProps> = ({
               </div>
               <div className={`${isCollapsed && !isMobileOpen ? "lg:hidden" : ""} min-w-0 flex-1`}>
                 <h2 className="text-base sm:text-lg lg:text-xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent truncate">
-                  HealthCare Pro
+                  Shalom HealthCare
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-500 truncate">{portalName}</p>
               </div>
