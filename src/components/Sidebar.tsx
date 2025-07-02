@@ -108,9 +108,11 @@ const Sidebar: React.FC<SidebarProps> = ({
           { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-600", shortLabel: "Dash" },
           { id: "hr", label: "HR Management", icon: Users, color: "text-purple-600", shortLabel: "HR" },
           { id: "documents", label: "Employee Documents", icon: FileText, color: "text-amber-600", shortLabel: "Docs" },
+          { id: "documents", label: "Employee Documents", icon: FileText, color: "text-amber-600", shortLabel: "Docs" },
+          { id: 'documents', name: 'Patient Documents', icon: FileText  },
           { id: "onboarding", label: "Onboarding", icon: UserCheck, color: "text-teal-600", shortLabel: "Onboard" },
           {
-            id: "analytics",
+            id: "analytics 23",
             label: "HR Analytics",
             icon: BarChart3,
             color: "text-indigo-600",
