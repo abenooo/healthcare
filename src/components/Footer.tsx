@@ -1,5 +1,6 @@
 import { FaFacebookF, FaTwitter, FaYoutube, FaPhoneAlt, FaLocationArrow, FaLinkedinIn, FaTiktok } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -9,12 +10,7 @@ const Footer = () => {
         {/* Logo & Description */}
         <div>
           <div className="flex items-center gap-3 mb-5">
-            <span className="bg-blue-500 rounded-lg p-2 flex items-center justify-center">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <rect x="14" y="4" width="4" height="24" rx="2" fill="#fff"/>
-                <rect x="4" y="14" width="24" height="4" rx="2" fill="#fff"/>
-              </svg>
-            </span>
+           
             <span className="text-2xl font-bold text-white tracking-tight">Shalom Health Care Services</span>
           </div>
           <p className="mb-7 text-sm leading-relaxed text-[#C3C8D1]">
@@ -33,44 +29,100 @@ const Footer = () => {
         </div>
         {/* Essential */}
         <div>
-          <h3 className="text-white font-bold text-xl mb-5 tracking-tight">+ Essential</h3>
+          <h3 className="text-white font-bold text-xl mb-5 tracking-tight">Essential</h3>
           <ul className="space-y-3 text-base">
-            <li className="hover:text-white cursor-pointer transition">About Us</li>
-            <li className="hover:text-white cursor-pointer transition">Our team</li>
-            <li className="hover:text-white cursor-pointer transition">Faq</li>
-            <li className="hover:text-white cursor-pointer transition">Blog</li>
-            <li className="hover:text-white cursor-pointer transition">Contact Us</li>
+            <li>
+              <Link to="/about" className="hover:text-white cursor-pointer transition">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link to="/services" className="hover:text-white cursor-pointer transition">
+                Our services
+              </Link>
+            </li>
+            <li>
+              <Link to="/faq" className="hover:text-white cursor-pointer transition">
+                Faq
+              </Link>
+            </li>
+            <li>
+              <Link to="/blog" className="hover:text-white cursor-pointer transition">
+                Blog
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="hover:text-white cursor-pointer transition">
+                Contact Us
+              </Link>
+            </li>
           </ul>
         </div>
         {/* Our Services */}
         <div>
-          <h3 className="text-white font-bold text-xl mb-5 tracking-tight">+ Our Services</h3>
+          <h3 className="text-white font-bold text-xl mb-5 tracking-tight"> Our Services</h3>
           <ul className="space-y-3 text-base">
-            <li className="hover:text-white cursor-pointer transition">In-Home Service</li>
-            <li className="hover:text-white cursor-pointer transition">Respite Care Service</li>
-            <li className="hover:text-white cursor-pointer transition">Direct Support Professional</li>
-            <li className="hover:text-white cursor-pointer transition">Host Home Provider</li>
-            <li className="hover:text-white cursor-pointer transition">Companion Services</li>
-            <li className="hover:text-white cursor-pointer transition">Professional Behavioral Support</li>
-            <li className="hover:text-white cursor-pointer transition">Employment Specialist</li>
-            <li className="hover:text-white cursor-pointer transition">Support Living Without Transportation</li>
-            <li className="hover:text-white cursor-pointer transition">Day Habilitation</li>
+            <li>
+              <Link to="/service/in-home-service" className="hover:text-white cursor-pointer transition">
+                In-Home Service
+              </Link>
+            </li>
+            <li>
+              <Link to="/service/respite-care-service" className="hover:text-white cursor-pointer transition">
+                Respite Care Service
+              </Link>
+            </li>
+            <li>
+              <Link to="/service/direct-support-professional" className="hover:text-white cursor-pointer transition">
+                Direct Support Professional
+              </Link>
+            </li>
+            <li>
+              <Link to="/service/host-home-provider" className="hover:text-white cursor-pointer transition">
+                Host Home Provider
+              </Link>
+            </li>
+            <li>
+              <Link to="/service/companion-services" className="hover:text-white cursor-pointer transition">
+                Companion Services
+              </Link>
+            </li>
+            <li>
+              <Link to="/service/professional-behavioral-support" className="hover:text-white cursor-pointer transition">
+                Professional Behavioral Support
+              </Link>
+            </li>
+            <li>
+              <Link to="/service/employment-specialist" className="hover:text-white cursor-pointer transition">
+                Employment Specialist
+              </Link>
+            </li>
+            <li>
+              <Link to="/service/support-living-without-transportation" className="hover:text-white cursor-pointer transition">
+                Support Living Without Transportation
+              </Link>
+            </li>
+            <li>
+              <Link to="/service/day-habilitation" className="hover:text-white cursor-pointer transition">
+                Day Habilitation
+              </Link>
+            </li>
           </ul>
         </div>
         {/* Get In Touch */}
         <div>
-          <h3 className="text-white font-bold text-xl mb-5 tracking-tight">+ Get In Touch</h3>
+          <h3 className="text-white font-bold text-xl mb-5 tracking-tight">Get In Touch</h3>
           <div className="flex items-center gap-3 mb-4">
             <FaPhoneAlt className="text-blue-400 text-lg" />
             <div>
-              <div className="text-white font-semibold text-base">+(123) 456 789 00</div>
+              <div className="text-white font-semibold text-base">+(1) (202) 621-8792</div>
               <div className="text-xs text-[#7B8CA6]">Phone number</div>
             </div>
           </div>
           <div className="flex items-center gap-3 mb-4">
             <MdEmail className="text-blue-400 text-lg" />
             <div>
-              <div className="text-white font-semibold text-base">codexafrica.com</div>
+              <div className="text-white font-semibold text-base">ShalomHealthCare.com</div>
               <div className="text-xs text-[#7B8CA6]">Email address</div>
             </div>
           </div>
@@ -78,7 +130,7 @@ const Footer = () => {
             <FaLocationArrow className="text-blue-400 text-lg" />
             <div>
               <div className="text-white font-semibold text-base">Address</div>
-              <div className="text-xs text-[#7B8CA6]">12/A, New Booston Tower</div>
+              <div className="text-xs text-[#7B8CA6]">7826 Eastern Ave NW, Suite 201 Washington, DC 20012</div>
             </div>
           </div>
         </div>
@@ -92,11 +144,11 @@ const Footer = () => {
           <input
             type="email"
             placeholder="Business email"
-            className="rounded-l-full px-6 py-4 outline-none bg-[#22344A] text-white placeholder-[#C3C8D1] w-full md:w-80 text-base"
+            className="rounded-l-full px-4 py-2 outline-none bg-[#22344A] text-white placeholder-[#C3C8D1] w-full md:w-64 text-base"
           />
           <button
             type="submit"
-            className="rounded-r-full bg-blue-500 hover:bg-blue-600 text-white px-10 py-4 font-semibold text-base transition"
+            className="rounded-r-full bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 font-semibold text-base transition whitespace-nowrap"
           >
             Subscribe now
           </button>
@@ -105,20 +157,15 @@ const Footer = () => {
       {/* Bottom bar */}
       <div className="flex flex-col md:flex-row items-center justify-between mt-12 border-t border-[#22344A] pt-7 text-sm">
         <div className="text-[#7B8CA6]">
-           All Rights Reserved by <span className="text-blue-400">Codex Africa</span>
+           All Rights Reserved by <span className="text-blue-400">Shalom Health Care Services</span>
         </div>
         <div className="flex items-center gap-8 mt-4 md:mt-0">
           <span className="hover:text-white cursor-pointer transition">Terms & Conditions</span>
           <span className="hover:text-white cursor-pointer transition">Privacy & Policy</span>
           <div className="flex items-center gap-2">
             <span className="text-xl font-bold text-white flex items-center gap-2">
-              <span className="bg-blue-500 rounded p-1 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 32 32" fill="none">
-                  <rect x="14" y="4" width="4" height="24" rx="2" fill="#fff"/>
-                  <rect x="4" y="14" width="24" height="4" rx="2" fill="#fff"/>
-                </svg>
-              </span>
-              Shalom Health Care Services
+             
+              {/* Shalom Health Care Services */}
             </span>
           </div>
         </div>
