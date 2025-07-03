@@ -6,19 +6,23 @@ import LandingPage from "./components/LandingPage"
 import Sidebar from "./components/Sidebar"
 import Header from "./components/Header"
 import Dashboard from "./components/Dashboard"
-import Services from "./components/Services"
 import HRModule from "./components/HRModule"
 import PatientPortal from "./components/PatientPortal"
 import DocumentCenter from "./components/DocumentCenter"
 import Onboarding from "./components/Onboarding"
 import Contact from "./components/Contact"
+import Component from "./components/Services.tsx"
 import FAQ from "./components/FAQ"
+import About from "./components/About.tsx"
+import BlogPage from "./components/BlogPage.tsx"
+
 import Navbar from "./components/Navbar"
 import LoginModal from "./components/LoginModal"
 import ServiceApprovals from "./components/ServiceApprovals"
 import { Menu, Calendar, Heart, Stethoscope, Sun, Building, UserCheck, Shield, Brain, Home, Users } from "lucide-react"
 import Footer from "./components/Footer"
 import BookingModal from "./components/booking-modal"
+import ServicePage from "./components/ServicePage"
 
 
 function App() {
@@ -67,8 +71,8 @@ function App() {
         return <Dashboard setActiveTab={setActiveTab} userRole={user?.role} />
       case "assigned-patients":
         return <PatientPortal userRole={user?.role} />
-      case "services":
-        return <Services userRole={user?.role} />
+      // case "services":
+        // return <Services userRole={user?.role} />
       case "hr":
         return <HRModule userRole={user?.role} />
       case "patient-documents":
@@ -333,7 +337,12 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage onLogin={handleLogin} />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/services" element={<Component />} />
           <Route path="/faq" element={<FAQ />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/blog" element={<BlogPage />} />
+          
+          <Route path="/service/:id" element={<ServicePage />} />
         </Routes>
         <Footer />
       </Router>
@@ -405,6 +414,7 @@ function App() {
               <Route path="/" element={renderContent()} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/faq" element={<FAQ />} />
+              <Route path="/service/:id" element={<ServicePage />} />
             </Routes>
           </main>
         </div>
