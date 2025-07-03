@@ -16,7 +16,7 @@ import {
   Building2,
   Calendar,
 } from "lucide-react"
-
+import logo from "../../public/logo.webp"
 interface NavbarProps {
   onLoginClick?: () => void
   onDemoClick?: () => void
@@ -28,7 +28,8 @@ interface NavbarProps {
 }
 
 const navigationItems = [
-  { name: "Services", to: "/#services" },
+  { name: "Home", to: "/" },
+  { name: "Services", to: "/services" },
   { name: "About", to: "/about" },
   { name: "FAQ", to: "/faq" },
   { name: "Contact", to: "/contact" },
@@ -36,7 +37,6 @@ const navigationItems = [
 ]
 
 export default function Navbar({
-  onLoginClick,
   onDemoClick,
   onBookNowClick,
   isLoggedIn = false,
