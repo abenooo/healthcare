@@ -483,27 +483,24 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
 
       </section>
 
-      <AwesomeHealthcareDashboard />
+      {/* <AwesomeHealthcareDashboard /> */}
       <PhoneCarousel />
 
 
-
+      <div className="text-center mb-12">
+          <div className="flex items-center justify-center mb-6">
+            <div>
+              <h1 className="text-4xl font-bold text-purple-900 mb-2">    Our Impact in Healthcare</h1>
+            </div>
+          </div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          See how our solutions are transforming care delivery, improving outcomes, and enhancing patient experiences.
+          </p>
+        </div>
       {/* Our Impact in Healthcare */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-12">
-            <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Our Impact in Healthcare
-              </h2>
-              <p className="text-xl text-gray-600">
-                See how our solutions are transforming care delivery, improving outcomes, and enhancing patient experiences.
-              </p>
-            </div>
-            <button className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-dark transition-colors duration-200 font-medium">
-              View All Stories
-            </button>
-          </div>
+       
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Patient Engagement */}
             <article className="bg-white rounded-2xl border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-300">
@@ -580,24 +577,26 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           </div>
         </div>
       </section>
-
+      <div className="text-center mb-12">
+          <div className="flex items-center justify-center mb-6">
+            <div>
+              <h1 className="text-4xl font-bold text-purple-900 mb-2"> What Our Patients Say</h1>
+            </div>
+          </div>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          Real stories from patients who trust our healthcare system for their well-being.
+          </p>
+        </div>
       {/* Patient Testimonials Carousel */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              What Our Patients Say
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Real stories from patients who trust our healthcare system for their well-being.
-            </p>
-          </div>
+        
           <PatientTestimonialsCarousel />
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-primary to-primary-dark">
+      <section className="py-20 bg-gradient-to-r from-[#947dac] to-[#946bbc]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-4xl font-bold text-white mb-4">
             Shalom Health Care Services: Your Community, Your Care
@@ -605,15 +604,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
           <p className="text-xl text-white mb-8 max-w-3xl mx-auto">
             We provide innovative, high-quality, person-centered services for individuals with disabilities, supporting integration, independence, and well-being in every neighborhood in the District of Columbia.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <button
-              onClick={() => setShowDemoUsers(true)}
-              className="bg-white text-primary px-8 py-4 rounded-lg hover:bg-primary/10 transition-colors duration-200 font-semibold text-lg flex items-center justify-center space-x-2"
-            >
-              <span>Get Started</span>
-              <ArrowRight className="w-5 h-5" />
-            </button>
-          </div>
+         
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
             <div>
               <div className="text-3xl font-bold text-white mb-2">201+</div>
@@ -628,8 +619,8 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
               <div className="text-white">Years of Experience</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-white mb-2">8AM–8PM</div>
-              <div className="text-white">Weekday Office Hours</div>
+              <div className="text-3xl font-bold text-white mb-2">30+</div>
+              <div className="text-white">Care Giver </div>
             </div>
           </div>
           <div className="mt-8 text-white">
