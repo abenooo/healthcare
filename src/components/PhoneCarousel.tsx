@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export function PhoneCarousel() {
   const [currentSlide, setCurrentSlide] = useState(2);
@@ -12,7 +11,7 @@ export function PhoneCarousel() {
       id: 1,
       title: "Our Health Mission",
       description:
-        "Our mission at Shalom Health Care Services is to abide by the Department of Disability Services (DDS) standards to provide innovative high-quality services that will enable people with disabilities to lead meaningful and productive lives as vital members of their families, schools, workplaces, and communities in every neighborhood in the District of Columbia. Our experienced team at Shalom Health Care Services is prepared to provide person-centered service.",
+        "Our mission at Shalom Health Care Services is to abide by the Department of Disability Services (DDS) standards to provide innovative high-quality services that will enable people with disabilities to lead meaningful and productive lives as vital members of their families, schools, workplaces, and communities in every neighborhood in the District of Columbia.",
       image: "/logo.webp",
     },
     {
@@ -42,29 +41,6 @@ export function PhoneCarousel() {
     return () => clearInterval(interval);
   }, [isAutoPlaying, slides.length]);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
-    setIsAutoPlaying(false);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
-    setIsAutoPlaying(false);
-  };
-
-  // For infinite row effect
-  const getDisplaySlides = () => {
-    // Show all slides, but order so current is centered
-    const before = slides.slice(0, currentSlide);
-    const after = slides.slice(currentSlide + 1);
-    return [
-      ...after,
-      ...slides.slice(currentSlide, currentSlide + 1),
-      ...before,
-    ];
-  };
-
-  const currentSlideData = slides[currentSlide];
 
   return (
     <section className="py-12 bg-[#f8fafc] min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
@@ -94,18 +70,18 @@ export function PhoneCarousel() {
         </div>
 
       {/* Desktop: Carousel with 3 slides, center active */}
-      <div className="hidden md:flex w-full max-w-5xl justify-center items-center space-x-6">
+      <div className="hidden my-5 md:flex w-full max-w-5xl justify-center items-center space-x-6">
         {slides.map((slide, idx) => {
           // Calculate position relative to currentSlide
           const pos = idx - currentSlide;
           let className =
             "w-80 h-[500px] rounded-3xl bg-white shadow-xl overflow-hidden transition-all duration-700 flex-shrink-0";
           if (pos === 0) {
-            className += " scale-100 opacity-100 blur-0 z-20";
+            className += " scale-95 opacity-80 z-10";
           } else if (Math.abs(pos) === 1) {
-            className += " scale-95 opacity-60 blur-sm z-10";
+            className += " scale-95 opacity-80 z-10";
           } else {
-            className += " scale-90 opacity-0 pointer-events-none z-0";
+            className += " scale-95 opacity-80 z-10";
           }
           return (
             <div key={slide.id} className={className}>
@@ -123,19 +99,7 @@ export function PhoneCarousel() {
         })}
       </div>
 
-      {/* Navigation Arrows (desktop only) */}
-      <button
-        onClick={prevSlide}
-        className="flex absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-30 w-10 md:w-12 h-10 md:h-12 bg-black/80 rounded-full items-center justify-center hover:bg-black transition-colors duration-200"
-      >
-        <ChevronLeft className="w-5 md:w-6 h-5 md:h-6 text-white" />
-      </button>
-      <button
-        onClick={nextSlide}
-        className="flex absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-30 w-10 md:w-12 h-10 md:h-12 bg-black/80 rounded-full items-center justify-center hover:bg-black transition-colors duration-200"
-      >
-        <ChevronRight className="w-5 md:w-6 h-5 md:h-6 text-white" />
-      </button>
+   
 
       {/* Mobile: Show the active slide in the phone mockup */}
       <div className="md:hidden w-full flex justify-center mt-12 mx-auto">
