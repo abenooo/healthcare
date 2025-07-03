@@ -180,7 +180,7 @@ export default function ShalomHealthcareServices() {
           })}
         </div>
 
-      
+       
       </div>
     </section>
   )
