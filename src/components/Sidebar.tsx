@@ -85,7 +85,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         return [
           { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, color: "text-blue-600", shortLabel: "Dash" },
           { id: "assigned-patients", label: "Assigned Patients", icon: Heart, color: "text-rose-600", shortLabel: "Patients" },
-          { id: "services", label: "Provide Services", icon: Stethoscope, color: "text-emerald-600", shortLabel: "Services" },
+          // { id: "services", label: "Provide Services", icon: Stethoscope, color: "text-emerald-600", shortLabel: "Services" },
           { id: "progress-note", label: "Progress Note", icon: FileText, color: "text-blue-600", shortLabel: "Progress" },
         ]
       case "HR":
