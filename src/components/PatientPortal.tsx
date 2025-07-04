@@ -675,10 +675,7 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
   <ProgressNoteModal open={showProgressNote} onClose={() => setShowProgressNote(false)} />
 )}
 
-      {/* Progress Notes Table */}
-      <div className="mt-10">
-        <ProgressNotesTable />
-      </div>
+   
     </div>
   );
 };
