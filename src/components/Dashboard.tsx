@@ -23,7 +23,9 @@ import {
   Zap,
   Brain,
   Eye,
-  Bone
+  Bone,
+  Download,
+  Upload
 } from 'lucide-react';
 
 interface DashboardProps {
@@ -42,6 +44,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole, setActiveTab }) => {
         return 'Staff Management';
       case 'Admin':
         return 'Hospital Administration';
+      case 'Care Giver':
+        return 'Care Giver Dashboard';
       default:
         return 'Dashboard';
     }
@@ -57,6 +61,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole, setActiveTab }) => {
         return 'Oversee medical staff, credentials, and workforce management';
       case 'Admin':
         return 'Monitor hospital operations, compliance, and system performance';
+      case 'Care Giver':
+        return 'Manage patient care and communication';
       default:
         return 'Welcome to your healthcare dashboard';
     }
@@ -91,6 +97,13 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole, setActiveTab }) => {
           { title: "ER Wait Time", value: "12 min", icon: Clock, color: "green", change: "↓5 min from yesterday", urgent: false },
           { title: "Revenue Today", value: "$847K", icon: DollarSign, color: "purple", change: "+12% vs last Monday", urgent: false },
           { title: "System Alerts", value: "2", icon: AlertTriangle, color: "red", change: "Network connectivity issues", urgent: true }
+        ];
+      case 'Care Giver':
+        return [
+          { title: "Assigned Patients", value: "5", icon: Users, color: "blue", change: "New patient assigned", urgent: false },
+          { title: "Completed Tasks", value: "12", icon: CheckCircle, color: "green", change: "New task completed", urgent: false },
+          { title: "Communication", value: "20", icon: MessageCircle, color: "purple", change: "New message received", urgent: false },
+          { title: "Patient Satisfaction", value: "95%", icon: Star, color: "yellow", change: "New feedback received", urgent: false }
         ];
       default:
         return [];
@@ -131,6 +144,13 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole, setActiveTab }) => {
           { time: "11:20 AM", action: "Pharmacy inventory restocked - Critical medications", type: "supply", priority: "normal" },
           { time: "10:15 AM", action: "Network maintenance completed - All systems operational", type: "system", priority: "normal" }
         ];
+      case 'Care Giver':
+        return [
+          { time: "Today", action: "New patient assigned", type: "assignment", priority: "normal" },
+          { time: "Yesterday", action: "Task completed", type: "task", priority: "normal" },
+          { time: "2 days ago", action: "Message received", type: "communication", priority: "normal" },
+          { time: "3 days ago", action: "Feedback received", type: "feedback", priority: "normal" }
+        ];
       default:
         return [];
     }
@@ -165,6 +185,13 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole, setActiveTab }) => {
           { time: "Tomorrow", title: "Joint Commission Survey", type: "Accreditation review", impact: "Hospital-wide" },
           { time: "Jan 20", title: "Board of Directors Meeting", type: "Quarterly review", impact: "Executive team" },
           { time: "Jan 25", title: "Emergency Drill", type: "Fire safety exercise", impact: "All departments" }
+        ];
+      case 'Care Giver':
+        return [
+          { time: "Today", title: "New patient assigned", type: "assignment", priority: "normal" },
+          { time: "Today", title: "Task assigned", type: "task", priority: "normal" },
+          { time: "Today", title: "Message received", type: "communication", priority: "normal" },
+          { time: "Today", title: "Feedback received", type: "feedback", priority: "normal" }
         ];
       default:
         return [];
@@ -280,7 +307,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole, setActiveTab }) => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Recent Activity */}
         <div className="lg:col-span-2 bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 border border-gray-100 shadow-sm">
-          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">Recent Activity</h3>
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 sm:mb-6">Recent Activity 123</h3>
           <div className="space-y-2 sm:space-y-3">
             {recentActivity.map((activity, index) => (
               <div key={index} className={`p-3 sm:p-4 rounded-lg transition-colors duration-200 hover:bg-gray-50 ${getPriorityColor(activity.priority)}`}>
@@ -466,6 +493,35 @@ const Dashboard: React.FC<DashboardProps> = ({ userRole, setActiveTab }) => {
               <button className="p-3 sm:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-center group">
                 <Stethoscope className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600 mx-auto mb-2 group-hover:scale-110 transition-transform" />
                 <span className="text-xs sm:text-sm font-medium text-gray-900 block">Clinical Systems</span>
+              </button>
+            </>
+          )}
+
+          {userRole === 'Care Giver' && (
+            <>
+              <button className="p-3 sm:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-center group">
+                <FileText className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs sm:text-sm font-medium text-gray-900 block">Add Progress Note</span>
+              </button>
+              <button className="p-3 sm:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-center group">
+                <Users className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs sm:text-sm font-medium text-gray-900 block">Assigned Patients</span>
+              </button>
+              <button className="p-3 sm:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-center group">
+                <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-purple-600 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs sm:text-sm font-medium text-gray-900 block">Today's Schedule</span>
+              </button>
+              <button className="p-3 sm:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-center group">
+                <Download className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs sm:text-sm font-medium text-gray-900 block">Download Form</span>
+              </button>
+              <button className="p-3 sm:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-center group">
+                <Upload className="w-5 h-5 sm:w-6 sm:h-6 text-red-600 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs sm:text-sm font-medium text-gray-900 block">Upload Signed Form</span>
+              </button>
+              <button className="p-3 sm:p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-center group">
+                <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs sm:text-sm font-medium text-gray-900 block">Contact HR</span>
               </button>
             </>
           )}
