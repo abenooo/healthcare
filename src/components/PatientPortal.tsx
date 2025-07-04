@@ -394,7 +394,7 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
           </div>
           <div>
             <h1 className="text-3xl font-bold text-gray-900">
-              {userRole === 'Care Giver' ? 'Assigned Patients 123' : 'Patient Management'}
+              {userRole === 'Care Giver' ? 'Assigned Patients' : 'Patient Management'}
             </h1>
             <p className="text-gray-600">
               {userRole === 'Care Giver' 
