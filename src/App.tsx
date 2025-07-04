@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import LandingPage from "./components/LandingPage"
 import Sidebar from "./components/Sidebar"
 import Header from "./components/Header"
@@ -13,6 +13,7 @@ import Onboarding from "./components/Onboarding"
 import Contact from "./components/Contact"
 import Component from "./components/Services.tsx"
 import FAQ from "./components/FAQ"
+import Careers from "./components/Careers.tsx"
 import About from "./components/About.tsx"
 import BlogPage from "./components/BlogPage.tsx"
 
@@ -354,7 +355,9 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<BlogPage />} />
-          <Route path="/progress-notes" element={<ProgressNotesTable />} />
+          <Route path="/careers" element={<Careers />} />
+          
+          {/* <Route path="/progress-notes" element={<ProgressNotesTable />} /> */}
           
           <Route path="/service/:id" element={<ServicePage />} />
         </Routes>
