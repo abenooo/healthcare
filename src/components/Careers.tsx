@@ -225,17 +225,7 @@ const Careers = () => {
       <div className="max-w-4xl mx-auto text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-[#77658B] mb-4">Careers at Shalom Healthcare & Services</h1>
         <p className="text-lg text-gray-700 mb-2">We are Hiring. We look forward to hearing from you.</p>
-        <div className="flex flex-wrap justify-center gap-4 mt-4 text-sm">
-          <span className="text-[#77658B] font-medium">Home</span>
-          <span className="text-gray-400">/</span>
-          <span className="text-[#77658B] font-medium">About Us</span>
-          <span className="text-gray-400">/</span>
-          <span className="text-[#77658B] font-medium">Services</span>
-          <span className="text-gray-400">/</span>
-          <span className="font-bold text-[#9AC15D]">Careers</span>
-          <span className="text-gray-400">/</span>
-          <span className="text-[#77658B] font-medium">Contact Us</span>
-        </div>
+    
       </div>
 
       {/* Jobs List */}
