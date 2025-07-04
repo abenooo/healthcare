@@ -266,15 +266,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             </div>
           </div>
 
-          {userRole === "Care Giver" && (
-            <button
-              onClick={() => setShowProgressNote(true)}
-              className="w-full flex items-center justify-center gap-2 px-4 py-2 mt-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-            >
-              <FileText className="w-4 h-4" />
-              <span>Add Progress Note</span>
-            </button>
-          )}
+      
         </div>
 
         {/* Resize Handle for Desktop */}
