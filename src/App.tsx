@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom"
 import LandingPage from "./components/LandingPage"
 import Sidebar from "./components/Sidebar"
 import Header from "./components/Header"
@@ -23,6 +23,7 @@ import { Menu, Calendar, Heart, Stethoscope, Sun, Building, UserCheck, Shield, B
 import Footer from "./components/Footer"
 import BookingModal from "./components/booking-modal"
 import ServicePage from "./components/ServicePage"
+import ProgressNotesTable from "./components/ProgressNotesTable"
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
   const [showDemoSelection, setShowDemoSelection] = useState(false)
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false)
   const [showBookingModal, setShowBookingModal] = useState(false)
+  const [showProgressNote, setShowProgressNote] = useState(false)
 
   const handleLogin = (userData: any) => {
     setUser(userData)
@@ -63,6 +65,17 @@ function App() {
 
   const toggleMobileSidebar = () => {
     setIsMobileSidebarOpen(!isMobileSidebarOpen)
+  }
+
+  const handleMenuItemClick = (tabId: string) => {
+    if (tabId === "progress-note") {
+      setShowProgressNote(true)
+      return
+    }
+    setActiveTab(tabId)
+    if (isMobileSidebarOpen) {
+      toggleMobileSidebar()
+    }
   }
 
   const renderContent = () => {
@@ -341,6 +354,7 @@ function App() {
           <Route path="/faq" element={<FAQ />} />
           <Route path="/about" element={<About />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/progress-notes" element={<ProgressNotesTable />} />
           
           <Route path="/service/:id" element={<ServicePage />} />
         </Routes>
@@ -415,6 +429,9 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/service/:id" element={<ServicePage />} />
+              {user?.role === "Care Giver" && (
+                <Route path="/progress-notes" element={<ProgressNotesTable />} />
+              )}
             </Routes>
           </main>
         </div>
