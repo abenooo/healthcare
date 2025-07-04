@@ -17,6 +17,8 @@ import {
   Calendar,
 } from "lucide-react"
 import logo from "../../public/logo.webp"
+import { useLocation } from "react-router-dom"
+
 interface NavbarProps {
   onLoginClick?: () => void
   onDemoClick?: () => void
@@ -46,6 +48,7 @@ export default function Navbar({
 }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isProfileOpen, setIsProfileOpen] = useState(false)
+  const location = useLocation()
 
   const isUserLoggedIn = isLoggedIn || !!user
 
@@ -139,15 +142,22 @@ export default function Navbar({
           {/* Desktop Navigation - Only show if not logged in */}
           {!isUserLoggedIn && (
             <div className="hidden lg:flex items-center space-x-8">
-              {navigationItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.to}
-                  className="text-gray-700 hover:text-[#77658B] font-medium transition-colors duration-200 py-2"
-                >
-                  {item.name}
-                </a>
-              ))}
+              {navigationItems.map((item) => {
+                const isActive = location.pathname === item.to;
+                return (
+                  <a
+                    key={item.name}
+                    href={item.to}
+                    className={`font-medium transition-colors duration-200 py-2 ${
+                      isActive
+                        ? "text-[#77658B] underline underline-offset-4"
+                        : "text-gray-700 hover:text-[#77658B]"
+                    }`}
+                  >
+                    {item.name}
+                  </a>
+                );
+              })}
             </div>
           )}
 
@@ -404,16 +414,23 @@ export default function Navbar({
           <div className="px-4 py-4 space-y-3">
             {!isUserLoggedIn ? (
               <>
-                {navigationItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.to}
-                    className="block text-gray-700 hover:text-[#77658B] font-medium transition-colors duration-200 py-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {item.name}
-                  </a>
-                ))}
+                {navigationItems.map((item) => {
+                  const isActive = location.pathname === item.to;
+                  return (
+                    <a
+                      key={item.name}
+                      href={item.to}
+                      className={`font-medium transition-colors duration-200 py-2 ${
+                        isActive
+                          ? "text-[#77658B] underline underline-offset-4"
+                          : "text-gray-700 hover:text-[#77658B]"
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.name}
+                    </a>
+                  );
+                })}
                 <button
                   onClick={() => {
                     onBookNowClick?.()
