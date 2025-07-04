@@ -450,6 +450,13 @@ const ProgressNotesTable: React.FC = () => {
           </div>
           <div className="flex gap-2">
             <button
+              onClick={() => setShowAddModal(true)}
+              className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Add Progress Note</span>
+            </button>
+            <button
               onClick={handleExportPDF}
               className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
