@@ -15,9 +15,14 @@ import {
   ChevronRight,
   ClipboardCheck,
   UserPlus,
+  Plus,
+  Edit,
+  Trash2,
 } from "lucide-react"
 import ProgressNoteModal from "./ProgressNoteSidebar"
 import { useNavigate } from "react-router-dom"
+import { CgWebsite } from "react-icons/cg"
+import { TbJoinBevel } from "react-icons/tb"
 
 interface SidebarProps {
   activeTab: string
@@ -95,6 +100,8 @@ const Sidebar: React.FC<SidebarProps> = ({
           { id: "patient-documents", label: "Patient Documents", icon: FileText, color: "text-amber-600", shortLabel: "Patient Docs" },
           { id: "employee-documents", label: "Employee Documents", icon: FileText, color: "text-green-600", shortLabel: "Employee Docs" },
           { id: "onboarding", label: "Onboarding", icon: UserPlus, color: "text-teal-600", shortLabel: "Onboard" },
+          { id: "blog", label: "Blog", icon: CgWebsite, color: "text-teal-600", shortLabel: "Blog" },
+          { id: "careers", label: "Careers", icon: TbJoinBevel, color: "text-teal-600", shortLabel: "Careers" },
           { id: "reports", label: "Reports & Analytics", icon: BarChart3, color: "text-indigo-600", shortLabel: "Reports" },
         ]
       default:
