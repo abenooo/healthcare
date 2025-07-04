@@ -17,6 +17,7 @@ import {
 import Contact from './Contact';
 import AwesomeHealthcareDashboard from './AwesomeHealthcareDashboard';
 import { PhoneCarousel } from './PhoneCarousel';
+import { Link } from "react-router-dom";
 
 interface LandingPageProps {
   onLogin: (userData: any) => void;
@@ -468,14 +469,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onLogin }) => {
             <p className="text-lg text-gray-700 mb-8 max-w-md">
             A licensed Medicaid provider for DDS that assesses each person to create a custom community involvement plan tailored to and for the person. We are dedicate to not only educate the person but also their family members so the person may live a positive day-to-day life within our communities
             </p>
-            <button className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-4 rounded-full text-lg shadow transition mb-10">
-              Find A Doctor
+            <Link to="/services" className="flex items-center bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-4 rounded-full text-lg shadow transition mb-10">
+              Find Our Sevices
               <span className="ml-3">
                 <svg width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" className="inline-block">
                   <path d="M5 11h12M13 7l4 4-4 4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </span>
-            </button>
+            </Link>
           </div>
           {/* Right: Empty for image focus */}
           <div className="hidden lg:block w-1/2"></div>
