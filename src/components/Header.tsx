@@ -46,6 +46,7 @@ const Header: React.FC<HeaderProps> = ({ user }) => {
               className="w-8 h-8 rounded-full object-cover"
             />
           </div>
+          
         </div>
       </div>
     </header>
