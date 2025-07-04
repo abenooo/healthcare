@@ -62,17 +62,17 @@ export default function Component() {
   ]
 
   return (
-    <div className="min-h-screen bg-[#181c23] py-16 px-4">
+    <div className="min-h-screen bg-[#f8fafc] py-16 px-4">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {services.map((service, index) => (
+        {services.map((service) => (
           <Link to={`/service/${service.id}`} key={service.id}>
             <div
-              className="rounded-2xl border border-[#2e3340] bg-transparent p-10 flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg"
+              className="rounded-2xl border border-gray-200 bg-white p-10 flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg"
               style={{ minHeight: 260 }}
             >
               <div className="mb-4">{service.icon}</div>
-              <h3 className="text-2xl font-bold text-white mb-2">{service.name}</h3>
-              <p className="text-gray-300 text-base">{service.description}</p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.name}</h3>
+              <p className="text-gray-600 text-base">{service.description}</p>
             </div>
           </Link>
         ))}
