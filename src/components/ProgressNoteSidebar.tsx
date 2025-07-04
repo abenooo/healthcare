@@ -1,223 +1,394 @@
+// import React, { useState, useEffect } from "react";
+// import { X } from "lucide-react";
+
+// const STORAGE_KEY = "progress_notes";
+
+// const demoNotes = Array.from({ length: 10 }).map((_, i) => ({
+//   clientName: `Client ${i + 1}`,
+//   service: `Service ${i + 1}`,
+//   hours: (Math.random() * 8).toFixed(1),
+//   condition: ["Stable", "Needs Attention", "Critical"][i % 3],
+//   observations: "All observations normal.",
+//   incidents: i % 3 === 0 ? "None" : "Minor incident reported.",
+//   signature: `Caregiver ${i + 1}`,
+//   status: "Pending",
+//   date: `2025-07-${(i + 10).toString().padStart(2, "0")}`,
+// }));
+
+// export default function ProgressNoteModal({ open, onClose }) {
+//   const [form, setForm] = useState({
+//     clientName: "",
+//     service: "",
+//     hours: "",
+//     condition: "",
+//     observations: "",
+//     incidents: "",
+//     signature: "",
+//   });
+//   const [submitting, setSubmitting] = useState(false);
+//   const [notes, setNotes] = useState(demoNotes);
+
+//   useEffect(() => {
+//     // Load from localStorage if available
+//     const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+//     if (stored.length) setNotes(stored);
+//   }, []);
+
+//   const handleChange = (e:any) => {
+//     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+//   };
+
+//   const handleSubmit = (e:any) => {
+//     e.preventDefault();
+//     setSubmitting(true);
+//     const note = {
+//       ...form,
+//       status: "Pending",
+//       date: new Date().toLocaleDateString(),
+//     };
+//     const updated = [note, ...notes];
+//     setNotes(updated);
+//     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+//     setTimeout(() => {
+//       setSubmitting(false);
+//       onClose();
+//       setForm({
+//         clientName: "",
+//         service: "",
+//         hours: "",
+//         condition: "",
+//         observations: "",
+//         incidents: "",
+//         signature: "",
+//       });
+//     }, 800);
+//   };
+
+//   if (!open) return null;
+
+//   return (
+//     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+//       <div className="bg-white rounded-2xl p-8 max-w-2xl w-full shadow-2xl relative">
+//         <button
+//           onClick={onClose}
+//           className="absolute top-4 right-4 text-gray-400 hover:text-gray-700"
+//         >
+//           <X className="w-6 h-6" />
+//         </button>
+//         <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">Submit Progress Note</h2>
+//         <form onSubmit={handleSubmit} className="space-y-4 mb-8">
+//           <div>
+//             <label className="block text-sm font-medium mb-1">Client Name</label>
+//             <input
+//               name="clientName"
+//               value={form.clientName}
+//               onChange={handleChange}
+//               placeholder="Client Name"
+//               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+//               required
+//             />
+//           </div>
+//           <div>
+//             <label className="block text-sm font-medium mb-1">Service Provided</label>
+//             <input
+//               name="service"
+//               value={form.service}
+//               onChange={handleChange}
+//               placeholder="Service Provided"
+//               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+//               required
+//             />
+//           </div>
+//           <div className="flex gap-4">
+//             <div className="flex-1">
+//               <label className="block text-sm font-medium mb-1">Hours Worked</label>
+//               <input
+//                 name="hours"
+//                 value={form.hours}
+//                 onChange={handleChange}
+//                 placeholder="Hours"
+//                 type="number"
+//                 min="0"
+//                 className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+//                 required
+//               />
+//             </div>
+//             <div className="flex-1">
+//               <label className="block text-sm font-medium mb-1">Client Condition</label>
+//               <input
+//                 name="condition"
+//                 value={form.condition}
+//                 onChange={handleChange}
+//                 placeholder="Client Condition"
+//                 className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+//               />
+//             </div>
+//           </div>
+//           <div>
+//             <label className="block text-sm font-medium mb-1">Observations</label>
+//             <textarea
+//               name="observations"
+//               value={form.observations}
+//               onChange={handleChange}
+//               placeholder="Observations"
+//               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+//             />
+//           </div>
+//           <div>
+//             <label className="block text-sm font-medium mb-1">Incidents</label>
+//             <textarea
+//               name="incidents"
+//               value={form.incidents}
+//               onChange={handleChange}
+//               placeholder="Incidents"
+//               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+//             />
+//           </div>
+//           <div>
+//             <label className="block text-sm font-medium mb-1">Your Signature</label>
+//             <input
+//               name="signature"
+//               value={form.signature}
+//               onChange={handleChange}
+//               placeholder="Your Signature"
+//               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+//               required
+//             />
+//           </div>
+//           <button
+//             type="submit"
+//             disabled={submitting}
+//             className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
+//           >
+//             {submitting ? "Submitting..." : "Submit"}
+//           </button>
+//         </form>
+//         <hr className="my-6" />
+//         <h3 className="text-lg font-bold mb-3 text-gray-800">Progress Notes</h3>
+//         <div className="overflow-x-auto max-h-64">
+//           <table className="min-w-full text-sm border">
+//             <thead>
+//               <tr className="bg-blue-50">
+//                 <th className="p-2 border">Client</th>
+//                 <th className="p-2 border">Service</th>
+//                 <th className="p-2 border">Hours</th>
+//                 <th className="p-2 border">Condition</th>
+//                 <th className="p-2 border">Date</th>
+//                 <th className="p-2 border">Status</th>
+//               </tr>
+//             </thead>
+//             <tbody>
+//               {notes.slice(0, 10).map((note, i) => (
+//                 <tr key={i} className="even:bg-gray-50">
+//                   <td className="p-2 border">{note.clientName}</td>
+//                   <td className="p-2 border">{note.service}</td>
+//                   <td className="p-2 border text-center">{note.hours}</td>
+//                   <td className="p-2 border">{note.condition}</td>
+//                   <td className="p-2 border">{note.date}</td>
+//                   <td className="p-2 border">{note.status}</td>
+//                 </tr>
+//               ))}
+//             </tbody>
+//           </table>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// }
 import React, { useState, useEffect } from "react";
-import { X, User, Briefcase, Clock, DollarSign, FileText, Send, List } from "lucide-react";
+import { X } from "lucide-react";
 
-interface ProgressNoteSidebarProps {
-  open: boolean;
-  onClose: () => void;
-  patients: { id: number; name: string }[];
-  hourlyAmount?: number;
-  onSubmit?: (data: any) => void;
-}
-
-const DEFAULT_HOURLY_AMOUNT = 25; // You can change this
 const STORAGE_KEY = "progress_notes";
 
-export default function ProgressNoteSidebar({
-  open,
-  onClose,
-  patients,
-  hourlyAmount = DEFAULT_HOURLY_AMOUNT,
-  onSubmit,
-}: ProgressNoteSidebarProps) {
+const demoNotes = Array.from({ length: 10 }).map((_, i) => ({
+  clientName: `Client ${i + 1}`,
+  service: `Service ${i + 1}`,
+  hours: (Math.random() * 8).toFixed(1),
+  condition: ["Stable", "Needs Attention", "Critical"][i % 3],
+  observations: "All observations normal.",
+  incidents: i % 3 === 0 ? "None" : "Minor incident reported.",
+  signature: `Caregiver ${i + 1}`,
+  status: "Pending",
+  date: `2025-07-${(i + 10).toString().padStart(2, "0")}`,
+}));
+
+export default function ProgressNoteModal({ open, onClose }) {
   const [form, setForm] = useState({
+    clientName: "",
     service: "",
-    recipientId: patients[0]?.id || "",
     hours: "",
+    condition: "",
+    observations: "",
+    incidents: "",
     signature: "",
   });
   const [submitting, setSubmitting] = useState(false);
-  const [notes, setNotes] = useState<any[]>([]);
+  const [notes, setNotes] = useState(demoNotes);
 
-  // Load notes from localStorage on open
   useEffect(() => {
-    if (open) {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      setNotes(stored ? JSON.parse(stored) : []);
-    }
-  }, [open]);
+    // Load from localStorage if available
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if (stored.length) setNotes(stored);
+  }, []);
 
-  // Save note to localStorage
-  const saveNote = (note: any) => {
-    const updated = [note, ...notes];
-    setNotes(updated);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+  const handleChange = (e:any) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e:any) => {
     e.preventDefault();
     setSubmitting(true);
     const note = {
       ...form,
-      recipientName: patients.find((p) => String(p.id) === String(form.recipientId))?.name || "",
-      hourlyAmount,
-      date: new Date().toLocaleString(),
+      status: "Pending",
+      date: new Date().toLocaleDateString(),
     };
+    const updated = [note, ...notes];
+    setNotes(updated);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     setTimeout(() => {
       setSubmitting(false);
-      saveNote(note);
-      if (onSubmit) onSubmit(form);
+      onClose();
       setForm({
+        clientName: "",
         service: "",
-        recipientId: patients[0]?.id || "",
         hours: "",
+        condition: "",
+        observations: "",
+        incidents: "",
         signature: "",
       });
-    }, 1200);
+    }, 800);
   };
 
+  if (!open) return null;
+
   return (
-    <div
-      className={`fixed inset-0 z-[100] transition-all duration-300 ${
-        open ? "pointer-events-auto" : "pointer-events-none"
-      }`}
-      style={{ background: open ? "rgba(0,0,0,0.3)" : "transparent" }}
-    >
-      <aside
-        className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl border-l border-gray-100 transform transition-transform duration-300 ${
-          open ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <div className="flex items-center justify-between p-6 border-b border-gray-100">
-          <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
-            <FileText className="w-5 h-5" />
-            Progress Note
-          </h2>
-          <button
-            onClick={onClose}
-            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {/* Service Provided */}
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-2xl p-8 max-w-2xl w-full shadow-2xl relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-700"
+        >
+          <X className="w-6 h-6" />
+        </button>
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-700">Submit Progress Note</h2>
+        <form onSubmit={handleSubmit} className="space-y-4 mb-8">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              <Briefcase className="w-4 h-4" />
-              Service Provided
-            </label>
+            <label className="block text-sm font-medium mb-1">Client Name</label>
+            <input
+              name="clientName"
+              value={form.clientName}
+              onChange={handleChange}
+              placeholder="Client Name"
+              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-1">Service Provided</label>
             <input
               name="service"
               value={form.service}
               onChange={handleChange}
-              placeholder="e.g. Medication Management"
-              className="w-full border-2 border-gray-200 rounded-lg px-4 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none"
+              placeholder="Service Provided"
+              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
-          {/* Service Recipient */}
+          <div className="flex gap-4">
+            <div className="flex-1">
+              <label className="block text-sm font-medium mb-1">Hours Worked</label>
+              <input
+                name="hours"
+                value={form.hours}
+                onChange={handleChange}
+                placeholder="Hours"
+                type="number"
+                min="0"
+                className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+                required
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-sm font-medium mb-1">Client Condition</label>
+              <input
+                name="condition"
+                value={form.condition}
+                onChange={handleChange}
+                placeholder="Client Condition"
+                className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              <User className="w-4 h-4" />
-              Service Recipient
-            </label>
-            <select
-              name="recipientId"
-              value={form.recipientId}
+            <label className="block text-sm font-medium mb-1">Observations</label>
+            <textarea
+              name="observations"
+              value={form.observations}
               onChange={handleChange}
-              className="w-full border-2 border-gray-200 rounded-lg px-4 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none"
-              required
-            >
-              {patients.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
+              placeholder="Observations"
+              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+            />
           </div>
-          {/* Amount of Time */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              Amount of Time (hours)
-            </label>
-            <input
-              name="hours"
-              value={form.hours}
+            <label className="block text-sm font-medium mb-1">Incidents</label>
+            <textarea
+              name="incidents"
+              value={form.incidents}
               onChange={handleChange}
-              type="number"
-              min={0.25}
-              step={0.25}
-              placeholder="e.g. 2"
-              className="w-full border-2 border-gray-200 rounded-lg px-4 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none"
-              required
+              placeholder="Incidents"
+              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          {/* Hourly Amount */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              <DollarSign className="w-4 h-4" />
-              Hourly Amount
-            </label>
-            <input
-              value={`$${hourlyAmount.toFixed(2)}`}
-              readOnly
-              className="w-full border-2 border-gray-200 rounded-lg px-4 py-2 bg-gray-50 text-gray-700 outline-none"
-              tabIndex={-1}
-            />
-          </div>
-          {/* Digital Signature */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-              <User className="w-4 h-4" />
-              Digital Signature
-            </label>
+            <label className="block text-sm font-medium mb-1">Your Signature</label>
             <input
               name="signature"
               value={form.signature}
               onChange={handleChange}
-              placeholder="Type your full name"
-              className="w-full border-2 border-gray-200 rounded-lg px-4 py-2 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 outline-none"
+              placeholder="Your Signature"
+              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
-          {/* Submit */}
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 rounded-lg transition-all duration-200 flex items-center justify-center gap-2"
             disabled={submitting}
+            className="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition"
           >
-            <Send className="w-5 h-5" />
-            {submitting ? "Sending..." : "Send to HR for Approval"}
+            {submitting ? "Submitting..." : "Submit"}
           </button>
         </form>
-
-        {/* Progress Notes List */}
-        <div className="p-6 pt-0 border-t border-gray-100">
-          <div className="flex items-center gap-2 mb-3">
-            <List className="w-5 h-5 text-blue-600" />
-            <span className="font-semibold text-gray-900">Submitted Progress Notes</span>
-          </div>
-          {notes.length === 0 ? (
-            <div className="text-gray-500 text-sm">No progress notes yet.</div>
-          ) : (
-            <ul className="space-y-3 max-h-48 overflow-y-auto pr-2">
-              {notes.map((note, idx) => (
-                <li key={idx} className="p-3 bg-blue-50 rounded-lg text-sm">
-                  <div className="font-medium text-blue-900">{note.service}</div>
-                  <div className="text-gray-700">
-                    <span className="font-semibold">To:</span> {note.recipientName}
-                  </div>
-                  <div className="text-gray-700">
-                    <span className="font-semibold">Hours:</span> {note.hours} @ ${note.hourlyAmount}/hr
-                  </div>
-                  <div className="text-gray-700">
-                    <span className="font-semibold">Signed:</span> {note.signature}
-                  </div>
-                  <div className="text-xs text-gray-500 mt-1">{note.date}</div>
-                </li>
+        <hr className="my-6" />
+        <h3 className="text-lg font-bold mb-3 text-gray-800">Progress Notes</h3>
+        <div className="overflow-x-auto max-h-64">
+          <table className="min-w-full text-sm border">
+            <thead>
+              <tr className="bg-blue-50">
+                <th className="p-2 border">Client</th>
+                <th className="p-2 border">Service</th>
+                <th className="p-2 border">Hours</th>
+                <th className="p-2 border">Condition</th>
+                <th className="p-2 border">Date</th>
+                <th className="p-2 border">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {notes.slice(0, 10).map((note, i) => (
+                <tr key={i} className="even:bg-gray-50">
+                  <td className="p-2 border">{note.clientName}</td>
+                  <td className="p-2 border">{note.service}</td>
+                  <td className="p-2 border text-center">{note.hours}</td>
+                  <td className="p-2 border">{note.condition}</td>
+                  <td className="p-2 border">{note.date}</td>
+                  <td className="p-2 border">{note.status}</td>
+                </tr>
               ))}
-            </ul>
-          )}
+            </tbody>
+          </table>
         </div>
-      </aside>
+      </div>
     </div>
   );
 }
