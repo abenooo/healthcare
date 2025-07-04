@@ -36,6 +36,8 @@ const navigationItems = [
   { name: "FAQ", to: "/faq" },
   { name: "Contact", to: "/contact" },
   { name: "Blog", to: "/blog" },
+  { name: "Careers", to: "/careers" },
+  
 ]
 
 export default function Navbar({
