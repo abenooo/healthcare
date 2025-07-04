@@ -137,9 +137,9 @@ export default function Navbar({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
+          {/* <div className="flex items-center space-x-3">
             <img src="/logo.webp" className="w-20 h-20 text-white" alt="Shalom Health Care Services" />
-          </div>
+          </div> */}
 
           {/* Desktop Navigation - Only show if not logged in */}
           {!isUserLoggedIn && (
@@ -165,222 +165,100 @@ export default function Navbar({
 
           {/* User Profile Section - Show when logged in */}
           {isUserLoggedIn ? (
-            <div className="flex items-center space-x-4">
-              {/* Quick Actions for different roles */}
-              <div className="hidden md:flex items-center space-x-3">
-                {userRole === "Doctor" && (
-                  <>
-                    <button
-                      className="p-2 text-gray-600 hover:text-[#77658B] hover:bg-purple-50 rounded-lg transition-colors duration-200"
-                      title="Emergency Alerts"
-                    >
-                      <div className="relative">
-                        <Bell className="w-5 h-5" />
-                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
-                          3
-                        </span>
-                      </div>
-                    </button>
-                    <button
-                      className="p-2 text-gray-600 hover:text-[#9AC15D] hover:bg-green-50 rounded-lg transition-colors duration-200"
-                      title="Patient Messages"
-                    >
-                      <MessageCircle className="w-5 h-5" />
-                    </button>
-                  </>
-                )}
+            // <div className="flex items-center space-x-4">
+            //   {/* Quick Actions for different roles */}
+            //   <div className="hidden md:flex items-center space-x-3">
+            //     {userRole === "Doctor" && (
+            //       <>
+            //         <button
+            //           className="p-2 text-gray-600 hover:text-[#77658B] hover:bg-purple-50 rounded-lg transition-colors duration-200"
+            //           title="Emergency Alerts"
+            //         >
+            //           <div className="relative">
+            //             <Bell className="w-5 h-5" />
+            //             <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">
+            //               3
+            //             </span>
+            //           </div>
+            //         </button>
+            //         <button
+            //           className="p-2 text-gray-600 hover:text-[#9AC15D] hover:bg-green-50 rounded-lg transition-colors duration-200"
+            //           title="Patient Messages"
+            //         >
+            //           <MessageCircle className="w-5 h-5" />
+            //         </button>
+            //       </>
+            //     )}
 
-                {userRole === "Patient" && (
-                  <>
-                    <button
-                      className="p-2 text-gray-600 hover:text-[#77658B] hover:bg-purple-50 rounded-lg transition-colors duration-200"
-                      title="Notifications"
-                    >
-                      <div className="relative">
-                        <Bell className="w-5 h-5" />
-                        {notificationCount > 0 && (
-                          <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#77658B] rounded-full text-xs text-white flex items-center justify-center">
-                            {notificationCount}
-                          </span>
-                        )}
-                      </div>
-                    </button>
-                    <button
-                      className="p-2 text-gray-600 hover:text-[#9AC15D] hover:bg-green-50 rounded-lg transition-colors duration-200"
-                      title="Care Team Messages"
-                    >
-                      <MessageCircle className="w-5 h-5" />
-                    </button>
-                  </>
-                )}
+            //     {userRole === "Patient" && (
+            //       <>
+            //         <button
+            //           className="p-2 text-gray-600 hover:text-[#77658B] hover:bg-purple-50 rounded-lg transition-colors duration-200"
+            //           title="Notifications"
+            //         >
+            //           <div className="relative">
+            //             <Bell className="w-5 h-5" />
+            //             {notificationCount > 0 && (
+            //               <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#77658B] rounded-full text-xs text-white flex items-center justify-center">
+            //                 {notificationCount}
+            //               </span>
+            //             )}
+            //           </div>
+            //         </button>
+            //         <button
+            //           className="p-2 text-gray-600 hover:text-[#9AC15D] hover:bg-green-50 rounded-lg transition-colors duration-200"
+            //           title="Care Team Messages"
+            //         >
+            //           <MessageCircle className="w-5 h-5" />
+            //         </button>
+            //       </>
+            //     )}
 
-                {(userRole === "HR Manager" || userRole === "Admin") && (
-                  <button
-                    className="p-2 text-gray-600 hover:text-[#77658B] hover:bg-purple-50 rounded-lg transition-colors duration-200"
-                    title="System Notifications"
-                  >
-                    <div className="relative">
-                      <Bell className="w-5 h-5" />
-                      {notificationCount > 0 && (
-                        <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#77658B] rounded-full text-xs text-white flex items-center justify-center">
-                          {notificationCount}
-                        </span>
-                      )}
-                    </div>
-                  </button>
-                )}
-              </div>
+            //     {(userRole === "HR Manager" || userRole === "Admin") && (
+            //       <button
+            //         className="p-2 text-gray-600 hover:text-[#77658B] hover:bg-purple-50 rounded-lg transition-colors duration-200"
+            //         title="System Notifications"
+            //       >
+            //         <div className="relative">
+            //           <Bell className="w-5 h-5" />
+            //           {notificationCount > 0 && (
+            //             <span className="absolute -top-1 -right-1 w-3 h-3 bg-[#77658B] rounded-full text-xs text-white flex items-center justify-center">
+            //               {notificationCount}
+            //             </span>
+            //           )}
+            //         </div>
+            //       </button>
+            //     )}
+            //   </div>
 
-              {/* User Profile Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => setIsProfileOpen(!isProfileOpen)}
-                  className="flex items-center space-x-3 p-2 rounded-lg hover:bg-purple-50 transition-colors duration-200"
-                >
-                  <div className="relative">
-                    <img
-                      src={userInfo.avatar || "/placeholder.svg"}
-                      alt={userInfo.name}
-                      className="w-8 h-8 rounded-full object-cover border-2 border-purple-200"
-                    />
-                    <div
-                      className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 ${userInfo.statusColor} rounded-full border-2 border-white`}
-                    ></div>
-                  </div>
-                  <div className="hidden md:block text-left">
-                    <p className="text-sm font-medium text-gray-900">{userInfo.name}</p>
-                    <p className="text-xs text-gray-500">{userInfo.title}</p>
-                  </div>
-                  <ChevronDown className="w-4 h-4 text-gray-500" />
-                </button>
+            //   {/* User Profile Dropdown */}
+            //   <div className="relative">
+            //     <button
+            //       onClick={() => setIsProfileOpen(!isProfileOpen)}
+            //       className="flex items-center space-x-3 p-2 rounded-lg hover:bg-purple-50 transition-colors duration-200"
+            //     >
+            //       <div className="relative">
+            //         <img
+            //           src={userInfo.avatar || "/placeholder.svg"}
+            //           alt={userInfo.name}
+            //           className="w-8 h-8 rounded-full object-cover border-2 border-purple-200"
+            //         />
+            //         <div
+            //           className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 ${userInfo.statusColor} rounded-full border-2 border-white`}
+            //         ></div>
+            //       </div>
+            //       <div className="hidden md:block text-left">
+            //         <p className="text-sm font-medium text-gray-900">{userInfo.name}</p>
+            //         <p className="text-xs text-gray-500">{userInfo.title}</p>
+            //       </div>
+            //       <ChevronDown className="w-4 h-4 text-gray-500" />
+            //     </button>
 
-                {/* Dropdown Menu */}
-                {isProfileOpen && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-lg border border-purple-100 py-2 z-50">
-                    {/* User Info Header */}
-                    <div className="px-4 py-3 border-b border-purple-100">
-                      <div className="flex items-center space-x-3">
-                        <div className="relative">
-                          <img
-                            src={userInfo.avatar || "/placeholder.svg"}
-                            alt={userInfo.name}
-                            className="w-12 h-12 rounded-full object-cover border-2 border-purple-200"
-                          />
-                          <div
-                            className={`absolute -bottom-1 -right-1 w-4 h-4 ${userInfo.statusColor} rounded-full border-2 border-white`}
-                          ></div>
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-semibold text-gray-900">{userInfo.name}</h3>
-                          <p className="text-sm text-gray-600">{userInfo.title}</p>
-                          <div className="flex items-center space-x-2 mt-1">
-                            <div className={`w-2 h-2 ${userInfo.statusColor} rounded-full`}></div>
-                            <span className="text-xs text-gray-500">{userInfo.status}</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Role-specific quick stats */}
-                    <div className="px-4 py-3 border-b border-purple-100">
-                      <div className="grid grid-cols-2 gap-3 text-center">
-                        {userRole === "Doctor" && (
-                          <>
-                            <div className="bg-purple-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-[#77658B]">14</div>
-                              <div className="text-xs text-[#77658B]">Today's Patients</div>
-                            </div>
-                            <div className="bg-red-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-red-600">3</div>
-                              <div className="text-xs text-red-700">Critical Alerts</div>
-                            </div>
-                          </>
-                        )}
-                        {userRole === "Patient" && (
-                          <>
-                            <div className="bg-green-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-[#9AC15D]">95%</div>
-                              <div className="text-xs text-[#9AC15D]">Health Score</div>
-                            </div>
-                            <div className="bg-purple-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-[#77658B]">Jan 15</div>
-                              <div className="text-xs text-[#77658B]">Next Appointment</div>
-                            </div>
-                          </>
-                        )}
-                        {userRole === "HR Manager" && (
-                          <>
-                            <div className="bg-purple-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-[#77658B]">247</div>
-                              <div className="text-xs text-[#77658B]">Active Staff</div>
-                            </div>
-                            <div className="bg-green-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-[#9AC15D]">12</div>
-                              <div className="text-xs text-[#9AC15D]">Credentials Due</div>
-                            </div>
-                          </>
-                        )}
-                        {userRole === "Admin" && (
-                          <>
-                            <div className="bg-purple-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-[#77658B]">87%</div>
-                              <div className="text-xs text-[#77658B]">Bed Occupancy</div>
-                            </div>
-                            <div className="bg-green-50 rounded-lg p-2">
-                              <div className="text-lg font-bold text-[#9AC15D]">99.9%</div>
-                              <div className="text-xs text-[#9AC15D]">System Uptime</div>
-                            </div>
-                          </>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Menu Items */}
-                    <div className="py-2">
-                      <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-purple-50 transition-colors duration-200">
-                        <User className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm text-gray-700">My Profile</span>
-                      </button>
-                      <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-purple-50 transition-colors duration-200">
-                        <Settings className="w-4 h-4 text-gray-500" />
-                        <span className="text-sm text-gray-700">Settings</span>
-                      </button>
-                      {userRole === "Patient" && (
-                        <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-purple-50 transition-colors duration-200">
-                          <Heart className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm text-gray-700">Health Dashboard</span>
-                        </button>
-                      )}
-                      {(userRole === "Doctor" || userRole === "HR Manager" || userRole === "Admin") && (
-                        <button className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-purple-50 transition-colors duration-200">
-                          <Bell className="w-4 h-4 text-gray-500" />
-                          <span className="text-sm text-gray-700">Notifications</span>
-                          {notificationCount > 0 && (
-                            <span className="ml-auto bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                              {notificationCount}
-                            </span>
-                          )}
-                        </button>
-                      )}
-                    </div>
-
-                    {/* Logout */}
-                    <div className="border-t border-purple-100 pt-2">
-                      <button
-                        onClick={() => {
-                          setIsProfileOpen(false)
-                          onLogout?.()
-                        }}
-                        className="w-full flex items-center space-x-3 px-4 py-2 text-left hover:bg-red-50 transition-colors duration-200 text-red-600"
-                      >
-                        <LogOut className="w-4 h-4" />
-                        <span className="text-sm font-medium">Sign Out</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
+             
+            //   </div>
+            // </div>
+            <>
+            </>
           ) : (
             /* Action Buttons - Show when not logged in */
             <div className="hidden lg:flex items-center space-x-4">
