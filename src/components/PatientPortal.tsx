@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Heart,
   Calendar,
@@ -21,11 +21,43 @@ import {
   Filter,
   Search
 } from 'lucide-react';
-import ProgressNoteSidebar from "./ProgressNoteSidebar"; // adjust path as needed
+// import ProgressNoteSidebar from "./ProgressNoteSidebar"; // adjust path as needed
+
+import ProgressNoteModal from "./ProgressNoteSidebar"
+import ProgressNotesTable from "./ProgressNotesTable";
 
 interface PatientPortalProps {
   userRole: string;
 }
+
+const STORAGE_KEY = "progress_notes";
+const demoNotes = [
+  {
+    clientName: "Elliott Bryant",
+    service: "Quis sit in cupidit",
+    hours: 67,
+    condition: "Quo magni ipsum con",
+    date: "7/4/2025",
+    status: "Pending",
+  },
+  {
+    clientName: "Aimee Kane",
+    service: "Quidem explicabo Ut",
+    hours: 33,
+    condition: "Aut harum non illo i",
+    date: "7/4/2025, 1:42:00 AM",
+    status: "Pending",
+  },
+  {
+    clientName: "Maryam Cote",
+    service: "Consequatur Dolorem",
+    hours: 13,
+    condition: "Laboriosam repellen",
+    date: "7/4/2025, 1:39:58 AM",
+    status: "Pending",
+  },
+  // ...add more demo notes as needed
+];
 
 const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
   const [activeTab, setActiveTab] = useState('assigned');
@@ -344,6 +376,14 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
     </div>
   );
 
+  // Add this state for notes
+  const [notes, setNotes] = useState(demoNotes);
+
+  useEffect(() => {
+    const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    if (stored.length) setNotes(stored);
+  }, [showProgressNote]); // reload when modal closes
+
   return (
     <div className="p-6 space-y-6">
       {/* Header */}
@@ -621,7 +661,7 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
         />
       )}
 
-      <ProgressNoteSidebar
+      {/* <ProgressNoteSidebar
         open={showProgressNote}
         onClose={() => setShowProgressNote(false)}
         patients={assignedPatients.map(p => ({ id: p.id, name: p.name }))}
@@ -630,7 +670,15 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
           // handle the submitted progress note here (e.g., send to backend, show toast, etc.)
           alert("Progress note sent to HR!");
         }}
-      />
+      /> */}
+      {userRole === "Care Giver" && (
+  <ProgressNoteModal open={showProgressNote} onClose={() => setShowProgressNote(false)} />
+)}
+
+      {/* Progress Notes Table */}
+      <div className="mt-10">
+        <ProgressNotesTable />
+      </div>
     </div>
   );
 };
