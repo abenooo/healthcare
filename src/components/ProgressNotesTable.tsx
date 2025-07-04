@@ -1,20 +1,15 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   FileText,
   Plus,
-  Calendar,
   Clock,
-  User,
-  Activity,
   AlertCircle,
   CheckCircle,
   Search,
-  Filter,
   Eye,
-  Edit,
-  Trash2,
   Download,
-  RefreshCw
+  RefreshCw,
+  Upload
 } from 'lucide-react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -45,6 +40,8 @@ const ProgressNotesTable: React.FC = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadMessage, setUploadMessage] = useState('');
 
   // Load notes from localStorage on component mount
   useEffect(() => {
@@ -160,6 +157,43 @@ const ProgressNotesTable: React.FC = () => {
       ],
     });
     doc.save(`progress-note-${note.id}.pdf`);
+  };
+
+  const handleDownloadBlankForm = () => {
+    const doc = new jsPDF();
+    doc.text("Progress Note Form", 14, 16);
+    autoTable(doc, {
+      startY: 22,
+      head: [['Field', 'Value']],
+      body: [
+        ['Client', '_________________________'],
+        ['Service', '_________________________'],
+        ['Hours', '_________________________'],
+        ['Condition', '_________________________'],
+        ['Date', '_________________________'],
+        ['Status', '_________________________'],
+        ['Observations', '_________________________'],
+        ['Incidents', '_________________________'],
+        ['Signature', '_________________________'],
+      ],
+    });
+    doc.save('progress-note-blank-form.pdf');
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUploading(true);
+    setUploadMessage('');
+    const file = e.target.files?.[0];
+    if (file) {
+      // You can process the file here (e.g., upload to server or just show a message)
+      setTimeout(() => {
+        setUploading(false);
+        setUploadMessage('File uploaded successfully!');
+      }, 1500);
+    } else {
+      setUploading(false);
+      setUploadMessage('No file selected.');
+    }
   };
 
   const AddNoteModal = () => {
@@ -448,7 +482,7 @@ const ProgressNotesTable: React.FC = () => {
               <p className="text-gray-600">Manage and track patient care progress notes</p>
             </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <button
               onClick={() => setShowAddModal(true)}
               className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -463,7 +497,22 @@ const ProgressNotesTable: React.FC = () => {
               <Download className="w-4 h-4" />
               <span>Export as PDF</span>
             </button>
+           
+            <label className="flex items-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors cursor-pointer">
+              <input
+                type="file"
+                accept="application/pdf,image/*"
+                onChange={handleFileUpload}
+                className="hidden"
+                disabled={uploading}
+              />
+              <Upload className="w-4 h-4" />
+              <span>Upload Signed Form</span>
+            </label>
           </div>
+          {uploadMessage && (
+            <div className="text-sm text-green-700 mt-2">{uploadMessage}</div>
+          )}
         </div>
 
         {/* Stats */}
