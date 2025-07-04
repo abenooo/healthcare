@@ -9,7 +9,7 @@ export default function About() {
       title: "Lead Home Caregiver",
       department: "Home & Personal Care",
       image:
-        "https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=facearea&w=400&h=400&facepad=2",
+        "https://images-cdn.welcomesoftware.com/Zz0wNTZiNzI0YzFmMmIxMWVlYjEyOTcyNTgxNjc5MmNjNg==/Nurse%20and%20patient%20using%20cell%20phone.jpeg",
       summary:
         "Over 12 years supporting elderly and disabled clients. Passionate about promoting independence, dignity, and quality of life in the home environment.",
       education: [
@@ -23,7 +23,7 @@ export default function About() {
       title: "Community Support Specialist",
       department: "Disability & Community Services",
       image:
-        "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=facearea&w=400&h=400&facepad=2",
+        "https://wcc.ca/wp-content/uploads/2024/10/wcc-blog-what-is-a-community-support-worker.jpg",
       summary:
         "Specialist in supporting individuals with intellectual and developmental disabilities. Focused on community integration, daily living skills, and advocacy.",
       education: [
@@ -37,7 +37,7 @@ export default function About() {
       title: "Elder Care Coordinator",
       department: "Senior Services",
       image:
-        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=facearea&w=400&h=400&facepad=2",
+        "https://medixcollege.ca/wp-content/uploads/2022/11/Nov-25-personal-support-worker-career.jpg",
       summary:
         "10 years of experience in elder care and patient advocacy. Dedicated to improving quality of life for seniors and their families.",
       education: [
@@ -51,7 +51,7 @@ export default function About() {
       title: "Personal Support Worker",
       department: "Daily Living Assistance",
       image:
-        "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=facearea&w=400&h=400&facepad=2",
+        "https://hartcollege.ca/wp-content/uploads/speaking-happy-caregiver-old-man-wheelchair-hospital-helping-elderly-patient-support-clinic-medical-nurse-healthcare-social-worker-talking-senior-person-with-disability-1024x683.jpg",
       summary:
         "18 years of experience helping clients with daily living activities and personal care. Expert in building trust and supporting independence.",
       education: ["Personal Support Worker Certificate, 2005"],
@@ -66,7 +66,7 @@ export default function About() {
       title: "Family & Community Liaison",
       department: "Community Engagement",
       image:
-        "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=facearea&w=400&h=400&facepad=2",
+        "https://canadianbusinesscollege.com/wp-content/uploads/2020/01/Jan-31-Personal-support-worker-career.jpg",
       summary:
         "Experienced in connecting families with resources and support. Specializes in community outreach and family education.",
       education: ["B.A. in Community Health, 2012"],
@@ -79,7 +79,7 @@ export default function About() {
   ];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen" style={{ backgroundColor: "#F9FAFC" }}>
       {/* Hero Section */}
       <section className="py-10 bg-gradient-to-br from-primary/10 to-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
