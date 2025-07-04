@@ -33,7 +33,7 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole, documentType 
   const patientDocuments = [
     {
       id: 1,
-      patientName: 'Maria Rodriguez',
+      patientName: 'Maria Rodriguez 12',
       documentType: 'Medical History',
       fileName: 'medical_history_maria_rodriguez.pdf',
       uploadDate: '2024-01-20',
