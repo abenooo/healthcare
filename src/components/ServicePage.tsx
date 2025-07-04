@@ -136,12 +136,12 @@ export default function ServicePage() {
                 Ready to learn more about our {service.name}? Contact us to discuss your specific needs and how we can
                 help.
               </p>
-              <button  className="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-medium hover:bg-blue-700 transition-colors mb-3">
+              <Link
+                to="/contact"
+                className="w-full bg-blue-600 text-white py-3 px-6 rounded-xl font-medium hover:bg-blue-700 transition-colors mb-3 flex items-center justify-center"
+              >
                 Contact Us About This Service
-              </button>
-              <button className="w-full bg-white text-blue-600 border border-blue-600 py-3 px-6 rounded-xl font-medium hover:bg-blue-50 transition-colors">
-                Schedule a Consultation
-              </button>
+              </Link>
             </div>
           </div>
         </div>
