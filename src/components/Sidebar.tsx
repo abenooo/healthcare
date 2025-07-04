@@ -16,7 +16,8 @@ import {
   ClipboardCheck,
   UserPlus,
 } from "lucide-react"
-import ProgressNoteSidebar from "./ProgressNoteSidebar"
+import ProgressNoteModal from "./ProgressNoteSidebar"
+import { useNavigate } from "react-router-dom"
 
 interface SidebarProps {
   activeTab: string
@@ -38,6 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const [touchEnd, setTouchEnd] = useState<number | null>(null)
   const sidebarRef = useRef<HTMLDivElement>(null)
   const [showProgressNote, setShowProgressNote] = useState(false)
+  const navigate = useNavigate()
 
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50
@@ -113,13 +115,12 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const handleMenuItemClick = (tabId: string) => {
     if (tabId === "progress-note") {
-      setShowProgressNote(true);
-      return;
+      navigate("/progress-notes")
+      if (onMobileToggle) onMobileToggle()
+      return
     }
-    setActiveTab(tabId);
-    if (onMobileToggle) {
-      onMobileToggle();
-    }
+    setActiveTab(tabId)
+    if (onMobileToggle) onMobileToggle()
   }
 
   const toggleCollapse = () => {
@@ -306,20 +307,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
       {/* Progress Note Sidebar */}
       {userRole === "Care Giver" && (
-        <ProgressNoteSidebar
-          open={showProgressNote}
-          onClose={() => setShowProgressNote(false)}
-          patients={[
-            { id: 1, name: "Maria Rodriguez" },
-            { id: 2, name: "James Wilson" },
-            { id: 3, name: "Emily Davis" },
-          ]}
-          hourlyAmount={25}
-          onSubmit={(data) => {
-            alert("Progress note sent to HR!");
-          }}
-        />
-      )}
+  <ProgressNoteModal open={showProgressNote} onClose={() => setShowProgressNote(false)} />
+)}
     </>
   )
 }
