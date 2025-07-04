@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Download, FileText, UserPlus, X } from "lucide-react";
 
+
 const jobs = [
   {
     title: "Direct Support Professional (DSP)",
@@ -186,14 +187,14 @@ const Careers = () => {
     setSubmitted(false);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setForm((prev) => ({
-        ...prev,
-        files: [...prev.files, ...Array.from(e.target.files)],
-      }));
-    }
-  };
+  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     setForm((prev) => ({
+  //       ...prev,
+  //       files: [...prev.files, ...Array.from(e.target.files)],
+  //     }));
+  //   }
+  // };
 
   const handleRemoveFile = (index: number) => {
     setForm((prev) => ({
@@ -352,7 +353,7 @@ const Careers = () => {
                     <input
                       type="file"
                       ref={fileInputRef}
-                      onChange={handleFileChange}
+                      // onChange={handleFileChange}
                       className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#77658B]/10 file:text-[#77658B] hover:file:bg-[#9AC15D]/10"
                       multiple
                       accept=".pdf,.doc,.docx"
