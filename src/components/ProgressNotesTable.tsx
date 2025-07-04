@@ -9,10 +9,11 @@ import {
   Eye,
   Download,
   RefreshCw,
-  Upload
+  Upload,
+  ChevronLeft,
+  ChevronRight,
+  User
 } from 'lucide-react';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
 
 const STORAGE_KEY = "progress_notes";
 
@@ -30,42 +31,64 @@ interface ProgressNote {
   createdAt: string;
 }
 
+interface ClientSummary {
+  clientName: string;
+  totalNotes: number;
+  totalHours: number;
+  lastService: string;
+  lastDate: string;
+  lastStatus: 'Pending' | 'Approved' | 'Rejected';
+  pendingCount: number;
+  approvedCount: number;
+  rejectedCount: number;
+}
+
 const ProgressNotesTable: React.FC = () => {
   const [notes, setNotes] = useState<ProgressNote[]>([]);
-  const [filteredNotes, setFilteredNotes] = useState<ProgressNote[]>([]);
+  const [clientSummaries, setClientSummaries] = useState<ClientSummary[]>([]);
+  const [filteredSummaries, setFilteredSummaries] = useState<ClientSummary[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [showAddModal, setShowAddModal] = useState(false);
   const [selectedNote, setSelectedNote] = useState<ProgressNote | null>(null);
+  const [selectedClient, setSelectedClient] = useState<string | null>(null);
+  const [showClientHistory, setShowClientHistory] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [uploadMessage, setUploadMessage] = useState('');
 
+  const ITEMS_PER_PAGE = 5;
+
   // Load notes from localStorage on component mount
   useEffect(() => {
     loadNotes();
   }, []);
 
-  // Filter notes based on search term and status
+  // Generate client summaries when notes change
   useEffect(() => {
-    let filtered = notes;
+    generateClientSummaries();
+  }, [notes]);
+
+  // Filter summaries based on search term and status
+  useEffect(() => {
+    let filtered = clientSummaries;
 
     if (searchTerm) {
-      filtered = filtered.filter(note =>
-        note.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        note.service.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        note.condition.toLowerCase().includes(searchTerm.toLowerCase())
+      filtered = filtered.filter(summary =>
+        summary.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        summary.lastService.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     if (statusFilter !== 'all') {
-      filtered = filtered.filter(note => note.status === statusFilter);
+      filtered = filtered.filter(summary => summary.lastStatus === statusFilter);
     }
 
-    setFilteredNotes(filtered);
-  }, [notes, searchTerm, statusFilter]);
+    setFilteredSummaries(filtered);
+  }, [clientSummaries, searchTerm, statusFilter]);
 
   const loadNotes = () => {
     setIsLoading(true);
@@ -80,6 +103,50 @@ const ProgressNotesTable: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const generateClientSummaries = () => {
+    const summaryMap = new Map<string, ClientSummary>();
+
+    notes.forEach(note => {
+      const existing = summaryMap.get(note.clientName);
+      
+      if (existing) {
+        existing.totalNotes += 1;
+        existing.totalHours += Number(note.hours) || 0;
+        
+        // Update counts based on status
+        if (note.status === 'Pending') existing.pendingCount += 1;
+        else if (note.status === 'Approved') existing.approvedCount += 1;
+        else if (note.status === 'Rejected') existing.rejectedCount += 1;
+
+        // Update last service if this note is more recent
+        if (new Date(note.createdAt) > new Date(existing.lastDate)) {
+          existing.lastService = note.service;
+          existing.lastDate = note.date;
+          existing.lastStatus = note.status;
+        }
+      } else {
+        summaryMap.set(note.clientName, {
+          clientName: note.clientName,
+          totalNotes: 1,
+          totalHours: Number(note.hours) || 0,
+          lastService: note.service,
+          lastDate: note.date,
+          lastStatus: note.status,
+          pendingCount: note.status === 'Pending' ? 1 : 0,
+          approvedCount: note.status === 'Approved' ? 1 : 0,
+          rejectedCount: note.status === 'Rejected' ? 1 : 0,
+        });
+      }
+    });
+
+    // Sort by most recent activity
+    const summaries = Array.from(summaryMap.values()).sort((a, b) => 
+      new Date(b.lastDate).getTime() - new Date(a.lastDate).getTime()
+    );
+
+    setClientSummaries(summaries);
   };
 
   const saveNotes = (newNotes: ProgressNote[]) => {
@@ -119,65 +186,16 @@ const ProgressNotesTable: React.FC = () => {
     }
   };
 
-  // PDF Export
-  const handleExportPDF = () => {
-    const doc = new jsPDF();
-    doc.text("Progress Notes", 14, 16);
-    autoTable(doc, {
-      startY: 22,
-      head: [['Client', 'Service', 'Hours', 'Condition', 'Date', 'Status']],
-      body: notes.map(note => [
-        note.clientName,
-        note.service,
-        note.hours,
-        note.condition,
-        note.date,
-        note.status
-      ]),
-    });
-    doc.save('progress-notes.pdf');
+  const handleViewClient = (clientName: string) => {
+    setSelectedClient(clientName);
+    setShowClientHistory(true);
+    setCurrentPage(1);
   };
 
-  const handleExportSinglePDF = (note: ProgressNote) => {
-    const doc = new jsPDF();
-    doc.text("Progress Note", 14, 16);
-    autoTable(doc, {
-      startY: 22,
-      head: [['Field', 'Value']],
-      body: [
-        ['Client', note.clientName],
-        ['Service', note.service],
-        ['Hours', note.hours],
-        ['Condition', note.condition],
-        ['Date', note.date],
-        ['Status', note.status],
-        ['Observations', note.observations],
-        ['Incidents', note.incidents],
-        ['Signature', note.signature],
-      ],
-    });
-    doc.save(`progress-note-${note.id}.pdf`);
-  };
-
-  const handleDownloadBlankForm = () => {
-    const doc = new jsPDF();
-    doc.text("Progress Note Form", 14, 16);
-    autoTable(doc, {
-      startY: 22,
-      head: [['Field', 'Value']],
-      body: [
-        ['Client', '_________________________'],
-        ['Service', '_________________________'],
-        ['Hours', '_________________________'],
-        ['Condition', '_________________________'],
-        ['Date', '_________________________'],
-        ['Status', '_________________________'],
-        ['Observations', '_________________________'],
-        ['Incidents', '_________________________'],
-        ['Signature', '_________________________'],
-      ],
-    });
-    doc.save('progress-note-blank-form.pdf');
+  const getClientNotes = (clientName: string) => {
+    return notes
+      .filter(note => note.clientName === clientName)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,7 +203,6 @@ const ProgressNotesTable: React.FC = () => {
     setUploadMessage('');
     const file = e.target.files?.[0];
     if (file) {
-      // You can process the file here (e.g., upload to server or just show a message)
       setTimeout(() => {
         setUploading(false);
         setUploadMessage('File uploaded successfully!');
@@ -381,6 +398,157 @@ const ProgressNotesTable: React.FC = () => {
     );
   };
 
+  const ClientHistoryModal = () => {
+    if (!showClientHistory || !selectedClient) return null;
+
+    const clientNotes = getClientNotes(selectedClient);
+    const totalPages = Math.ceil(clientNotes.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const currentNotes = clientNotes.slice(startIndex, endIndex);
+
+    const totalHours = clientNotes.reduce((sum, note) => sum + Number(note.hours || 0), 0).toFixed(1);
+
+    return (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-2xl p-6 max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center space-x-3">
+              <User className="w-8 h-8 text-blue-600" />
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">{selectedClient}</h2>
+                <p className="text-gray-600">Progress Notes History ({clientNotes.length} total notes)</p>
+              </div>
+            </div>
+            <button
+              onClick={() => {
+                setShowClientHistory(false);
+                setSelectedClient(null);
+                setCurrentPage(1);
+              }}
+              className="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Client Summary Stats */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-blue-50 rounded-lg p-4">
+              <p className="text-blue-600 text-sm font-medium">Total Notes</p>
+              <p className="text-2xl font-bold text-blue-900">{clientNotes.length}</p>
+            </div>
+            <div className="bg-green-50 rounded-lg p-4">
+              <p className="text-green-600 text-sm font-medium">Total Hours</p>
+              <p className="text-2xl font-bold text-green-900">
+                {clientNotes.reduce((sum, note) => sum + Number(note.hours || 0), 0).toFixed(1)}
+              </p>
+            </div>
+            <div className="bg-yellow-50 rounded-lg p-4">
+              <p className="text-yellow-600 text-sm font-medium">Pending</p>
+              <p className="text-2xl font-bold text-yellow-900">
+                {clientNotes.filter(note => note.status === 'Pending').length}
+              </p>
+            </div>
+            <div className="bg-purple-50 rounded-lg p-4">
+              <p className="text-purple-600 text-sm font-medium">Approved</p>
+              <p className="text-2xl font-bold text-purple-900">
+                {clientNotes.filter(note => note.status === 'Approved').length}
+              </p>
+            </div>
+          </div>
+
+          {/* Notes Table */}
+          <div className="overflow-x-auto mb-6">
+            <table className="min-w-full text-sm border border-gray-200 rounded-lg">
+              <thead>
+                <tr className="bg-gray-50">
+                  <th className="p-3 border-b text-left font-medium text-gray-700">Date</th>
+                  <th className="p-3 border-b text-left font-medium text-gray-700">Service</th>
+                  <th className="p-3 border-b text-left font-medium text-gray-700">Hours</th>
+                  <th className="p-3 border-b text-left font-medium text-gray-700">Condition</th>
+                  <th className="p-3 border-b text-left font-medium text-gray-700">Status</th>
+                  <th className="p-3 border-b text-left font-medium text-gray-700">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentNotes.map((note, index) => (
+                  <tr key={note.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                    <td className="p-3 border-b">{note.date}</td>
+                    <td className="p-3 border-b">{note.service}</td>
+                    <td className="p-3 border-b text-center">{note.hours}</td>
+                    <td className="p-3 border-b">{note.condition}</td>
+                    <td className="p-3 border-b">
+                      <span className={`inline-flex items-center space-x-1 px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(note.status)}`}>
+                        {getStatusIcon(note.status)}
+                        <span>{note.status}</span>
+                      </span>
+                    </td>
+                    <td className="p-3 border-b">
+                      <button
+                        onClick={() => setSelectedNote(note)}
+                        className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        <Eye className="w-4 h-4" />
+                        <span>View</span>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-gray-700">
+                Showing {startIndex + 1} to {Math.min(endIndex, clientNotes.length)} of {clientNotes.length} notes
+              </p>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="flex items-center space-x-1 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  <span>Previous</span>
+                </button>
+                
+                <div className="flex space-x-1">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-3 py-2 rounded-lg transition-colors ${
+                        currentPage === page
+                          ? 'bg-blue-600 text-white'
+                          : 'border border-gray-300 hover:bg-gray-50'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="flex items-center space-x-1 px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <span>Next</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   const NoteDetailModal = () => {
     if (!selectedNote) return null;
 
@@ -478,8 +646,8 @@ const ProgressNotesTable: React.FC = () => {
               <FileText className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Progress Notes</h1>
-              <p className="text-gray-600">Manage and track patient care progress notes</p>
+              <h1 className="text-3xl font-bold text-gray-900">Progress Notes by Client</h1>
+              <p className="text-gray-600">Manage and track patient care progress notes grouped by client</p>
             </div>
           </div>
           <div className="flex gap-2 flex-wrap">
@@ -490,14 +658,7 @@ const ProgressNotesTable: React.FC = () => {
               <Plus className="w-4 h-4" />
               <span>Add Progress Note</span>
             </button>
-            <button
-              onClick={handleExportPDF}
-              className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              <Download className="w-4 h-4" />
-              <span>Export as PDF</span>
-            </button>
-           
+            
             <label className="flex items-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors cursor-pointer">
               <input
                 type="file"
@@ -520,10 +681,20 @@ const ProgressNotesTable: React.FC = () => {
           <div className="bg-blue-50 rounded-xl p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-600 text-sm font-medium">Total Notes</p>
-                <p className="text-2xl font-bold text-blue-900">{notes.length}</p>
+                <p className="text-blue-600 text-sm font-medium">Total Clients</p>
+                <p className="text-2xl font-bold text-blue-900">{clientSummaries.length}</p>
               </div>
-              <FileText className="w-8 h-8 text-blue-600" />
+              <User className="w-8 h-8 text-blue-600" />
+            </div>
+          </div>
+
+          <div className="bg-green-50 rounded-xl p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-green-600 text-sm font-medium">Total Notes</p>
+                <p className="text-2xl font-bold text-green-900">{notes.length}</p>
+              </div>
+              <FileText className="w-8 h-8 text-green-600" />
             </div>
           </div>
 
@@ -539,27 +710,15 @@ const ProgressNotesTable: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-green-50 rounded-xl p-4">
+          <div className="bg-purple-50 rounded-xl p-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-600 text-sm font-medium">Approved</p>
-                <p className="text-2xl font-bold text-green-900">
+                <p className="text-purple-600 text-sm font-medium">Approved</p>
+                <p className="text-2xl font-bold text-purple-900">
                   {notes.filter(note => note.status === 'Approved').length}
                 </p>
               </div>
-              <CheckCircle className="w-8 h-8 text-green-600" />
-            </div>
-          </div>
-
-          <div className="bg-red-50 rounded-xl p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-red-600 text-sm font-medium">Rejected</p>
-                <p className="text-2xl font-bold text-red-900">
-                  {notes.filter(note => note.status === 'Rejected').length}
-                </p>
-              </div>
-              <AlertCircle className="w-8 h-8 text-red-600" />
+              <CheckCircle className="w-8 h-8 text-purple-600" />
             </div>
           </div>
         </div>
@@ -571,7 +730,7 @@ const ProgressNotesTable: React.FC = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Search notes..."
+                placeholder="Search clients..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
@@ -598,19 +757,19 @@ const ProgressNotesTable: React.FC = () => {
         </div>
       </div>
 
-      {/* Notes Grid */}
-      <div className="space-y-4">
+      {/* Client Summaries Table */}
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100">
         {isLoading ? (
           <div className="flex items-center justify-center py-12">
             <RefreshCw className="w-8 h-8 text-blue-600 animate-spin" />
           </div>
-        ) : filteredNotes.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center shadow-sm border border-gray-100">
-            <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">No Progress Notes Found</h3>
+        ) : filteredSummaries.length === 0 ? (
+          <div className="p-12 text-center">
+            <User className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">No Clients Found</h3>
             <p className="text-gray-600 mb-6">
               {searchTerm || statusFilter !== 'all' 
-                ? 'No notes match your current filters. Try adjusting your search criteria.'
+                ? 'No clients match your current filters. Try adjusting your search criteria.'
                 : 'Get started by creating your first progress note.'
               }
             </p>
@@ -625,56 +784,65 @@ const ProgressNotesTable: React.FC = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full text-sm border">
+            <table className="min-w-full">
               <thead>
-                <tr className="bg-blue-50">
-                  <th className="p-2 border">Client</th>
-                  <th className="p-2 border">Service</th>
-                  <th className="p-2 border">Hours</th>
-                  <th className="p-2 border">Condition</th>
-                  <th className="p-2 border">Date</th>
-                  <th className="p-2 border">Status</th>
-                  <th className="p-2 border">Action</th>
+                <tr className="bg-gray-50 border-b border-gray-200">
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Client Name</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Total Notes</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Total Hours</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Last Service</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Last Date</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Status Summary</th>
+                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Actions</th>
                 </tr>
               </thead>
-              <tbody>
-                {notes.length === 0 ? (
-                  <tr>
-                    <td colSpan={7} className="text-center p-6 text-gray-500">No progress notes found.</td>
+              <tbody className="divide-y divide-gray-200">
+                {filteredSummaries.map((summary, index) => (
+                  <tr key={summary.clientName} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                          <User className="w-5 h-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <p className="font-medium text-gray-900">{summary.clientName}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-900">{summary.totalNotes}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900">{summary.totalHours.toFixed(1)}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900">{summary.lastService}</td>
+                    <td className="px-6 py-4 text-sm text-gray-900">{summary.lastDate}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex space-x-2">
+                        {summary.pendingCount > 0 && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            {summary.pendingCount} Pending
+                          </span>
+                        )}
+                        {summary.approvedCount > 0 && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            {summary.approvedCount} Approved
+                          </span>
+                        )}
+                        {summary.rejectedCount > 0 && (
+                          <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            {summary.rejectedCount} Rejected
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => handleViewClient(summary.clientName)}
+                        className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
+                      >
+                        <Eye className="w-4 h-4" />
+                        <span>View History</span>
+                      </button>
+                    </td>
                   </tr>
-                ) : (
-                  notes.map(note => (
-                    <tr key={note.id} className="even:bg-gray-50">
-                      <td className="p-2 border">{note.clientName}</td>
-                      <td className="p-2 border">{note.service}</td>
-                      <td className="p-2 border text-center">{note.hours}</td>
-                      <td className="p-2 border">{note.condition}</td>
-                      <td className="p-2 border">{note.date}</td>
-                      <td className="p-2 border">
-                        <span className="inline-flex items-center gap-1">
-                          {getStatusIcon(note.status)}
-                          {note.status}
-                        </span>
-                      </td>
-                      <td className="p-2 border flex gap-2">
-                        <button
-                          onClick={() => setSelectedNote(note)}
-                          className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
-                        >
-                          <Eye className="w-4 h-4" />
-                          <span>View</span>
-                        </button>
-                        <button
-                          onClick={() => handleExportSinglePDF(note)}
-                          className="flex items-center space-x-1 text-green-600 hover:text-green-800 transition-colors"
-                        >
-                          <Download className="w-4 h-4" />
-                          <span>Export</span>
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                )}
+                ))}
               </tbody>
             </table>
           </div>
@@ -683,6 +851,7 @@ const ProgressNotesTable: React.FC = () => {
 
       {/* Modals */}
       <AddNoteModal />
+      <ClientHistoryModal />
       <NoteDetailModal />
       <SuccessMessage />
     </div>
