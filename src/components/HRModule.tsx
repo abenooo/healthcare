@@ -409,13 +409,7 @@ const HRModule: React.FC<HRModuleProps> = ({ userRole }) => {
 
       {/* Employee Document Status */}
       <div className="bg-white rounded-xl p-6 border border-gray-100">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-gray-900">Employee Document Status</h3>
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
-            <Upload className="w-4 h-4" />
-            <span>Send Document</span>
-          </button>
-        </div>
+      
         
         <div className="space-y-4">
           {staffData.map((staff) => (
