@@ -14,6 +14,8 @@ import {
   Calendar,
 } from "lucide-react"
 import Logo from "../../public/logo.webp"
+import { Link, useLocation } from "react-router-dom"
+
 interface NavbarProps {
   onLoginClick?: () => void
   onDemoClick?: () => void
@@ -44,6 +46,7 @@ export default function Navbar({
 }: NavbarProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isProfileOpen, setIsProfileOpen] = useState(false)
+  const location = useLocation()
 
   const isUserLoggedIn = isLoggedIn || !!user
 
@@ -141,15 +144,24 @@ export default function Navbar({
             {/* Desktop Navigation - Only show if not logged in */}
             {!isUserLoggedIn && (
               <div className="hidden lg:flex items-center space-x-8">
-                {navigationItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.to}
-                    className="font-medium transition-colors duration-200 py-2 text-gray-700 hover:text-[#77658B]"
-                  >
-                    {item.name}
-                  </a>
-                ))}
+                {navigationItems.map((item) => {
+                  const isActive =
+                    location.pathname === item.to ||
+                    (item.to !== "/" && location.pathname.startsWith(item.to));
+                  return (
+                    <Link
+                      key={item.name}
+                      to={item.to}
+                      className={`font-medium transition-colors duration-200 py-2
+                        ${isActive
+                          ? "text-[#77658B] underline underline-offset-4"
+                          : "text-gray-700 hover:text-[#77658B] hover:underline hover:underline-offset-4"}
+                      `}
+                    >
+                      {item.name}
+                    </Link>
+                  );
+                })}
               </div>
             )}
 
@@ -202,16 +214,25 @@ export default function Navbar({
             <div className="px-4 py-6 space-y-4">
               {!isUserLoggedIn ? (
                 <>
-                  {navigationItems.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.to}
-                      className="block font-medium text-gray-700 hover:text-[#77658B] py-3 px-2 rounded-lg hover:bg-purple-50 transition-colors duration-200"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
+                  {navigationItems.map((item) => {
+                    const isActive =
+                      location.pathname === item.to ||
+                      (item.to !== "/" && location.pathname.startsWith(item.to));
+                    return (
+                      <Link
+                        key={item.name}
+                        to={item.to}
+                        className={`block font-medium py-3 px-2 rounded-lg transition-colors duration-200
+                          ${isActive
+                            ? "bg-purple-100 text-[#77658B] underline underline-offset-4"
+                            : "text-gray-700 hover:text-[#77658B] hover:underline hover:underline-offset-4 hover:bg-purple-50"}
+                        `}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {item.name}
+                      </Link>
+                    );
+                  })}
                   
                   <div className="pt-4 space-y-3">
                     <button
