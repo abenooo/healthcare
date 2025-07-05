@@ -262,7 +262,7 @@ export default function Navbar({
                   <div className="flex items-center space-x-3 p-4 bg-purple-50 rounded-lg">
                     <img
                       src={userInfo.avatar || "/placeholder.svg"}
-                      alt={userInfo.name}
+                      alt={userInfo.name || "Abenezer "}
                       className="w-12 h-12 rounded-full object-cover border-2 border-purple-200"
                     />
                     <div>
