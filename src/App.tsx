@@ -16,6 +16,8 @@ import FAQ from "./components/FAQ"
 import Careers from "./components/Careers.tsx"
 import About from "./components/About.tsx"
 import BlogPage from "./components/BlogPage.tsx"
+import AdminBlog from "./components/AdminBlog"
+import AdminCareers from "./components/AdminCareers"
 
 import Navbar from "./components/Navbar"
 import LoginModal from "./components/LoginModal"
@@ -25,6 +27,7 @@ import Footer from "./components/Footer"
 import BookingModal from "./components/booking-modal"
 import ServicePage from "./components/ServicePage"
 import ProgressNotesTable from "./components/ProgressNotesTable"
+import Analytics from "./components/Analytics"
 
 
 function App() {
@@ -95,10 +98,14 @@ function App() {
         return <DocumentCenter userRole={user?.role} documentType="employee" />
       case "onboarding":
         return <Onboarding userRole={user?.role} />
-      case "reports":
-        return <Dashboard setActiveTab={setActiveTab} userRole={user?.role} />
+      // case "reports":
+      //   return <div className="p-8 text-xl">Reports & Analytics coming soon...</div>
       case "service-approvals":
         return <ServiceApprovals userRole={user?.role} />
+      case "blog":
+        return <AdminBlog />
+      case "careers":
+        return <AdminCareers />
       default:
         return <Dashboard setActiveTab={setActiveTab} userRole={user?.role} />
     }
@@ -242,7 +249,7 @@ function App() {
 
   const services = [
     {
-      name: "In-Home Service",
+      name: "In-Home Service 123",
       description:
         "Personalized support for home activities, medication reminders, and goal setting to enhance daily living.",
       icon: Home,
