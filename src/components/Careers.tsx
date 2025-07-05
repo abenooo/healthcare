@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Download, FileText, UserPlus, X } from "lucide-react";
-
+import { Download, FileText, UserPlus, X, Briefcase, Calendar } from "lucide-react";
 
 const jobs = [
   {
@@ -167,6 +166,36 @@ const jobs = [
   },
 ];
 
+const jobPostings = [
+  {
+    title: 'Senior Cardiologist',
+    department: 'Cardiology',
+    type: 'Full-time',
+    applications: 12,
+    status: 'Active',
+    posted: '2024-01-10',
+    salary: '$180,000 - $220,000'
+  },
+  {
+    title: 'Registered Nurse',
+    department: 'Emergency',
+    type: 'Full-time',
+    applications: 28,
+    status: 'Active',
+    posted: '2024-01-08',
+    salary: '$75,000 - $95,000'
+  },
+  {
+    title: 'Medical Administrator',
+    department: 'Administration',
+    type: 'Part-time',
+    applications: 15,
+    status: 'Review',
+    posted: '2024-01-05',
+    salary: '$45,000 - $55,000'
+  }
+];
+
 const Careers = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedJob, setSelectedJob] = useState<string | null>(null);
@@ -186,15 +215,6 @@ const Careers = () => {
     setForm({ name: "", phone: "", email: "", message: "", files: [] });
     setSubmitted(false);
   };
-
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     setForm((prev) => ({
-  //       ...prev,
-  //       files: [...prev.files, ...Array.from(e.target.files)],
-  //     }));
-  //   }
-  // };
 
   const handleRemoveFile = (index: number) => {
     setForm((prev) => ({
@@ -225,7 +245,6 @@ const Careers = () => {
       <div className="max-w-4xl mx-auto text-center mb-12">
         <h1 className="text-4xl md:text-5xl font-extrabold text-[#77658B] mb-4">Careers at Shalom Healthcare & Services</h1>
         <p className="text-lg text-gray-700 mb-2">We are Hiring. We look forward to hearing from you.</p>
-    
       </div>
 
       {/* Jobs List */}
@@ -343,7 +362,6 @@ const Careers = () => {
                     <input
                       type="file"
                       ref={fileInputRef}
-                      // onChange={handleFileChange}
                       className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#77658B]/10 file:text-[#77658B] hover:file:bg-[#9AC15D]/10"
                       multiple
                       accept=".pdf,.doc,.docx"
@@ -390,6 +408,73 @@ const Careers = () => {
         <div>Address: 7826 Eastern Ave NW, Suite 201, Washington, DC 20012</div>
         <div>Office Number: 1(202) 621-8792</div>
         <div className="mt-4 text-xs text-gray-400">Copyright © 2023 Shalom Health Care Services - All Rights Reserved.</div>
+      </div>
+
+      <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white rounded-xl p-6 border border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center">
+                <Briefcase className="w-6 h-6 text-blue-600" />
+              </div>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-1">12</h3>
+            <p className="text-gray-600 text-sm">Open Positions</p>
+          </div>
+          <div className="bg-white rounded-xl p-6 border border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
+                <UserPlus className="w-6 h-6 text-green-600" />
+              </div>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-1">55</h3>
+            <p className="text-gray-600 text-sm">Applications</p>
+          </div>
+          <div className="bg-white rounded-xl p-6 border border-gray-100">
+            <div className="flex items-center justify-between mb-4">
+              <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-purple-600" />
+              </div>
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-1">8</h3>
+            <p className="text-gray-600 text-sm">Interviews Scheduled</p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl p-6 border border-gray-100">
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-xl font-semibold text-gray-900">Active Job Postings</h3>
+            <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+              Post New Job
+            </button>
+          </div>
+          <div className="space-y-4">
+            {jobPostings.map((job, index) => (
+              <div key={index} className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-semibold text-gray-900">{job.title}</h4>
+                    <p className="text-sm text-gray-600">{job.department} • {job.type}</p>
+                    <div className="flex items-center space-x-4 mt-1">
+                      <span className="text-xs text-gray-500">Posted: {job.posted}</span>
+                      <span className="text-xs text-gray-500">Salary: {job.salary}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <span className="text-sm text-gray-600">{job.applications} applications</span>
+                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      job.status === 'Active' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {job.status}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
