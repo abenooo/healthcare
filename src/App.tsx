@@ -446,7 +446,8 @@ function App() {
           </main>
         </div>
       </div>
-      <Footer />
+      {/* Only show Footer for public site (not logged in) */}
+      {!isAuthenticated && <Footer />}
       {showBookingModal && (
         <BookingModal isOpen={showBookingModal} onClose={() => setShowBookingModal(false)} services={services} />
       )}
