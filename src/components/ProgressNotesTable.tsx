@@ -46,7 +46,6 @@ interface ClientSummary {
 }
 
 const ProgressNotesTable: React.FC = () => {
-  const [signature, setSignature] = useState('')
   const [notes, setNotes] = useState<ProgressNote[]>([]);
   const [clientSummaries, setClientSummaries] = useState<ClientSummary[]>([]);
   const [filteredSummaries, setFilteredSummaries] = useState<ClientSummary[]>([]);
@@ -217,6 +216,7 @@ const ProgressNotesTable: React.FC = () => {
   };
 
   const AddNoteModal = () => {
+    const FORM_STORAGE_KEY = "progress_note_form";
     const [form, setForm] = useState({
       clientName: '',
       service: '',
@@ -354,8 +354,62 @@ const ProgressNotesTable: React.FC = () => {
           incidents: '',
           signature: ''
         });
+        setSelectedService("");
+        setSelectedDetails([]);
+        // 3. Clear the saved form data after submit
+        localStorage.removeItem(FORM_STORAGE_KEY);
       }, 1000);
     };
+
+    // 1. Load saved form data from localStorage when the modal opens
+    useEffect(() => {
+      if (showAddModal) {
+        const saved = localStorage.getItem(FORM_STORAGE_KEY);
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            setForm(parsed.form || {
+              clientName: '',
+              service: '',
+              hours: '',
+              condition: '',
+              observations: '',
+              incidents: '',
+              signature: ''
+            });
+            setSelectedService(parsed.selectedService || "");
+            setSelectedDetails(parsed.selectedDetails || []);
+          } catch {
+            // ignore parse errors
+          }
+        }
+      }
+      // Optionally, clear form if modal is closed
+      if (!showAddModal) {
+        setForm({
+          clientName: '',
+          service: '',
+          hours: '',
+          condition: '',
+          observations: '',
+          incidents: '',
+          signature: ''
+        });
+        setSelectedService("");
+        setSelectedDetails([]);
+      }
+      // eslint-disable-next-line
+    }, [showAddModal]);
+
+    // 2. Save form data to localStorage on every change
+    useEffect(() => {
+      if (showAddModal) {
+        localStorage.setItem(
+          FORM_STORAGE_KEY,
+          JSON.stringify({ form, selectedService, selectedDetails })
+        );
+      }
+    }, [form, selectedService, selectedDetails, showAddModal]);
 
     if (!showAddModal) return null;
 
@@ -470,8 +524,8 @@ const ProgressNotesTable: React.FC = () => {
                {/* Digital Signature */}
           <div className="border-t pt-6">
             <DigitalSignature
-              onSignatureChange={setSignature}
-              value={signature}
+              onSignatureChange={sig => setForm(prev => ({ ...prev, signature: sig }))}
+              value={form.signature}
             />
           </div>
 
