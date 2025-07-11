@@ -220,8 +220,7 @@ const HRModule: React.FC<HRModuleProps> = ({ userRole }) => {
   const hrSections = [
     { id: 'staff', name: 'Staff Management', icon: Users },
     { id: 'documents', name: 'Employee Documents', icon: FileText },
-    { id: 'recruitment', name: 'Recruitment', icon: UserPlus },
-    { id: 'performance', name: 'Performance', icon: TrendingUp }
+    { id: 'recruitment', name: 'Recruitment', icon: UserPlus }
   ];
 
   const getDocumentStatusColor = (status: string) => {
@@ -250,6 +249,21 @@ const HRModule: React.FC<HRModuleProps> = ({ userRole }) => {
     }
   };
 
+  const totalStaff = staffData.length;
+  const onboardingStaff = staffData.filter(s => s.status === 'Onboarding').length;
+  const activeStaff = staffData.filter(s => s.status === 'Active').length;
+  const avgSalary = staffData.length
+    ? Math.round(
+        staffData.reduce((sum, s) => sum + Number(s.salary.replace(/[^0-9.-]+/g, "")), 0) / staffData.length
+      )
+    : 0;
+  const avgPerformance = staffData.filter(s => s.performance).length
+    ? (
+        staffData.filter(s => s.performance).reduce((sum, s) => sum + (s.performance || 0), 0) /
+        staffData.filter(s => s.performance).length
+      ).toFixed(1)
+    : "N/A";
+
   const renderStaffManagement = () => (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -259,38 +273,35 @@ const HRModule: React.FC<HRModuleProps> = ({ userRole }) => {
               <Users className="w-6 h-6 text-blue-600" />
             </div>
           </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-1">245</h3>
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">{totalStaff}</h3>
           <p className="text-gray-600 text-sm">Total Staff</p>
         </div>
-        
         <div className="bg-white rounded-xl p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 bg-green-50 rounded-xl flex items-center justify-center">
-              <Clock className="w-6 h-6 text-green-600" />
+              <CheckCircle className="w-6 h-6 text-green-600" />
             </div>
           </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-1">98.2%</h3>
-          <p className="text-gray-600 text-sm">Attendance Rate</p>
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">{activeStaff}</h3>
+          <p className="text-gray-600 text-sm">Active Staff</p>
         </div>
-        
         <div className="bg-white rounded-xl p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
-            <div className="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center">
-              <DollarSign className="w-6 h-6 text-purple-600" />
+            <div className="w-12 h-12 bg-yellow-50 rounded-xl flex items-center justify-center">
+              <Clock className="w-6 h-6 text-yellow-600" />
             </div>
           </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-1">$85K</h3>
-          <p className="text-gray-600 text-sm">Avg. Salary</p>
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">{onboardingStaff}</h3>
+          <p className="text-gray-600 text-sm">Onboarding</p>
         </div>
-        
         <div className="bg-white rounded-xl p-6 border border-gray-100">
           <div className="flex items-center justify-between mb-4">
             <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
               <MessageSquare className="w-6 h-6 text-amber-600" />
             </div>
           </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-1">4.8/5</h3>
-          <p className="text-gray-600 text-sm">Satisfaction</p>
+          <h3 className="text-2xl font-bold text-gray-900 mb-1">{avgPerformance}/5</h3>
+          <p className="text-gray-600 text-sm">Avg. Performance</p>
         </div>
       </div>
 
