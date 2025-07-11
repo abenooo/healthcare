@@ -388,7 +388,13 @@ const Onboarding: React.FC<OnboardingProps> = ({ userRole }) => {
     </div>
   );
 
-  const currentData = activeTab === 'new_hires' ? newHires : patientOnboarding;
+  const notFullyOnboardedEmployees = newHires.filter(e => e.completionPercentage < 100);
+  const fullyOnboardedEmployees = newHires.filter(e => e.completionPercentage === 100);
+
+  const notFullyOnboardedPatients = patientOnboarding.filter(p => p.completionPercentage < 100);
+  const fullyOnboardedPatients = patientOnboarding.filter(p => p.completionPercentage === 100);
+
+  const currentData = activeTab === 'new_hires' ? notFullyOnboardedEmployees : notFullyOnboardedPatients;
 
   return (
     <div className="p-6 space-y-6">
@@ -587,6 +593,56 @@ const Onboarding: React.FC<OnboardingProps> = ({ userRole }) => {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Employee Documents */}
+      <div className="bg-white rounded-xl p-6 border border-gray-100 mt-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Employee Documents</h2>
+        {fullyOnboardedEmployees.length === 0 ? (
+          <p className="text-gray-500">No fully onboarded employees yet.</p>
+        ) : (
+          <div className="space-y-4">
+            {fullyOnboardedEmployees.map(emp => (
+              <div key={emp.id} className="p-4 border border-gray-200 rounded-lg flex items-center space-x-4">
+                <img src={emp.avatar} alt={emp.name} className="w-12 h-12 rounded-full object-cover" />
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900">{emp.name}</h3>
+                  <p className="text-sm text-gray-600">{emp.position} • {emp.department}</p>
+                </div>
+                <div>
+                  <span className="px-2 py-1 rounded-full text-xs font-medium border bg-green-100 text-green-800">
+                    Onboarded
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Patient Documents */}
+      <div className="bg-white rounded-xl p-6 border border-gray-100 mt-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Patient Documents</h2>
+        {fullyOnboardedPatients.length === 0 ? (
+          <p className="text-gray-500">No fully onboarded patients yet.</p>
+        ) : (
+          <div className="space-y-4">
+            {fullyOnboardedPatients.map(pat => (
+              <div key={pat.id} className="p-4 border border-gray-200 rounded-lg flex items-center space-x-4">
+                <img src={pat.avatar} alt={pat.name} className="w-12 h-12 rounded-full object-cover" />
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900">{pat.name}</h3>
+                  <p className="text-sm text-gray-600">{pat.condition}</p>
+                </div>
+                <div>
+                  <span className="px-2 py-1 rounded-full text-xs font-medium border bg-green-100 text-green-800">
+                    Onboarded
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Detail Modal */}
