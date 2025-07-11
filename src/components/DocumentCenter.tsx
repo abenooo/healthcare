@@ -29,123 +29,407 @@ interface DocumentCenterProps {
 const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole, documentType = 'patient' }) => {
   const [activeFilter, setActiveFilter] = useState('all');
   const [selectedDocument, setSelectedDocument] = useState<any>(null);
+  const [selectedPerson, setSelectedPerson] = useState<any>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const patientDocuments = [
+  const fullyOnboardedEmployees = [
     {
       id: 1,
-      patientName: 'Maria Rodriguez 12',
-      documentType: 'Medical History',
-      fileName: 'medical_history_maria_rodriguez.pdf',
-      uploadDate: '2024-01-20',
-      lastModified: '2024-01-20',
-      status: 'complete',
-      size: '2.4 MB',
-      uploadedBy: 'Dr. Sarah Johnson',
-      category: 'medical',
-      confidential: true,
-      description: 'Complete medical history including allergies, medications, and previous treatments.'
+      name: "Dr. Amanda Foster",
+      position: "Cardiologist",
+      department: "Cardiology",
+      startDate: "2024-02-01",
+      email: "amanda.foster@email.com",
+      phone: "(555) 123-4567",
+      address: "123 Medical Drive, Springfield",
+      avatar: "https://images.pexels.com/photos/5452268/pexels-photo-5452268.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      onboardingSteps: [
+        { step: "Personal Information", status: "completed", date: "2024-01-25" },
+        { step: "Employment Contract", status: "completed", date: "2024-01-26" },
+        { step: "Background Check", status: "completed", date: "2024-01-27" },
+        { step: "Certification Verification", status: "completed", date: "2024-01-28" },
+        { step: "Care Training", status: "completed", date: "2024-01-29" },
+        { step: "Patient Assignment", status: "completed", date: "2024-01-30" },
+        { step: "System Access Setup", status: "completed", date: "2024-01-31" }
+      ],
+      documents: [
+        { name: "Resume", status: "uploaded", type: "pdf" },
+        { name: "Care Certification", status: "uploaded", type: "pdf" },
+        { name: "Background Check", status: "uploaded", type: "pdf" },
+        { name: "Employment Contract", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "Michael Johnson",
+        relationship: "Husband",
+        phone: "(555) 987-6543"
+      }
     },
     {
       id: 2,
-      patientName: 'James Wilson',
-      documentType: 'Care Plan',
-      fileName: 'care_plan_james_wilson.pdf',
-      uploadDate: '2024-01-19',
-      lastModified: '2024-01-21',
-      status: 'pending_review',
-      size: '1.8 MB',
-      uploadedBy: 'Michael Chen',
-      category: 'care_plan',
-      confidential: true,
-      description: 'Comprehensive care plan for dementia patient including daily routines and emergency contacts.'
+      name: "David Thompson", 
+      position: "Care Giver",
+      department: "Home Care",
+      startDate: "2024-02-10",
+      email: "sarah.johnson@email.com",
+      phone: "(555) 123-4567",
+      address: "123 Care Lane, Springfield",
+      avatar: "https://images.pexels.com/photos/6129967/pexels-photo-6129967.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      onboardingSteps: [
+        { step: "Personal Information", status: "completed", date: "2024-01-25" },
+        { step: "Employment Contract", status: "completed", date: "2024-01-26" },
+        { step: "Background Check", status: "completed", date: "2024-01-27" },
+        { step: "Certification Verification", status: "completed", date: "2024-01-28" },
+        { step: "Care Training", status: "completed", date: "2024-01-29" },
+        { step: "Patient Assignment", status: "completed", date: "2024-01-30" },
+        { step: "System Access Setup", status: "completed", date: "2024-01-31" }
+      ],
+      documents: [
+        { name: "Resume", status: "uploaded", type: "pdf" },
+        { name: "Care Certification", status: "uploaded", type: "pdf" },
+        { name: "Background Check", status: "uploaded", type: "pdf" },
+        { name: "Employment Contract", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "Michael Johnson",
+        relationship: "Husband",
+        phone: "(555) 987-6543"
+      }
+    },
+    {
+      id: 2,
+      name: "Sarah Johnson",
+      position: "Care Giver",
+      department: "Home Care",
+      startDate: "2024-02-10",
+      email: "sarah.johnson@email.com",
+      phone: "(555) 123-4567",
+      address: "123 Care Lane, Springfield",
+      avatar: "https://images.pexels.com/photos/6129967/pexels-photo-6129967.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      onboardingSteps: [
+        { step: "Personal Information", status: "completed", date: "2024-01-25" },
+        { step: "Employment Contract", status: "completed", date: "2024-01-26" },
+        { step: "Background Check", status: "completed", date: "2024-01-27" },
+        { step: "Certification Verification", status: "completed", date: "2024-01-28" },
+        { step: "Care Training", status: "completed", date: "2024-01-29" },
+        { step: "Patient Assignment", status: "completed", date: "2024-01-30" },
+        { step: "System Access Setup", status: "completed", date: "2024-01-31" }
+      ],
+      documents: [
+        { name: "Resume", status: "uploaded", type: "pdf" },
+        { name: "Care Certification", status: "uploaded", type: "pdf" },
+        { name: "Background Check", status: "uploaded", type: "pdf" },
+        { name: "Employment Contract", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "Michael Johnson",
+        relationship: "Husband",
+        phone: "(555) 987-6543"
+      }
     },
     {
       id: 3,
-      patientName: 'Emily Davis',
-      documentType: 'Insurance Information',
-      fileName: 'insurance_emily_davis.pdf',
-      uploadDate: '2024-01-18',
-      lastModified: '2024-01-18',
-      status: 'complete',
-      size: '0.9 MB',
-      uploadedBy: 'Lisa Anderson',
-      category: 'administrative',
-      confidential: false,
-      description: 'Current insurance coverage details and authorization forms.'
+      name: "Michael Chen",
+      position: "Care Giver",
+      department: "Home Care",
+      startDate: "2024-02-15",
+      email: "michael.chen@email.com",
+      phone: "(555) 234-5678",
+      address: "456 Care Ave, Springfield",
+      avatar: "https://images.pexels.com/photos/6129967/pexels-photo-6129967.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      onboardingSteps: [
+        { step: "Personal Information", status: "completed", date: "2024-02-01" },
+        { step: "Employment Contract", status: "completed", date: "2024-02-02" },
+        { step: "Background Check", status: "completed", date: "2024-02-03" },
+        { step: "Certification Verification", status: "completed", date: "2024-02-04" },
+        { step: "Care Training", status: "completed", date: "2024-02-05" },
+        { step: "Patient Assignment", status: "completed", date: "2024-02-06" },
+        { step: "System Access Setup", status: "completed", date: "2024-02-07" }
+      ],
+      documents: [
+        { name: "Resume", status: "uploaded", type: "pdf" },
+        { name: "Care Certification", status: "uploaded", type: "pdf" },
+        { name: "Background Check", status: "uploaded", type: "pdf" },
+        { name: "Employment Contract", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "Lisa Chen",
+        relationship: "Wife",
+        phone: "(555) 345-6789"
+      }
     },
     {
       id: 4,
-      patientName: 'Robert Brown',
-      documentType: 'Assessment Report',
-      fileName: 'assessment_robert_brown.pdf',
-      uploadDate: '2024-01-17',
-      lastModified: '2024-01-17',
-      status: 'incomplete',
-      size: '3.2 MB',
-      uploadedBy: 'Jennifer White',
-      category: 'assessment',
-      confidential: true,
-      description: 'Initial assessment report for new patient intake and service planning.'
+      name: "Lisa Anderson",
+      position: "Care Giver",
+      department: "Home Care",
+      startDate: "2024-02-20",
+      email: "lisa.anderson@email.com",
+      phone: "(555) 456-7890",
+      address: "789 Care Blvd, Springfield",
+      avatar: "https://images.pexels.com/photos/6129967/pexels-photo-6129967.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      onboardingSteps: [
+        { step: "Personal Information", status: "completed", date: "2024-02-10" },
+        { step: "Employment Contract", status: "completed", date: "2024-02-11" },
+        { step: "Background Check", status: "completed", date: "2024-02-12" },
+        { step: "Certification Verification", status: "completed", date: "2024-02-13" },
+        { step: "Care Training", status: "completed", date: "2024-02-14" },
+        { step: "Patient Assignment", status: "completed", date: "2024-02-15" },
+        { step: "System Access Setup", status: "completed", date: "2024-02-16" }
+      ],
+      documents: [
+        { name: "Resume", status: "uploaded", type: "pdf" },
+        { name: "Care Certification", status: "uploaded", type: "pdf" },
+        { name: "Background Check", status: "uploaded", type: "pdf" },
+        { name: "Employment Contract", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "David Anderson",
+        relationship: "Son",
+        phone: "(555) 567-8901"
+      }
+    },
+    {
+      id: 5,
+      name: "Jennifer White",
+      position: "Care Giver",
+      department: "Home Care",
+      startDate: "2024-02-25",
+      email: "jennifer.white@email.com",
+      phone: "(555) 678-9012",
+      address: "101 Care Lane, Springfield",
+      avatar: "https://images.pexels.com/photos/6129967/pexels-photo-6129967.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      onboardingSteps: [
+        { step: "Personal Information", status: "completed", date: "2024-02-20" },
+        { step: "Employment Contract", status: "completed", date: "2024-02-21" },
+        { step: "Background Check", status: "completed", date: "2024-02-22" },
+        { step: "Certification Verification", status: "completed", date: "2024-02-23" },
+        { step: "Care Training", status: "completed", date: "2024-02-24" },
+        { step: "Patient Assignment", status: "completed", date: "2024-02-25" },
+        { step: "System Access Setup", status: "completed", date: "2024-02-26" }
+      ],
+      documents: [
+        { name: "Resume", status: "uploaded", type: "pdf" },
+        { name: "Care Certification", status: "uploaded", type: "pdf" },
+        { name: "Background Check", status: "uploaded", type: "pdf" },
+        { name: "Employment Contract", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "Robert White",
+        relationship: "Husband",
+        phone: "(555) 789-0123"
+      }
     }
   ];
 
-  const employeeDocuments = [
+  const fullyOnboardedPatients = [
     {
       id: 1,
-      employeeName: 'Sarah Johnson',
-      documentType: 'Employment Contract',
-      fileName: 'contract_sarah_johnson.pdf',
-      uploadDate: '2024-01-15',
-      lastModified: '2024-01-15',
-      status: 'signed',
-      size: '1.2 MB',
-      uploadedBy: 'HR Department',
-      category: 'contract',
-      confidential: true,
-      description: 'Signed employment contract with terms and conditions.'
+      name: "Robert Wilson",
+      age: 75,
+      condition: "Post-Surgery Recovery",
+      address: "321 Recovery Road, Springfield",
+      phone: "(555) 456-7890",
+      email: "robert.wilson@email.com",
+      avatar: "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      enrollmentDate: "2024-01-22",
+      assignedCareGiver: "Sarah Johnson",
+      onboardingSteps: [
+        { step: "Initial Assessment", status: "completed", date: "2024-01-22" },
+        { step: "Medical History Review", status: "completed", date: "2024-01-23" },
+        { step: "Insurance Verification", status: "completed", date: "2024-01-24" },
+        { step: "Care Plan Development", status: "completed", date: "2024-01-25" },
+        { step: "Care Giver Assignment", status: "completed", date: "2024-01-26" },
+        { step: "Service Scheduling", status: "completed", date: "2024-01-27" }
+      ],
+      documents: [
+        { name: "Medical History", status: "completed", type: "pdf" },
+        { name: "Insurance Card", status: "uploaded", type: "pdf" },
+        { name: "Emergency Contacts", status: "completed", type: "pdf" },
+        { name: "Care Agreement", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "Linda Wilson",
+        relationship: "Daughter",
+        phone: "(555) 654-3210"
+      }
     },
     {
       id: 2,
-      employeeName: 'Michael Chen',
-      documentType: 'Medical License',
-      fileName: 'license_michael_chen.pdf',
-      uploadDate: '2024-01-14',
-      lastModified: '2024-01-14',
-      status: 'verified',
-      size: '0.8 MB',
-      uploadedBy: 'Credentials Office',
-      category: 'certification',
-      confidential: false,
-      description: 'Current medical license and certification documents.'
+      name: "Emily Davis",
+      age: 62,
+      condition: "Alzheimer's Disease",
+      address: "654 Memory Lane, Springfield",
+      phone: "(555) 789-0123",
+      email: "emily.davis@email.com",
+      avatar: "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      enrollmentDate: "2024-01-23",
+      assignedCareGiver: "Michael Chen",
+      onboardingSteps: [
+        { step: "Initial Assessment", status: "completed", date: "2024-01-23" },
+        { step: "Medical History Review", status: "completed", date: "2024-01-24" },
+        { step: "Insurance Verification", status: "completed", date: "2024-01-25" },
+        { step: "Care Plan Development", status: "completed", date: "2024-01-26" },
+        { step: "Care Giver Assignment", status: "completed", date: "2024-01-27" },
+        { step: "Service Scheduling", status: "completed", date: "2024-01-28" }
+      ],
+      documents: [
+        { name: "Medical History", status: "completed", type: "pdf" },
+        { name: "Insurance Card", status: "uploaded", type: "pdf" },
+        { name: "Emergency Contacts", status: "completed", type: "pdf" },
+        { name: "Care Agreement", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "Robert Davis",
+        relationship: "Son",
+        phone: "(555) 890-1234"
+      }
     },
     {
       id: 3,
-      employeeName: 'Lisa Anderson',
-      documentType: 'Background Check',
-      fileName: 'background_lisa_anderson.pdf',
-      uploadDate: '2024-01-13',
-      lastModified: '2024-01-13',
-      status: 'pending',
-      size: '1.5 MB',
-      uploadedBy: 'Security Department',
-      category: 'background',
-      confidential: true,
-      description: 'Background verification and security clearance documentation.'
+      name: "Maria Rodriguez",
+      age: 80,
+      condition: "Parkinson's Disease",
+      address: "987 Care Blvd, Springfield",
+      phone: "(555) 901-2345",
+      email: "maria.rodriguez@email.com",
+      avatar: "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      enrollmentDate: "2024-01-24",
+      assignedCareGiver: "Lisa Anderson",
+      onboardingSteps: [
+        { step: "Initial Assessment", status: "completed", date: "2024-01-24" },
+        { step: "Medical History Review", status: "completed", date: "2024-01-25" },
+        { step: "Insurance Verification", status: "completed", date: "2024-01-26" },
+        { step: "Care Plan Development", status: "completed", date: "2024-01-27" },
+        { step: "Care Giver Assignment", status: "completed", date: "2024-01-28" },
+        { step: "Service Scheduling", status: "completed", date: "2024-01-29" }
+      ],
+      documents: [
+        { name: "Medical History", status: "completed", type: "pdf" },
+        { name: "Insurance Card", status: "uploaded", type: "pdf" },
+        { name: "Emergency Contacts", status: "completed", type: "pdf" },
+        { name: "Care Agreement", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "James Rodriguez",
+        relationship: "Daughter",
+        phone: "(555) 012-3456"
+      }
+    },
+    {
+      id: 4,
+      name: "James Wilson",
+      age: 70,
+      condition: "Diabetes",
+      address: "123 Memory Lane, Springfield",
+      phone: "(555) 123-4567",
+      email: "james.wilson@email.com",
+      avatar: "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      enrollmentDate: "2024-01-25",
+      assignedCareGiver: "Jennifer White",
+      onboardingSteps: [
+        { step: "Initial Assessment", status: "completed", date: "2024-01-25" },
+        { step: "Medical History Review", status: "completed", date: "2024-01-26" },
+        { step: "Insurance Verification", status: "completed", date: "2024-01-27" },
+        { step: "Care Plan Development", status: "completed", date: "2024-01-28" },
+        { step: "Care Giver Assignment", status: "completed", date: "2024-01-29" },
+        { step: "Service Scheduling", status: "completed", date: "2024-01-30" }
+      ],
+      documents: [
+        { name: "Medical History", status: "completed", type: "pdf" },
+        { name: "Insurance Card", status: "uploaded", type: "pdf" },
+        { name: "Emergency Contacts", status: "completed", type: "pdf" },
+        { name: "Care Agreement", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "Maria Wilson",
+        relationship: "Daughter",
+        phone: "(555) 234-5678"
+      }
+    },
+    {
+      id: 5,
+      name: "Robert Brown",
+      age: 65,
+      condition: "Heart Disease",
+      address: "456 Care Ave, Springfield",
+      phone: "(555) 345-6789",
+      email: "robert.brown@email.com",
+      avatar: "https://images.pexels.com/photos/5452201/pexels-photo-5452201.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&dpr=2",
+      status: "completed",
+      completionPercentage: 100,
+      enrollmentDate: "2024-01-26",
+      assignedCareGiver: "David Thompson",
+      onboardingSteps: [
+        { step: "Initial Assessment", status: "completed", date: "2024-01-26" },
+        { step: "Medical History Review", status: "completed", date: "2024-01-27" },
+        { step: "Insurance Verification", status: "completed", date: "2024-01-28" },
+        { step: "Care Plan Development", status: "completed", date: "2024-01-29" },
+        { step: "Care Giver Assignment", status: "completed", date: "2024-01-30" },
+        { step: "Service Scheduling", status: "completed", date: "2024-01-31" }
+      ],
+      documents: [
+        { name: "Medical History", status: "completed", type: "pdf" },
+        { name: "Insurance Card", status: "uploaded", type: "pdf" },
+        { name: "Emergency Contacts", status: "completed", type: "pdf" },
+        { name: "Care Agreement", status: "signed", type: "pdf" }
+      ],
+      emergencyContact: {
+        name: "Emily Brown",
+        relationship: "Daughter",
+        phone: "(555) 456-7890"
+      }
     }
   ];
 
-  const documents = documentType === 'patient' ? patientDocuments : employeeDocuments;
+  const people = documentType === "employee" ? fullyOnboardedEmployees : fullyOnboardedPatients;
+
+  const filteredPeople = people.filter(person =>
+    person.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    person.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    ("position" in person
+      ? person.position.toLowerCase().includes(searchTerm.toLowerCase())
+      : person.condition.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
+  const totalEmployees = fullyOnboardedEmployees.length;
+  const totalPatients = fullyOnboardedPatients.length;
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'complete':
       case 'signed':
       case 'verified':
+      case 'completed':
         return 'bg-green-100 text-green-800 border-green-200';
       case 'pending_review':
       case 'pending':
+      case 'pending_upload':
+      case 'not_sent':
+      case 'not_started':
         return 'bg-yellow-100 text-yellow-800 border-yellow-200';
       case 'incomplete':
+      case 'not_started':
+      case 'not_sent':
         return 'bg-red-100 text-red-800 border-red-200';
       default:
         return 'bg-gray-100 text-gray-800 border-gray-200';
@@ -157,11 +441,17 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole, documentType 
       case 'complete':
       case 'signed':
       case 'verified':
+      case 'completed':
         return <CheckCircle className="w-4 h-4 text-green-600" />;
       case 'pending_review':
       case 'pending':
+      case 'pending_upload':
+      case 'not_sent':
+      case 'not_started':
         return <Clock className="w-4 h-4 text-yellow-600" />;
       case 'incomplete':
+      case 'not_started':
+      case 'not_sent':
         return <AlertTriangle className="w-4 h-4 text-red-600" />;
       default:
         return <FileText className="w-4 h-4 text-gray-600" />;
@@ -189,16 +479,28 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole, documentType 
     }
   };
 
-  const filteredDocuments = documents.filter(doc => {
-    if (activeFilter === 'all') return true;
-    return doc.status === activeFilter;
-  });
+  const filteredDocuments = people.filter(person => person.completionPercentage === 100);
 
-  const DocumentDetailModal = ({ document, onClose }: { document: any; onClose: () => void }) => (
+  const PersonDetailModal = ({ person, onClose }: { person: any; onClose: () => void }) => (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
+        {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">Document Details</h2>
+          <div className="flex items-center space-x-4">
+            <img src={person.avatar} alt={person.name} className="w-16 h-16 rounded-full object-cover border-2 border-blue-500" />
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">{person.name}</h2>
+              {"position" in person && (
+                <p className="text-blue-700 font-medium">{person.position}</p>
+              )}
+              {"department" in person && (
+                <p className="text-gray-500">{person.department}</p>
+              )}
+              {"condition" in person && (
+                <p className="text-blue-700 font-medium">{person.condition}</p>
+              )}
+            </div>
+          </div>
           <button
             onClick={onClose}
             className="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
@@ -209,94 +511,85 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole, documentType 
           </button>
         </div>
 
-        <div className="space-y-6">
-          {/* Document Header */}
-          <div className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              {getCategoryIcon(document.category)}
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-gray-900">{document.documentType}</h3>
-              <p className="text-gray-600">
-                {documentType === 'patient' ? `Patient: ${document.patientName}` : `Employee: ${document.employeeName}`}
-              </p>
-              <p className="text-sm text-gray-500">{document.fileName}</p>
-            </div>
-            <div className="text-right">
-              <span className={`px-3 py-1 rounded-full text-sm font-medium border ${getStatusColor(document.status)}`}>
-                {getStatusIcon(document.status)}
-                <span className="ml-1">{document.status.replace('_', ' ').charAt(0).toUpperCase() + document.status.replace('_', ' ').slice(1)}</span>
-              </span>
-            </div>
-          </div>
-
-          {/* Document Information */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">File Information</h4>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">File Size:</span>
-                    <span className="font-medium">{document.size}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Upload Date:</span>
-                    <span className="font-medium">{document.uploadDate}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Last Modified:</span>
-                    <span className="font-medium">{document.lastModified}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Uploaded By:</span>
-                    <span className="font-medium">{document.uploadedBy}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-semibold text-gray-900 mb-2">Security & Access</h4>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Category:</span>
-                    <span className="font-medium capitalize">{document.category.replace('_', ' ')}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-500">Confidential:</span>
-                    <span className={`font-medium ${document.confidential ? 'text-red-600' : 'text-green-600'}`}>
-                      {document.confidential ? 'Yes' : 'No'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Description */}
+        {/* Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <div>
-            <h4 className="font-semibold text-gray-900 mb-2">Description</h4>
-            <p className="text-gray-700 text-sm leading-relaxed">{document.description}</p>
+            <p className="text-sm text-gray-500">
+              <span className="font-semibold">Start:</span>{"startDate" in person ? person.startDate : person.enrollmentDate}
+            </p>
+            <p className="text-sm text-gray-500">
+              <span className="font-semibold">Email:</span> {person.email}
+            </p>
+            <p className="text-sm text-gray-500">
+              <span className="font-semibold">Phone:</span> {person.phone}
+            </p>
+            <p className="text-sm text-gray-500">
+              <span className="font-semibold">Address:</span> {person.address}
+            </p>
           </div>
+          <div>
+            <p className="text-sm text-gray-500">
+              <span className="font-semibold">Emergency Contact:</span> {person.emergencyContact?.name} ({person.emergencyContact?.relationship}) {person.emergencyContact?.phone}
+            </p>
+          </div>
+        </div>
 
-          {/* Action Buttons */}
-          <div className="flex space-x-4 pt-4 border-t border-gray-200">
-            <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center space-x-2">
-              <Eye className="w-4 h-4" />
-              <span>View Document</span>
-            </button>
-            <button className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors duration-200 flex items-center justify-center space-x-2">
-              <Download className="w-4 h-4" />
-              <span>Download</span>
-            </button>
-            {userRole === 'HR' && (
-              <button className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 flex items-center space-x-2">
-                <Edit className="w-4 h-4" />
-                <span>Edit</span>
-              </button>
-            )}
+        {/* Onboarding Steps */}
+        <div className="mb-6">
+          <h4 className="font-semibold text-gray-900 mb-2">Onboarding Progress</h4>
+          <div className="space-y-2">
+            {person.onboardingSteps.map((step: any, idx: number) => (
+              <div key={idx} className="flex items-center justify-between p-2 border border-gray-100 rounded-lg bg-gray-50">
+                <div className="flex items-center space-x-2">
+                  {/* Status Icon */}
+                  {step.status === "completed" && <CheckCircle className="w-4 h-4 text-green-600" />}
+                  {step.status === "pending" && <Clock className="w-4 h-4 text-yellow-600" />}
+                  {step.status === "in_progress" && <Clock className="w-4 h-4 text-blue-600" />}
+                  <span>{step.step}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  {step.date && (
+                    <span className="text-xs text-gray-400">{step.date}</span>
+                  )}
+                  <span className={`text-xs px-2 py-1 rounded-full border font-medium
+                    ${step.status === "completed" ? "bg-green-100 text-green-800 border-green-200" :
+                      step.status === "in_progress" ? "bg-blue-100 text-blue-800 border-blue-200" :
+                      "bg-yellow-100 text-yellow-800 border-yellow-200"}`}>
+                    {step.status === "in_progress" ? "In progress" : step.status.charAt(0).toUpperCase() + step.status.slice(1)}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Documents */}
+        <div>
+          <h4 className="font-semibold text-gray-900 mb-2">Documents</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {person.documents.map((doc: any, idx: number) => (
+              <div key={idx} className="flex items-center justify-between p-3 border border-gray-100 rounded-lg bg-gray-50">
+                <div className="flex items-center space-x-2">
+                  <FileText className="w-4 h-4 text-gray-500" />
+                  <span>{doc.name}</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <span className={`text-xs px-2 py-1 rounded-full border font-medium
+                    ${doc.status === "uploaded" || doc.status === "completed" || doc.status === "signed"
+                      ? "bg-green-100 text-green-800 border-green-200"
+                      : doc.status === "pending_upload" || doc.status === "not_sent"
+                      ? "bg-blue-100 text-blue-800 border-blue-200"
+                      : "bg-yellow-100 text-yellow-800 border-yellow-200"}`}>
+                    {doc.status === "pending_upload" ? "Uploaded" :
+                      doc.status === "signed" ? "Signed" :
+                      doc.status.charAt(0).toUpperCase() + doc.status.slice(1).replace("_", " ")}
+                  </span>
+                  <button className="p-1 text-blue-600 hover:text-blue-800" title="View">
+                    <Eye className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -325,91 +618,32 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole, documentType 
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-blue-50 rounded-xl p-4">
-            <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6 space-y-4 md:space-y-0">
+          <div className="flex space-x-6">
+            <div className="bg-blue-50 rounded-xl p-4 flex items-center space-x-2">
+              <FileText className="w-6 h-6 text-blue-600" />
               <div>
-                <p className="text-blue-600 text-sm font-medium">Total Documents</p>
-                <p className="text-2xl font-bold text-blue-900">{documents.length}</p>
+                <p className="text-blue-600 text-sm font-medium">Total Employees</p>
+                <p className="text-2xl font-bold text-blue-900">{totalEmployees}</p>
               </div>
-              <FileText className="w-8 h-8 text-blue-600" />
+            </div>
+            <div className="bg-green-50 rounded-xl p-4 flex items-center space-x-2">
+              <FileText className="w-6 h-6 text-green-600" />
+              <div>
+                <p className="text-green-600 text-sm font-medium">Total Patients</p>
+                <p className="text-2xl font-bold text-green-900">{totalPatients}</p>
+              </div>
             </div>
           </div>
-
-          <div className="bg-green-50 rounded-xl p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-green-600 text-sm font-medium">Complete</p>
-                <p className="text-2xl font-bold text-green-900">
-                  {documents.filter(d => ['complete', 'signed', 'verified'].includes(d.status)).length}
-                </p>
-              </div>
-              <CheckCircle className="w-8 h-8 text-green-600" />
-            </div>
-          </div>
-
-          <div className="bg-yellow-50 rounded-xl p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-yellow-600 text-sm font-medium">Pending Review</p>
-                <p className="text-2xl font-bold text-yellow-900">
-                  {documents.filter(d => ['pending_review', 'pending'].includes(d.status)).length}
-                </p>
-              </div>
-              <Clock className="w-8 h-8 text-yellow-600" />
-            </div>
-          </div>
-
-          <div className="bg-red-50 rounded-xl p-4">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-red-600 text-sm font-medium">Incomplete</p>
-                <p className="text-2xl font-bold text-red-900">
-                  {documents.filter(d => d.status === 'incomplete').length}
-                </p>
-              </div>
-              <AlertTriangle className="w-8 h-8 text-red-600" />
-            </div>
-          </div>
-        </div>
-
-        {/* Controls */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-          <div className="flex space-x-2">
-            {['all', 'complete', 'pending_review', 'incomplete'].map((filter) => (
-              <button
-                key={filter}
-                onClick={() => setActiveFilter(filter)}
-                className={`px-4 py-2 rounded-lg transition-colors duration-200 ${
-                  activeFilter === filter
-                    ? 'bg-blue-100 text-blue-700'
-                    : 'text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                {filter === 'all' ? 'All' : filter.replace('_', ' ').charAt(0).toUpperCase() + filter.replace('_', ' ').slice(1)}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex space-x-3">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
                 type="text"
-                placeholder="Search documents..."
+              value={searchTerm}
+              onChange={e => setSearchTerm(e.target.value)}
+              placeholder="Search by name, email, or role/condition..."
                 className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
-            </div>
-            <button className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200">
-              <Filter className="w-4 h-4" />
-              <span>Filter</span>
-            </button>
-            {userRole === 'HR' && (
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center space-x-2">
-                <Upload className="w-4 h-4" />
-                <span>Upload Document</span>
-              </button>
-            )}
           </div>
         </div>
       </div>
@@ -417,87 +651,68 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole, documentType 
       {/* Documents List */}
       <div className="bg-white rounded-xl p-6 border border-gray-100">
         <div className="space-y-4">
-          {filteredDocuments.map((document) => (
+          {filteredPeople.map((person) => (
             <div
-              key={document.id}
-              className="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+              key={person.id}
+              className="p-4 border border-gray-200 rounded-lg flex flex-col md:flex-row items-center justify-between space-y-2 md:space-y-0 md:space-x-4"
             >
-              <div className="flex items-start justify-between">
-                <div className="flex items-start space-x-4 flex-1">
-                  <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    {getCategoryIcon(document.category)}
+              {/* Name */}
+              <div className="flex items-center space-x-2 min-w-[160px]">
+                <User className="w-4 h-4" />
+                <span className="font-medium">{person.name}</span>
                   </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="font-semibold text-gray-900">{document.documentType}</h3>
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getStatusColor(document.status)}`}>
-                        {getStatusIcon(document.status)}
-                        <span className="ml-1">{document.status.replace('_', ' ').charAt(0).toUpperCase() + document.status.replace('_', ' ').slice(1)}</span>
-                      </span>
-                      {document.confidential && (
-                        <span className="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium">
-                          Confidential
+              {/* Enrolled/Start Date */}
+              <div className="flex items-center space-x-2 min-w-[160px]">
+                <Calendar className="w-4 h-4" />
+                <span>
+                  {"startDate" in person
+                    ? `Start: ${person.startDate}`
+                    : `Enrolled: ${person.enrollmentDate}`}
                         </span>
-                      )}
                     </div>
-                    
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm text-gray-600 mb-2">
-                      <div className="flex items-center space-x-2">
-                        <User className="w-4 h-4" />
+              {/* Condition or Role */}
+              <div className="flex items-center space-x-2 min-w-[180px]">
+                <FileText className="w-4 h-4" />
                         <span>
-                          {documentType === 'patient' ? document.patientName : document.employeeName}
+                  {"position" in person
+                    ? `Role: ${person.position}`
+                    : `Condition: ${person.condition}`}
                         </span>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <Calendar className="w-4 h-4" />
-                        <span>Uploaded: {document.uploadDate}</span>
+              {/* Contact */}
+              <div className="flex items-center space-x-2 min-w-[220px]">
+                <User className="w-4 h-4" />
+                <span>Contact: {person.email}</span>
                       </div>
+              {/* Completed badge */}
                       <div className="flex items-center space-x-2">
-                        <FileText className="w-4 h-4" />
-                        <span>Size: {document.size}</span>
+                <span className="flex items-center px-3 py-1 rounded-full text-sm font-medium border bg-green-100 text-green-800">
+                  <CheckCircle className="w-4 h-4 mr-1" />
+                  Completed
+                </span>
                       </div>
+              {/* Actions */}
                       <div className="flex items-center space-x-2">
-                        <User className="w-4 h-4" />
-                        <span>By: {document.uploadedBy}</span>
-                      </div>
-                    </div>
-                    
-                    <p className="text-sm text-gray-700 line-clamp-2">{document.description}</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-center space-x-2 ml-4">
                   <button
-                    onClick={() => setSelectedDocument(document)}
+                  onClick={() => setSelectedPerson(person)}
                     className="p-2 text-blue-600 hover:text-blue-800 transition-colors duration-200"
                     title="View Details"
                   >
                     <Eye className="w-4 h-4" />
                   </button>
-                  <button
-                    className="p-2 text-green-600 hover:text-green-800 transition-colors duration-200"
-                    title="Download"
-                  >
+                <button className="p-2 text-green-600 hover:text-green-800 transition-colors duration-200" title="Download">
                     <Download className="w-4 h-4" />
                   </button>
                   {userRole === 'HR' && (
                     <>
-                      <button
-                        className="p-2 text-gray-600 hover:text-gray-800 transition-colors duration-200"
-                        title="Edit"
-                      >
+                    <button className="p-2 text-gray-600 hover:text-gray-800 transition-colors duration-200" title="Edit">
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button
-                        className="p-2 text-red-600 hover:text-red-800 transition-colors duration-200"
-                        title="Delete"
-                      >
+                    <button className="p-2 text-red-600 hover:text-red-800 transition-colors duration-200" title="Delete">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </>
                   )}
-                </div>
               </div>
             </div>
           ))}
@@ -505,10 +720,10 @@ const DocumentCenter: React.FC<DocumentCenterProps> = ({ userRole, documentType 
       </div>
 
       {/* Document Detail Modal */}
-      {selectedDocument && (
-        <DocumentDetailModal
-          document={selectedDocument}
-          onClose={() => setSelectedDocument(null)}
+      {selectedPerson && (
+        <PersonDetailModal
+          person={selectedPerson}
+          onClose={() => setSelectedPerson(null)}
         />
       )}
     </div>
