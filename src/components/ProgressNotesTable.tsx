@@ -771,7 +771,16 @@ const ProgressNotesTable: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-gray-500 mb-1">Signature</label>
-                <p className="text-gray-900 font-medium">{selectedNote.signature}</p>
+                {selectedNote.signature ? (
+                  <img
+                    src={selectedNote.signature}
+                    alt="Signature"
+                    className="max-h-32 border rounded bg-white"
+                    style={{ background: "#fff" }}
+                  />
+                ) : (
+                  <span className="text-gray-400">No signature</span>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-500 mb-1">Date Submitted</label>
