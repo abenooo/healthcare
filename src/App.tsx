@@ -249,7 +249,7 @@ function App() {
 
   const services = [
     {
-      name: "In-Home Service 123",
+      name: "In-Home Service",
       description:
         "Personalized support for home activities, medication reminders, and goal setting to enhance daily living.",
       icon: Home,
