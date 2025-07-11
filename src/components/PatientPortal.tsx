@@ -91,7 +91,13 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
       recentServices: [
         { date: '2024-01-18', service: 'Medication Management', duration: '2 hours', status: 'completed' },
         { date: '2024-01-15', service: 'Meal Preparation', duration: '3 hours', status: 'completed' }
-      ]
+      ],
+      appointment: {
+        date: '2024-02-10',
+        time: '10:00 AM',
+        provider: 'Dr. Smith',
+        status: 'Upcoming'
+      }
     },
     {
       id: 2,
@@ -119,7 +125,13 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
       recentServices: [
         { date: '2024-01-20', service: 'Companion Care', duration: '6 hours', status: 'completed' },
         { date: '2024-01-17', service: 'Behavioral Support', duration: '4 hours', status: 'completed' }
-      ]
+      ],
+      appointment: {
+        date: '2024-02-15',
+        time: '02:00 PM',
+        provider: 'Dr. Johnson',
+        status: 'Upcoming'
+      }
     },
     {
       id: 3,
@@ -147,7 +159,13 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
       recentServices: [
         { date: '2024-01-19', service: 'Community Activities', duration: '5 hours', status: 'completed' },
         { date: '2024-01-16', service: 'Transportation', duration: '2 hours', status: 'completed' }
-      ]
+      ],
+      appointment: {
+        date: '2024-02-20',
+        time: '11:00 AM',
+        provider: 'Dr. Brown',
+        status: 'Upcoming'
+      }
     }
   ];
 
@@ -306,29 +324,6 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
             </div>
           </div>
 
-          {/* Current Vitals */}
-          <div>
-            <h4 className="font-semibold text-gray-900 mb-4">Current Vitals</h4>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="p-3 bg-blue-50 rounded-lg text-center">
-                <p className="text-xs text-blue-600 font-medium">Blood Pressure</p>
-                <p className="text-lg font-bold text-blue-900">{patient.vitals.bloodPressure}</p>
-              </div>
-              <div className="p-3 bg-green-50 rounded-lg text-center">
-                <p className="text-xs text-green-600 font-medium">Heart Rate</p>
-                <p className="text-lg font-bold text-green-900">{patient.vitals.heartRate}</p>
-              </div>
-              <div className="p-3 bg-orange-50 rounded-lg text-center">
-                <p className="text-xs text-orange-600 font-medium">Temperature</p>
-                <p className="text-lg font-bold text-orange-900">{patient.vitals.temperature}</p>
-              </div>
-              <div className="p-3 bg-purple-50 rounded-lg text-center">
-                <p className="text-xs text-purple-600 font-medium">Blood Sugar</p>
-                <p className="text-lg font-bold text-purple-900">{patient.vitals.bloodSugar}</p>
-              </div>
-            </div>
-          </div>
-
           {/* Care Notes */}
           <div>
             <h4 className="font-semibold text-gray-900 mb-2">Care Notes</h4>
@@ -355,6 +350,36 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
               ))}
             </div>
           </div>
+
+          {/* Appointment */}
+      {/* Appointment */}
+<div>
+  <h4 className="font-semibold text-gray-900 mb-4">Appointment</h4>
+  {patient.appointment ? (
+    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="p-3 bg-blue-50 rounded-lg text-center">
+        <p className="text-xs text-blue-600 font-medium">Date</p>
+        <p className="text-lg font-bold text-blue-900">{patient.appointment.date}</p>
+      </div>
+      <div className="p-3 bg-green-50 rounded-lg text-center">
+        <p className="text-xs text-green-600 font-medium">Time</p>
+        <p className="text-lg font-bold text-green-900">{patient.appointment.time}</p>
+      </div>
+      <div className="p-3 bg-orange-50 rounded-lg text-center">
+        <p className="text-xs text-orange-600 font-medium">Provider</p>
+        <p className="text-lg font-bold text-orange-900">{patient.appointment.provider}</p>
+      </div>
+      <div className="p-3 bg-purple-50 rounded-lg text-center">
+        <p className="text-xs text-purple-600 font-medium">Status</p>
+        <p className="text-lg font-bold text-purple-900">{patient.appointment.status}</p>
+      </div>
+    </div>
+  ) : (
+    <div className="p-3 bg-blue-50 rounded-lg text-center">
+      <p className="text-xs text-blue-600 font-medium">No appointment data available.</p>
+    </div>
+  )}
+</div>
 
           {/* Action Buttons */}
           <div className="flex space-x-4 pt-4 border-t border-gray-200">
@@ -582,13 +607,13 @@ const PatientPortal: React.FC<PatientPortalProps> = ({ userRole }) => {
               </div>
             ))}
           </div>
-          <button
+          {/* <button
             onClick={() => setShowProgressNote(true)}
             className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-          >
-            <FileText className="w-4 h-4" />
-            <span>Add Progress Note</span>
-          </button>
+          > */}
+            {/* <FileText className="w-4 h-4" /> */}
+            {/* <span>Add Progress Note 123</span> */}
+          {/* </button> */}
         </div>
       ) : (
         <div className="bg-white rounded-xl p-6 border border-gray-100">
