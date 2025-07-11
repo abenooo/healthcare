@@ -20,7 +20,6 @@ import ProgressNoteModal from "./ProgressNoteSidebar"
 import { useNavigate } from "react-router-dom"
 import { CgWebsite } from "react-icons/cg"
 import { TbJoinBevel } from "react-icons/tb"
-import Careers from "./components/Careers"
 
 interface SidebarProps {
   activeTab: string
