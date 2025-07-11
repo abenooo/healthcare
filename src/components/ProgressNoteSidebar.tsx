@@ -1,12 +1,26 @@
 import  { useState, useEffect } from "react";
 import { X } from "lucide-react";
 
+interface ProgressNote {
+  id: string;
+  clientName: string;
+  service: string;
+  hours: number;
+  condition: string;
+  observations: string;
+  incidents: string;
+  signature: string;
+  status: string;
+  date: string;
+  createdAt: string;
+}
+
 const STORAGE_KEY = "progress_notes";
 
 const demoNotes = Array.from({ length: 10 }).map((_, i) => ({
   clientName: `Client ${i + 1}`,
   service: `Service ${i + 1}`,
-  hours: (Math.random() * 8).toFixed(1),
+  hours: Number((Math.random() * 8).toFixed(1)), // <-- Make this a number
   condition: ["Stable", "Needs Attention", "Critical"][i % 3],
   observations: "All observations normal.",
   incidents: i % 3 === 0 ? "None" : "Minor incident reported.",
@@ -15,7 +29,7 @@ const demoNotes = Array.from({ length: 10 }).map((_, i) => ({
   date: `2025-07-${(i + 10).toString().padStart(2, "0")}`,
 }));
 
-export default function ProgressNoteModal({ open, onClose }) {
+export default function ProgressNoteModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [form, setForm] = useState({
     clientName: "",
     service: "",
@@ -27,6 +41,8 @@ export default function ProgressNoteModal({ open, onClose }) {
   });
   const [submitting, setSubmitting] = useState(false);
   const [notes, setNotes] = useState(demoNotes);
+  const [selectedService, setSelectedService] = useState("");
+  const [selectedDetail, setSelectedDetail] = useState("");
 
   useEffect(() => {
     // Load from localStorage if available
@@ -38,15 +54,21 @@ export default function ProgressNoteModal({ open, onClose }) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e:any) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    const note = {
+
+    const newNote: ProgressNote = {
+      id: Date.now().toString(),
       ...form,
-      status: "Pending",
+      service: selectedService + (selectedDetail ? ` - ${selectedDetail}` : ""),
+      hours: parseFloat(form.hours),
+      status: 'Pending',
       date: new Date().toLocaleDateString(),
+      createdAt: new Date().toISOString()
     };
-    const updated = [note, ...notes];
+
+    const updated = [newNote, ...notes];
     setNotes(updated);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     setTimeout(() => {
@@ -90,15 +112,46 @@ export default function ProgressNoteModal({ open, onClose }) {
           </div>
           <div>
             <label className="block text-sm font-medium mb-1">Service Provided</label>
-            <input
+            <select
               name="service"
-              value={form.service}
-              onChange={handleChange}
-              placeholder="Service Provided"
-              className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
+              value={selectedService}
+              onChange={e => {
+                setSelectedService(e.target.value);
+                setSelectedDetail(""); // Reset detail when service changes
+                handleChange(e);
+              }}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
               required
-            />
+            >
+              <option value="">Select a service</option>
+              {serviceOptions.map(service => (
+                <option key={service.label} value={service.label}>
+                  {service.label}
+                </option>
+              ))}
+            </select>
           </div>
+          {selectedService && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Service Detail</label>
+              <select
+                name="serviceDetail"
+                value={selectedDetail}
+                onChange={e => setSelectedDetail(e.target.value)}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                required
+              >
+                <option value="">Select a detail</option>
+                {serviceOptions
+                  .find(service => service.label === selectedService)
+                  ?.details.map(detail => (
+                    <option key={detail} value={detail}>
+                      {detail}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          )}
           <div className="flex gap-4">
             <div className="flex-1">
               <label className="block text-sm font-medium mb-1">Hours Worked</label>
@@ -125,12 +178,12 @@ export default function ProgressNoteModal({ open, onClose }) {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1">Observations</label>
+            <label className="block text-sm font-medium mb-1">Notes</label>
             <textarea
               name="observations"
               value={form.observations}
               onChange={handleChange}
-              placeholder="Observations"
+              placeholder="Notes"
               className="w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -195,3 +248,96 @@ export default function ProgressNoteModal({ open, onClose }) {
     </div>
   );
 }
+
+const serviceOptions = [
+  {
+    label: "In-Home Service",
+    details: [
+      "Personal Care",
+      "Meal Preparation",
+      "Medication Reminders",
+      "Housekeeping",
+      "Mobility Assistance"
+    ]
+  },
+  {
+    label: "Respite Care Service",
+    details: [
+      "Short-Term Relief",
+      "Emergency Care",
+      "Overnight Stay",
+      "Weekend Care",
+      "Daytime Supervision"
+    ]
+  },
+  {
+    label: "Direct Support Professional",
+    details: [
+      "Skill Development",
+      "Community Integration",
+      "Behavioral Support",
+      "Transportation",
+      "Daily Living Assistance"
+    ]
+  },
+  {
+    label: "Host Home Provider",
+    details: [
+      "Room & Board",
+      "Family Integration",
+      "24/7 Supervision",
+      "Medical Coordination",
+      "Life Skills Training"
+    ]
+  },
+  {
+    label: "Companion Services",
+    details: [
+      "Socialization",
+      "Recreational Activities",
+      "Errand Assistance",
+      "Escort to Appointments",
+      "Safety Monitoring"
+    ]
+  },
+  {
+    label: "Professional Behavioral Support",
+    details: [
+      "Behavior Assessment",
+      "Intervention Planning",
+      "Crisis Management",
+      "Family Training",
+      "Progress Monitoring"
+    ]
+  },
+  {
+    label: "Employment Specialist",
+    details: [
+      "Job Coaching",
+      "Resume Building",
+      "Interview Preparation",
+      "Workplace Advocacy",
+      "On-the-Job Training"
+    ]
+  },
+  {
+    label: "Support Living Without Transportation",
+    details: [
+      "Home Setup",
+      "Budgeting",
+      "Meal Planning",
+      "Personal Safety",
+      "Health Management"
+    ]
+  },
+  {
+    label: "Day Habilitation",
+    details: [
+      "Group Activities",
+      "Skill Building",
+      "Therapeutic Recreation",
+      "Community Outings",
+      "Personal Care Support"
+    ]
+  }
+];
