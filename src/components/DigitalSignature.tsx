@@ -143,7 +143,7 @@ const DigitalSignature: React.FC<DigitalSignatureProps> = ({ onSignatureChange, 
       <div className="flex items-center gap-2 mb-2">
         <Pen className="w-4 h-4 text-gray-600" />
         <label className="text-sm font-medium text-gray-700">
-          የዲጂታል ፊርማ (Digital Signature)
+         Digital Signature
         </label>
       </div>
       
