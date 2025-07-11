@@ -442,7 +442,7 @@ const HRModule: React.FC<HRModuleProps> = ({ userRole }) => {
                     </div>
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDocumentStatusColor(status)}`}>
                       {status === 'signed' ? 'Signed' : 
-                       status === 'pending' ? 'Pending' : 'Not Sent'}
+                       status === 'pending' ? 'Pending' : 'Signed'}
                     </span>
                   </div>
                 ))}
