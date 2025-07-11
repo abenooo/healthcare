@@ -7,17 +7,18 @@ import {
   CheckCircle,
   Search,
   Eye,
-  Download,
   RefreshCw,
   Upload,
   ChevronLeft,
   ChevronRight,
   User
 } from 'lucide-react';
+import DigitalSignature from './DigitalSignature';
 
 const STORAGE_KEY = "progress_notes";
 
 interface ProgressNote {
+  
   id: string;
   clientName: string;
   service: string;
@@ -29,6 +30,7 @@ interface ProgressNote {
   status: 'Pending' | 'Approved' | 'Rejected';
   date: string;
   createdAt: string;
+  details?: string[]; // <-- add this line
 }
 
 interface ClientSummary {
@@ -44,6 +46,7 @@ interface ClientSummary {
 }
 
 const ProgressNotesTable: React.FC = () => {
+  const [signature, setSignature] = useState('')
   const [notes, setNotes] = useState<ProgressNote[]>([]);
   const [clientSummaries, setClientSummaries] = useState<ClientSummary[]>([]);
   const [filteredSummaries, setFilteredSummaries] = useState<ClientSummary[]>([]);
@@ -224,8 +227,101 @@ const ProgressNotesTable: React.FC = () => {
       signature: ''
     });
     const [submitting, setSubmitting] = useState(false);
+    const [selectedService, setSelectedService] = useState("");
+    const [selectedDetails, setSelectedDetails] = useState<string[]>([]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    // Get unique client names from localStorage notes
+    const storedNotes = (() => {
+      try {
+        const raw = localStorage.getItem("progress_notes");
+        return raw ? JSON.parse(raw) : [];
+      } catch {
+        return [];
+      }
+    })();
+    const uniqueClientNames: string[] = Array.from(
+      new Set(storedNotes.map((n: any) => n.clientName).filter(Boolean))
+    );
+
+    // New static service options
+    const serviceOptions = [
+      {
+        label: "In-Home Service",
+        details: [
+          { label: "Personal Care", options: ["Bathing", "Dressing", "Grooming", "Feeding", "Toileting"] }
+        ]
+      },
+      {
+        label: "Respite Care Service",
+        details: [
+          { label: "Caregiver Availability", options: ["Weekday", "Weekend", "24/7"] }
+        ]
+      },
+      {
+        label: "Direct Support Professional",
+        details: [
+          { label: "Service Type", options: ["Personal Care", "Meal Preparation", "Medication Reminders", "Housekeeping", "Mobility Assistance"] }
+        ]
+      },
+      {
+        label: "Host Home Provider",
+        details: [
+          { label: "Host Home Type", options: ["Private Residence", "Group Home", "Assisted Living Facility"] },
+          { label: "Hours Worked", options: ["1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"] },
+          { label: "Incidents", options: ["None", "Minor", "Moderate", "Severe"] },
+          { label: "Notes", options: ["Observations", "Incidents"] }
+        ]
+      },
+      {
+        label: "Companion Services",
+        details: [
+          { label: "Activity Type", options: ["Conversation", "Companion", "Social Interaction", "Entertainment", "Transportation"] },
+          { label: "Hours Worked", options: ["1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"] },
+          { label: "Incidents", options: ["None", "Minor", "Moderate", "Severe"] },
+          { label: "Notes", options: ["Observations", "Incidents"] }
+        ]
+      },
+      {
+        label: "Professional Behavioral Support",
+        details: [
+          { label: "Service Type", options: ["Behavioral Intervention", "Skill Training", "Consultation", "Monitoring", "Documentation"] },
+          { label: "Hours Worked", options: ["1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"] },
+          { label: "Incidents", options: ["None", "Minor", "Moderate", "Severe"] },
+          { label: "Notes", options: ["Observations", "Incidents"] }
+        ]
+      },
+      {
+        label: "Employment Specialist",
+        details: [
+          { label: "Employment Type", options: ["Direct Hire", "Temporary", "Contract", "Internship"] },
+          { label: "Hours Worked", options: ["1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"] },
+          { label: "Incidents", options: ["None", "Minor", "Moderate", "Severe"] },
+          { label: "Notes", options: ["Observations", "Incidents"] }
+        ]
+      },
+      {
+        label: "Support Living Without Transportation",
+        details: [
+          { label: "Service Type", options: ["Personal Care", "Meal Preparation", "Housekeeping", "Medication Reminders", "Mobility Assistance"] },
+          { label: "Hours Worked", options: ["1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"] },
+          { label: "Incidents", options: ["None", "Minor", "Moderate", "Severe"] },
+          { label: "Notes", options: ["Observations", "Incidents"] }
+        ]
+      },
+      {
+        label: "Day Habilitation",
+        details: [
+          { label: "Program Type", options: ["Community Integration", "Vocational Training", "Social Skills", "Recreation", "Health & Wellness"] },
+          { label: "Hours Worked", options: ["1 Hour", "2 Hours", "3 Hours", "4 Hours", "5 Hours"] },
+          { label: "Incidents", options: ["None", "Minor", "Moderate", "Severe"] },
+          { label: "Notes", options: ["Observations", "Incidents"] }
+        ]
+      }
+    ];
+
+    const handleChange = (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    ) => {
       setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
@@ -236,6 +332,7 @@ const ProgressNotesTable: React.FC = () => {
       const newNote: ProgressNote = {
         id: Date.now().toString(),
         ...form,
+        service: selectedService + (selectedDetails[0] ? ` - ${selectedDetails[0]}` : ""),
         hours: parseFloat(form.hours),
         status: 'Pending',
         date: new Date().toLocaleDateString(),
@@ -279,29 +376,66 @@ const ProgressNotesTable: React.FC = () => {
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Client Name Dropdown */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Client Name</label>
-                <input
+                <select
                   name="clientName"
                   value={form.clientName}
                   onChange={handleChange}
-                  placeholder="Enter client name"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   required
-                />
+                >
+                  <option value="">Select a client</option>
+                  {uniqueClientNames.map(name => (
+                    <option key={name} value={name}>{name}</option>
+                  ))}
+                </select>
               </div>
 
+              {/* Service Provided Dropdown */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Service Provided</label>
-                <input
+                <select
                   name="service"
-                  value={form.service}
-                  onChange={handleChange}
-                  placeholder="Enter service provided"
+                  value={selectedService}
+                  onChange={e => {
+                    setSelectedService(e.target.value);
+                    setSelectedDetails([]); // Reset all details
+                    handleChange(e);
+                  }}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   required
-                />
+                >
+                  <option value="">Select a service</option>
+                  {serviceOptions.map(service => (
+                    <option key={service.label} value={service.label}>
+                      {service.label}
+                    </option>
+                  ))}
+                </select>
               </div>
+
+              {selectedService && (() => {
+                const service = serviceOptions.find(s => s.label === selectedService);
+                const detail = service?.details[0];
+                return detail ? (
+                  <div className="mt-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{detail.label}</label>
+                    <select
+                      value={selectedDetails[0] || ""}
+                      onChange={e => setSelectedDetails([e.target.value])}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                      required
+                    >
+                      <option value="">Select {detail.label}</option>
+                      {detail.options.map(option => (
+                        <option key={option} value={option}>{option}</option>
+                      ))}
+                    </select>
+                  </div>
+                ) : null;
+              })()}
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Hours Worked</label>
@@ -318,53 +452,28 @@ const ProgressNotesTable: React.FC = () => {
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Client Condition</label>
-                <input
-                  name="condition"
-                  value={form.condition}
-                  onChange={handleChange}
-                  placeholder="Enter client condition"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                />
-              </div>
+            
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Observations</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Notes</label>
               <textarea
                 name="observations"
                 value={form.observations}
                 onChange={handleChange}
-                placeholder="Enter your observations..."
+                placeholder="Enter your notes here..."
                 rows={4}
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Incidents</label>
-              <textarea
-                name="incidents"
-                value={form.incidents}
-                onChange={handleChange}
-                placeholder="Report any incidents..."
-                rows={3}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Digital Signature</label>
-              <input
-                name="signature"
-                value={form.signature}
-                onChange={handleChange}
-                placeholder="Enter your full name"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                required
-              />
-            </div>
+               {/* Digital Signature */}
+          <div className="border-t pt-6">
+            <DigitalSignature
+              onSignatureChange={setSignature}
+              value={signature}
+            />
+          </div>
 
             <div className="flex space-x-4 pt-4">
               <button
@@ -596,7 +705,7 @@ const ProgressNotesTable: React.FC = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-500 mb-1">Observations</label>
+              <label className="block text-sm font-medium text-gray-500 mb-1">Notes</label>
               <p className="text-gray-900 bg-gray-50 p-4 rounded-lg">{selectedNote.observations || 'No observations recorded'}</p>
             </div>
 
