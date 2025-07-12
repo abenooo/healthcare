@@ -1,6 +1,5 @@
 "use client"
 
-import { Home, Heart, Users, Shield, Brain, Briefcase, UserCheck, Car, Building } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export default function Component() {
@@ -8,71 +7,116 @@ export default function Component() {
     {
       id: "in-home-service",
       name: "In-Home Service",
-      description: "Personalized support for home activities, medication reminders, and goal setting to enhance daily living.",
-      icon: <span role="img" aria-label="Healthcare" className="text-5xl">🏥</span>,
+      description: "Personalized support for daily living and wellness at home.",
+      tag: "Personalized Care",
+      image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+      // duration: "Flexible",
     },
     {
       id: "respite-care-service",
       name: "Respite Care Service",
-      description: "Short-term relief for families and caregivers, ensuring continuous care and support.",
-      icon: <span role="img" aria-label="Heart" className="text-5xl">💖</span>,
+      description: "Short-term relief for families and caregivers.",
+      tag: "Family Relief",
+      image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
+      // duration: "Flexible",
     },
     {
       id: "direct-support-professional",
-      name: "Direct Support ",
-      description: "Skilled DSPs help individuals with IDD participate in the community and daily activities.",
-      icon: <span role="img" aria-label="Users" className="text-5xl">🧑‍🤝‍🧑</span>,
+      name: "Direct Support Professional",
+      description: "Community and personal support for all ages with IDD.",
+      tag: "Community Support",
+      image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
+      // duration: "Flexible",
     },
     {
       id: "host-home-provider",
       name: "Host Home Provider",
-      description: "Experienced families provide a supportive home, helping develop life and social skills.",
-      icon: <span role="img" aria-label="Shield" className="text-5xl">🏠</span>,
+      description: "Supportive family environment for skill development.",
+      tag: "Supportive Home",
+      image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80",
+      // duration: "Flexible",
     },
     {
       id: "companion-services",
       name: "Companion Services",
-      description: "Professional DSPs offer emotional and physical support, ensuring stability and well-being.",
-      icon: <span role="img" aria-label="UserCheck" className="text-5xl">🤝</span>,
+      description: "Emotional and physical support for well-being.",
+      tag: "Companionship",
+      image: "https://images.unsplash.com/photo-1468421870903-4df1664ac249?auto=format&fit=crop&w=600&q=80",
+      // duration: "Flexible",
     },
     {
       id: "professional-behavioral-support",
-      name: "Professional Behavioral ",
-      description: "Education and support for chronic behavioral challenges, improving safety and relationships.",
-      icon: <span role="img" aria-label="Brain" className="text-5xl">🧠</span>,
+      name: "Professional Behavioral Support",
+      description: "Guidance for behavioral challenges and safety.",
+      tag: "Behavioral Guidance",
+      image: "https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=600&q=80",
+      // duration: "Flexible",
     },
     {
       id: "employment-specialist",
       name: "Employment Specialist",
-      description: "Guidance and support to help individuals find and keep competitive, integrated jobs.",
-      icon: <span role="img" aria-label="Briefcase" className="text-5xl">💼</span>,
+      description: "Support for finding and keeping competitive jobs.",
+      tag: "Workforce Support",
+      image: "https://images.unsplash.com/photo-1465101178521-c1a9136a3b99?auto=format&fit=crop&w=600&q=80",
+      // duration: "Flexible",
     },
     {
       id: "support-living-without-transportation",
       name: "Support Living Without Transportation",
-      description: "Support for independent living and community access for those without reliable transport.",
-      icon: <span role="img" aria-label="Car" className="text-5xl">🚗</span>,
+      description: "Help with independent living and community access.",
+      tag: "Independent Living",
+      image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
+      // duration: "Flexible",
     },
     {
       id: "day-habilitation",
       name: "Day Habilitation",
-      description: "A safe, respectful place for indoor and outdoor activities, ensuring safety and enjoyment.",
-      icon: <span role="img" aria-label="Building" className="text-5xl">🏢</span>,
+      description: "Safe, respectful place for activities and events.",
+      tag: "Day Program",
+      image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=600&q=80",
+      // duration: "Flexible",
     },
   ]
 
   return (
     <div className="min-h-screen bg-[#f8fafc] py-16 px-4">
+      <h1 className="text-3xl font-bold text-center mb-10 text-gray-900">Services At Shalom Health Care</h1>
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {services.map((service) => (
           <Link to={`/service/${service.id}`} key={service.id}>
             <div
-              className="rounded-2xl border border-gray-200 bg-white p-10 flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg"
-              style={{ minHeight: 260 }}
+              className="group rounded-2xl border border-gray-200 bg-white p-0 flex flex-col shadow-sm hover:shadow-lg transition-all duration-300"
             >
-              <div className="mb-4">{service.icon}</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">{service.name}</h3>
-              <p className="text-gray-600 text-base">{service.description}</p>
+              <div className="relative overflow-hidden rounded-t-2xl">
+                <img
+                  src={service.image}
+                  alt={service.name}
+                  className="w-full h-48 object-cover rounded-t-2xl transition-transform duration-300 group-hover:scale-105"
+                />
+                <div className="absolute top-4 left-4 bg-white bg-opacity-90 rounded-full px-4 py-1 text-sm font-medium flex items-center shadow">
+                  {service.tag}
+                </div>
+              </div>
+              <div className="flex-1 flex flex-col p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{service.name}</h3>
+                <p className="text-gray-600 text-base mb-4 truncate">{service.description}</p>
+                <div className="flex items-center text-gray-600 text-sm mb-4 space-x-6 justify-center">
+                  <div className="flex items-center space-x-1">
+                    {/* <span role="img" aria-label="calendar">📅</span> */}
+                    {/* <span>{service.duration}</span> */}
+                  </div>
+                </div>
+                <div className="mt-auto">
+                  <span
+                    className="block w-full text-center py-2 rounded-xl font-semibold transition-all duration-200
+                      text-white hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-purple-400
+                      transform hover:scale-105"
+                    style={{ backgroundColor: "#6E439A" }}
+                  >
+                    View Details
+                  </span>
+                </div>
+              </div>
             </div>
           </Link>
         ))}
