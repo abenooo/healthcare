@@ -414,8 +414,8 @@ const ProgressNotesTable: React.FC = () => {
     if (!showAddModal) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-lg sm:max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900">Add Progress Note</h2>
             <button
@@ -573,8 +573,8 @@ const ProgressNotesTable: React.FC = () => {
     const totalHours = clientNotes.reduce((sum, note) => sum + Number(note.hours || 0), 0).toFixed(1);
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl p-6 max-w-6xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-2xl sm:max-w-6xl max-h-[90vh] overflow-y-auto shadow-2xl">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-3">
               <User className="w-8 h-8 text-blue-600" />
@@ -716,8 +716,8 @@ const ProgressNotesTable: React.FC = () => {
     if (!selectedNote) return null;
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-2xl p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 w-full max-w-lg sm:max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-gray-900">Progress Note Details</h2>
             <button
@@ -811,27 +811,28 @@ const ProgressNotesTable: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+      <div className="bg-white rounded-2xl p-2 sm:p-8 shadow-sm border border-gray-100">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          {/* Title and subtitle */}
+          <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-2 sm:space-y-0 sm:space-x-4 sm:flex-row w-full sm:w-auto">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mb-2 sm:mb-0">
               <FileText className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Progress Notes by Client</h1>
-              <p className="text-gray-600">Manage and track patient care progress notes grouped by client</p>
+              <h1 className="text-xl sm:text-3xl font-bold text-gray-900">Progress Notes by Client</h1>
+              <p className="text-gray-600 text-xs sm:text-base">Manage and track patient care progress notes grouped by client</p>
             </div>
           </div>
-          <div className="flex gap-2 flex-wrap">
+          {/* Actions */}
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto mt-2 sm:mt-0">
             <button
               onClick={() => setShowAddModal(true)}
-              className="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+              className="flex items-center justify-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors min-w-[140px] w-full sm:w-auto"
             >
               <Plus className="w-4 h-4" />
               <span>Add Progress Note</span>
             </button>
-            
-            <label className="flex items-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors cursor-pointer">
+            <label className="flex items-center justify-center space-x-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors cursor-pointer min-w-[140px] w-full sm:w-auto">
               <input
                 type="file"
                 accept="application/pdf,image/*"
@@ -843,61 +844,58 @@ const ProgressNotesTable: React.FC = () => {
               <span>Upload Signed Form</span>
             </label>
           </div>
-          {uploadMessage && (
-            <div className="text-sm text-green-700 mt-2">{uploadMessage}</div>
-          )}
         </div>
+        {uploadMessage && (
+          <div className="text-sm text-green-700 mt-2">{uploadMessage}</div>
+        )}
 
         {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-          <div className="bg-blue-50 rounded-xl p-4">
+        <div className="flex overflow-x-auto gap-4 sm:grid sm:grid-cols-4 sm:gap-6 mb-6 pb-2 scrollbar-hide">
+          <div className="bg-blue-50 rounded-xl p-4 min-w-[160px] flex-1">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-blue-600 text-sm font-medium">Total Clients</p>
-                <p className="text-2xl font-bold text-blue-900">{clientSummaries.length}</p>
+                <p className="text-blue-600 text-xs sm:text-sm font-medium">Total Clients</p>
+                <p className="text-xl sm:text-2xl font-bold text-blue-900">{clientSummaries.length}</p>
               </div>
-              <User className="w-8 h-8 text-blue-600" />
+              <User className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600" />
             </div>
           </div>
-
-          <div className="bg-green-50 rounded-xl p-4">
+          <div className="bg-green-50 rounded-xl p-4 min-w-[160px] flex-1">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-green-600 text-sm font-medium">Total Notes</p>
-                <p className="text-2xl font-bold text-green-900">{notes.length}</p>
+                <p className="text-green-600 text-xs sm:text-sm font-medium">Total Notes</p>
+                <p className="text-xl sm:text-2xl font-bold text-green-900">{notes.length}</p>
               </div>
-              <FileText className="w-8 h-8 text-green-600" />
+              <FileText className="w-6 h-6 sm:w-8 sm:h-8 text-green-600" />
             </div>
           </div>
-
-          <div className="bg-yellow-50 rounded-xl p-4">
+          <div className="bg-yellow-50 rounded-xl p-4 min-w-[160px] flex-1">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-yellow-600 text-sm font-medium">Pending</p>
-                <p className="text-2xl font-bold text-yellow-900">
+                <p className="text-yellow-600 text-xs sm:text-sm font-medium">Pending</p>
+                <p className="text-xl sm:text-2xl font-bold text-yellow-900">
                   {notes.filter(note => note.status === 'Pending').length}
                 </p>
               </div>
-              <Clock className="w-8 h-8 text-yellow-600" />
+              <Clock className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-600" />
             </div>
           </div>
-
-          <div className="bg-purple-50 rounded-xl p-4">
+          <div className="bg-purple-50 rounded-xl p-4 min-w-[160px] flex-1">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-purple-600 text-sm font-medium">Approved</p>
-                <p className="text-2xl font-bold text-purple-900">
+                <p className="text-purple-600 text-xs sm:text-sm font-medium">Approved</p>
+                <p className="text-xl sm:text-2xl font-bold text-purple-900">
                   {notes.filter(note => note.status === 'Approved').length}
                 </p>
               </div>
-              <CheckCircle className="w-8 h-8 text-purple-600" />
+              <CheckCircle className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
             </div>
           </div>
         </div>
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
-          <div className="flex space-x-4">
+          <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <input
@@ -905,13 +903,13 @@ const ProgressNotesTable: React.FC = () => {
                 placeholder="Search clients..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-64"
+                className="pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-64"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full sm:w-auto"
             >
               <option value="all">All Status</option>
               <option value="Pending">Pending</option>
@@ -921,7 +919,7 @@ const ProgressNotesTable: React.FC = () => {
           </div>
           <button
             onClick={loadNotes}
-            className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+            className="flex items-center space-x-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-200 w-full sm:w-auto"
           >
             <RefreshCw className="w-4 h-4" />
             <span>Refresh</span>
@@ -956,22 +954,22 @@ const ProgressNotesTable: React.FC = () => {
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full">
+            <table className="min-w-full text-sm">
               <thead>
                 <tr className="bg-gray-50 border-b border-gray-200">
-                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Client Name</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Total Notes</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Total Hours</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Last Service</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Last Date</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Status Summary</th>
-                  <th className="px-6 py-4 text-left text-sm font-medium text-gray-700">Actions</th>
+                  <th className="px-2 sm:px-6 py-4 text-left font-medium text-gray-700 whitespace-nowrap">Client Name</th>
+                  <th className="px-2 sm:px-6 py-4 text-left font-medium text-gray-700 whitespace-nowrap">Total Notes</th>
+                  <th className="px-2 sm:px-6 py-4 text-left font-medium text-gray-700 whitespace-nowrap">Total Hours</th>
+                  <th className="px-2 sm:px-6 py-4 text-left font-medium text-gray-700 whitespace-nowrap">Last Service</th>
+                  <th className="px-2 sm:px-6 py-4 text-left font-medium text-gray-700 whitespace-nowrap">Last Date</th>
+                  <th className="px-2 sm:px-6 py-4 text-left font-medium text-gray-700 whitespace-nowrap">Status Summary</th>
+                  <th className="px-2 sm:px-6 py-4 text-left font-medium text-gray-700 whitespace-nowrap">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
                 {filteredSummaries.map((summary, index) => (
                   <tr key={summary.clientName} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                    <td className="px-6 py-4">
+                    <td className="px-2 sm:px-6 py-4">
                       <div className="flex items-center space-x-3">
                         <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                           <User className="w-5 h-5 text-blue-600" />
@@ -981,11 +979,11 @@ const ProgressNotesTable: React.FC = () => {
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{summary.totalNotes}</td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{summary.totalHours.toFixed(1)}</td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{summary.lastService}</td>
-                    <td className="px-6 py-4 text-sm text-gray-900">{summary.lastDate}</td>
-                    <td className="px-6 py-4">
+                    <td className="px-2 sm:px-6 py-4 text-sm text-gray-900">{summary.totalNotes}</td>
+                    <td className="px-2 sm:px-6 py-4 text-sm text-gray-900">{summary.totalHours.toFixed(1)}</td>
+                    <td className="px-2 sm:px-6 py-4 text-sm text-gray-900">{summary.lastService}</td>
+                    <td className="px-2 sm:px-6 py-4 text-sm text-gray-900">{summary.lastDate}</td>
+                    <td className="px-2 sm:px-6 py-4">
                       <div className="flex space-x-2">
                         {summary.pendingCount > 0 && (
                           <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
@@ -1004,7 +1002,7 @@ const ProgressNotesTable: React.FC = () => {
                         )}
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-2 sm:px-6 py-4">
                       <button
                         onClick={() => handleViewClient(summary.clientName)}
                         className="flex items-center space-x-1 text-blue-600 hover:text-blue-800 transition-colors"
